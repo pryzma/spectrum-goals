@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SpectrumGoals</title>
+    <%- css %>
+    
+<link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="css/spectrum-goals_styles.css" />
+  </head>
+  <body>
+    <header class="d-flex flex-column flex-md-row align-items-center p-2 px-md-3 mb-2 bg-white fixed-top">
+      <a class="navbar-brand col-sm-3 col-md-3 mr-0" href="#"><span class="inner">SpectrumGoals</span></a>
+      <nav id="headerNav" class="my-2 my-md-0 mr-auto">
+
+      </nav>
+      <div id="accountTopInfo" >
+          <a href="#account"><i class="fas fa-user"></i> <%= full_name %></a> | <a href="/logout" >Logout</a>
+      </div>
+    </header>
+    <main role="main" class="container-fluid">
+      <div class="row">
+        <section class="col-md-9 ml-sm-auto col-lg-9 px-4" id="mainContent">
+          <div class="text-muted" style="margin: auto; position: absolute;"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>
+        </section>
+      </div>
+
+    </main>
+    <footer>
+
+    </footer>
+   <!-- Modal -->
+<div class="modal fade" id="serverConnectionLost" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="serverConnectionLost" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Server Connection Lost</h5>
+       
+      </div>
+      <div class="modal-body">
+        <p>SpectrumGoals failed to connect with server backend.</p>
+        <p class="text-muted"><i class="fas fa-circle-notch fa-spin"></i> Trying to reconnect...</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- amModal -->
+<div class="modal fade" id="amModal" tabindex="-1" role="dialog" aria-labelledby="amModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="amModalTitle"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="amModalBody"> 
+          <div class="text-muted" style="margin: auto; position: absolute;"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>
+      </div>
+      <div class="modal-footer" id="amModalFooter">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" crossorigin="anonymous"></script>
+    <%- js %>
+    <script src="js/ejs.min.js"></script>
+    <script src="js/application.js"></script>
+  </body>
+</html>

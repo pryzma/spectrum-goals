@@ -1,0 +1,94 @@
+{
+    "name" : "Spectrum Goals",
+    "app" : "spectrum-goals",
+    "client" :{
+        "require" : [ 
+            "application-vue",            
+            "application-ejs",
+            "websocket",
+            "components",
+            "spectrum-goals" 
+        ],
+        "modules" : [
+            "dashboard",
+            "targets",    
+            "checklist",
+            "accounts"
+            
+        ],
+        "menu" : ["accounts","targets","checklist"],
+        "routes" : {
+            "dashboard" : "dashboard",
+            "account" : "account",
+            "accounts" : "acccounts",
+            "accounts/add" : "accounts.add"
+        },
+        "default" : "dashboard",
+        "main" : "section#mainContent",
+        "nav" : "nav#headerNav",
+        "template" : "pageLayout",
+        "style" : "border-top: 3px solid {color}",
+        "defaults" : {
+            "template" : "defaultLayout",
+            "templatePath" : "html/templates/{template}.html"
+        },
+        "cdns" : [
+            
+           
+            { "name" : "jQuery", "url" : "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", "type" : "script", "sri" : "sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="},
+            { "name" : "Vue", "url" : "https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js", "type" : "script", "sri" : "sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="},
+            { "name" : "Axios", "url" : "https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js", "type" : "script", "sri" : "sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs="},
+            { "name" : "Bootstrap (JS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js", "type" : "script", "sri" : "sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" },    
+            { "name" : "Bootstrap (CSS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css", "type" : "stylesheet", "sri" : "sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY" },    
+            { "name" : "Hammer", "url" : "https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js", "type" : "script", "sri" : "sha256-eVNjHw5UeU0jUqPPpZHAkU1z4U+QFBBY488WvueTm88=" },
+            { "name" : "Underscore", "url" : "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js", "type" : "script", "sri" : "sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=" },
+            { "name" : "Backbone", "url" : "https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone-min.js", "type" : "script", "sri" : "sha256-OO+KD/bMG3Dr57LO27ZhYL2zYhLP1CJIkCXUUDnFNuc=" },
+            { "name" : "Moment", "url" : "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js", "type" : "script", "sri" : "sha384-fYxN7HsDOBRo1wT/NSZ0LkoNlcXvpDpFy6WzB42LxuKAX7sBwgo7vuins+E1HCaw" },
+            { "name" : "Datatables jQuery", "url" : "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js", "type" : "script", "sri" : "sha384-rgWRqC0OFPisxlUvl332tiM/qmaNxnlY46eksSZD84t+s2vZlqGeHrncwIRX7CGp" },
+            { "name" : "Bootstrap Date Picker", "url" : "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js", "type" : "script", "sri" : "sha384-vtZXrrXR60MGoprJb7ApH4t3Y59IhePhwtXXmbqg//ha9LHwSo3QCNR6XvF5oXVM" },
+            { "name" : "Bootstrap Time Picker", "url" : "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js", "type" : "script", "sri" : "sha384-j0kMAC9Ymu1pP+W9AURKMmsgAhiaJJCdBKGCqmpXMdeaOz+T1y6vHtcUlrobCB6G" },
+            { "name" : "Datatables Bootstrap", "url" : "https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js", "type" : "script", "sri" : "sha384-uiSTMvD1kcI19sAHJDVf68medP9HA2E2PzGis9Efmfsdb8p9+mvbQNgFhzii1MEX" },
+            { "name" : "Fontawesome", "url" : "https://use.fontawesome.com/releases/v5.6.1/css/all.css", "type" : "stylesheet", "sri" : "sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" }
+            
+          ],
+          "icons" : [
+            { "type" : "", "size" : "" }
+          ],
+          "jshint" : {
+            "undef" : false,
+            "asi" : false,
+            "esversion" : 6,
+            "maxerr" :250
+          }, 
+        "debug" : false,
+        "manifest" : true
+    },
+    "server" : {
+        "routes" : {
+            "/" : "index",
+            "/verify" : "verify",
+            "/status" : "status",
+            "/config" : "config",
+            "/api/accounts" : "accounts",
+            "/api/contacts" : "contacts",
+            "/api/account" : "account",
+            "/api/options" : "options",
+            "/api/events" : "events",
+            "/api/rehearsals" : "rehearsals",
+            "/api/blockdates" : "blockdates"
+        },
+        "require" : [
+            "dev",
+            "session",
+            "sequelize",
+            "manifest",
+            "routes",
+            "view",
+            "parser",
+            "static",
+            "auth",
+            "websocket",
+            "error"
+        ]
+    }
+}

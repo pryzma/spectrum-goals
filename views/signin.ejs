@@ -1,0 +1,147 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>Inloggen · <%= name %></title>
+
+		<!-- bootstrap  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY=" crossorigin="anonymous" />
+    <!-- Google fonts  -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Inconsolata" rel="stylesheet">
+    <!-- fontawesome  -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+			html,
+body {
+  height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+  background-image: url('img/bg.png');
+  background-size: cover;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+    </style>
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="css/spectrum-goals_styles.css" />
+  </head>
+  <body class="text-center">
+    <form id="login" class="form-signin" action="/signin" method="post" name="Login_Form" >
+  <img class="mb-4" src="/img/logo_sm_300.png">
+
+	<% if (message) { %>
+	<p><%= message %></p>
+	<% } %>
+  <label for="inputEmail" class="sr-only">Gebruikersnaam</label>
+
+  <input id="email" type="email" name="username" class="form-control" placeholder="Gebruikersnaam"  autocomplete="new-email" required autofocus>
+  <label for="inputPassword" class="sr-only">Wachtwoord</label>
+  <input id="password" type="password" name="password" class="form-control" placeholder="Wachtwoord" autocomplete="new-password" required>
+  
+      <div class="custom-control custom-checkbox  mb-3">
+          <input type="checkbox" class="custom-control-input" id="remember">
+          <label class="custom-control-label text-muted" for="remember">Remember me</label>
+        </div>
+  
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+</form>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script>
+<!-- bootstrap -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js" integrity="sha384-L2pyEeut/H3mtgCBaUNw7KWzp5n9+4pDQiExs933/5QfaTh8YStYFFkOzSoXjlTb" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha256-1A78rJEdiWTzco6qdn3igTBv9VupN3Q1ozZNTR4WE/Y=" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function() {
+    window.location.hash = '';
+    const remember = $.cookie('spectrum-goals-remember');
+    if (remember && remember !='null'){
+      let email = $.cookie('spectrum-goals-email'),
+      password = $.cookie('spectrum-goals-password');
+      // autofill the fields
+      email==='null'? email = undefined : email = email;
+      password==='null'? password = undefined : password = password;
+      if(email)$('#email').val(email);
+      if(password)$('#password').val(password);
+      $('#remember').prop('checked', true);
+    }
+
+    $("#login").submit(function() {
+        if ($('#remember').is(':checked')) {
+            var email = $('#email').val();
+            var password = $('#password').val();
+
+            // set cookies to expire in 14 days
+            $.cookie('spectrum-goals-email', email, { expires: 14 });
+            $.cookie('spectrum-goals-password', password, { expires: 14 });
+            $.cookie('spectrum-goals-remember', true, { expires: 14 });
+        }else{
+            // reset cookies
+            $.cookie('spectrum-goals-email', null);
+            $.cookie('spectrum-goals-password', null);
+            $.cookie('spectrum-goals-remember', null);
+        }
+  });
+});
+</script>
+</body>
+</html>

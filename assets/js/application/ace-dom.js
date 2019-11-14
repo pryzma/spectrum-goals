@@ -1,0 +1,5 @@
+
+
+ace.dom = function(args){
+
+}
