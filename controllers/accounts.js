@@ -8,7 +8,7 @@ const connection = require('../app/dbconn'),
       crypto = require('crypto');
       
 const models = require('../models').sequelize.models;
-const Account = models.account;
+const Account = models.Account;
 const Contact = models.Contact;
 
 const auth = require('./auth')
@@ -32,10 +32,10 @@ controller.createAccount = (req,res) => {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const msg = {
           to: `${account.email}`,
-          from: `noreply@agendamanager.nl`,
-          subject: `Registration at agendamanager.nl`,
-          text: `Someone has invited you to join Agenda Manager. Visit agendamanager.nl/verify and paste the following code: ${account.id}`,
-          html: `<div><img src="https://dev.agendamanager.nl/img/logo_sm_300.png" style="margin:auto;" /></div>${req.session.user.firstName} ${req.session.user.lastName} has invited you to join Agenda Manager. Visit <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${account.id}">agendamanager.nl/verify</a> and paste the following code: <br><strong>${account.id}</strong>`,
+          from: `noreply@spectrumgoals.nl`,
+          subject: `Activeer je SpectrumGoals Leerdoelen Monitor Account`,
+          text: ``,
+          html: `Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
         }
         sgMail.send(msg);
         res.json(account);
@@ -51,22 +51,22 @@ controller.verifyAccount = (req,res) => {
     account_.salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6'+account_.password;
     account_.password = crypto.createHash('sha1').update(account_.salt).digest('hex');
 
-    connection.query(`SELECT * FROM accounts WHERE id='${account_.id}'`, (err,result) => {
+    connection.query(`SELECT * FROM Accounts WHERE id='${account_.id}'`, (err,result) => {
         //console.log(result)
         if(err){
             throw err
         }
         const account = result
         console.log(account)
-        connection.query(`UPDATE accounts SET password='${account_.password}',isActivated=1 WHERE id='${account_.id}'`, (err, result) => {
+        connection.query(`UPDATE Accounts SET password='${account_.password}',isActivated=1 WHERE id='${account_.id}'`, (err, result) => {
             //console.log(account[0])
-            const accountCreatedBy = connection.query(`SELECT * FROM accounts WHERE id='${account[0].createdBy}'`, (err,result) => {
+            const accountCreatedBy = connection.query(`SELECT * FROM Accounts WHERE id='${account[0].createdBy}'`, (err,result) => {
                 const msg = {
                     to: `${result[0].email}`,
-                    from: `noreply@agendamanager.nl`,
-                    subject: `Agendamanager account ${account[0].firstName} ${account[0].lastName} has been activated `,
-                    text: `The account you created for ${account[0].firstName} ${account[0].lastName}(${account[0].email}) on ${account[0].createdAt} has been activated`,
-                    html: `The account you created for ${account[0].firstName} ${account[0].lastName}(${account[0].email}) on ${account[0].createdAt} has been activated `,
+                    from: `noreply@spectrumgoals.nl`,
+                    subject: `SpectrumGoals Account ${account[0].firstName} ${account[0].lastName} is geactiveerd `,
+                    text: `Het account wat is aangemaakt voor ${account[0].firstName} ${account[0].lastName}(${account[0].email}) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik.`,
+                    html: `Het account wat is aangemaakt voor <b>${account[0].firstName} ${account[0].lastName}</b>(${account[0].email}) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik. `,
                 }
                 console.log(msg)
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -79,64 +79,6 @@ controller.verifyAccount = (req,res) => {
         });
     });
     
-    
-    
-    /*Account.findOne({ where: {id: account_.id} }).then(account => {
-        //console.log(account.dataValues)
-        account = account.dataValues;
-        Account.update(
-            {password : account_.password,isActivated : 1},
-            {
-                returning : true,
-                plain : true,
-                where: { id: account.id } 
-            }
-        ).then(function(updatedAccount) {
-            //callback(account);
-            console.log(updatedAccount)
-        });
-
-        /*
-        controller.updateAccount(account.id,{
-            password : account_.password,
-            isActivated : 1
-        },(account) => {
-            Account.findOne({ where: {id: account.createdBy} }).then(accountCreatedBy => {
-                accountCreatedBy = accountCreatedBy.get({ plain: true })
-                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-                sgMail.send({
-                    to: `${accountCreatedBy.email}`,
-                    from: `noreply@agendamanager.nl`,
-                    subject: `Agendamanager account ${account.firstName} ${account.lastName} has been activated `,
-                    text: ``,
-                    html: `The account you created for ${account.firstName} ${account.lastName}(${account.email}) on ${account.createdAt} has been activated `,
-                });
-            });
-        },(account) =>{
-            res.json(account)
-        })
-        */
-    /*});
-    
-    connection.query(`UPDATE accounts SET firstName='${account.firstName}',lastName='${account.lastName}',password='${account.password}',isActivated=1 WHERE id='${account.id}'`, (err, result) => {
-       
-        if (!err) {
-       
-            const accountCreatedBy = controller.getOne(account.createdBy)
-            //console.log(`getAccount(req.body.createdBy) : ${JSON.stringify(accountCreatedBy)}`)
-            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-            const msg = {
-                to: `${accountCreatedBy.email}`,
-                from: `noreply@agendamanager.nl`,
-                subject: `Agendamanager account ${account.firstName} ${account.lastName} has been activated `,
-                text: ``,
-                html: `The account you created for ${account.firstName} ${account.lastName}(${account.email}) on ${account.createdAt} has been activated `,
-            }
-            sgMail.send(msg);
-            res.end(JSON.stringify(account));
-        }
-    });
-    */
 }
 controller.updateAccount = (id,update,callback) => {
     Account.update(update,{returning : true,where: { id: id } })

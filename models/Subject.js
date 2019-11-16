@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    return sequelize.define('Target',{
+    return sequelize.define('Subject',{
         id: {
             type: Sequelize.STRING,
             notEmpty: true,
