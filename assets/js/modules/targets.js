@@ -17,10 +17,10 @@ component.targetSublevels = (args)=>{
             $('<button></button>')
                 .attr('class','btn btn-sublevel')
                 .html(sublevel.name)
-            )
+            );
     }
-    $(`div.${targetSublevelsClass}`).remove()
-    $(`button.btn#${args.id}`).after($targetSublevelsContainer)
+    $(`div.${targetSublevelsClass}`).remove();
+    $(`button.btn#${args.id}`).after($targetSublevelsContainer);
 
 }
 component.targetOverview = (args)=>{
@@ -29,9 +29,10 @@ component.targetOverview = (args)=>{
             .attr('class','row'),
           $colElement = () => $('<div></div>')
             .attr('class','col-md'),
-          $btnElement = (txt) => $('<button></button>')
+          $btnElement = (btn) => $('<button></button>')
             .attr('class','btn btn-subject')
-            .html(txt);
+            .attr('id',btn.id)
+            .html(btn.txt);
     const $subjectRow = $rowElement()
             .attr('id','subjects')
     for(let subject in args.subjects){

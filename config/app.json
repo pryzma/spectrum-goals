@@ -71,11 +71,7 @@
             "/config" : "config",
             "/api/accounts" : "accounts",
             "/api/contacts" : "contacts",
-            "/api/account" : "account",
-            "/api/options" : "options",
-            "/api/events" : "events",
-            "/api/rehearsals" : "rehearsals",
-            "/api/blockdates" : "blockdates"
+            "/api/account" : "account"
         },
         "require" : [
             "dev",

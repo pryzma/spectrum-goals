@@ -3,11 +3,14 @@ const dashboard = {
     default : medientOverview
 }
 const medientData = {
-    url : 'api/accounts/medients'
+    url : 'api/accounts/medients',
+    modify : (medient) => {
+        // modify medient data
+    }
 }
 function medientOverview(){
     const medientOverviewTable = {
-        el : 'medientOverview',
+        el : '#medientOverview',
         model : 'Account',
         data : medientData
     }

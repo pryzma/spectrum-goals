@@ -5,8 +5,11 @@ module.exports = (sequelize, Sequelize) => {
             notEmpty: true,
             primaryKey: true
         },
-        // email is username
         email: {
+            type: Sequelize.STRING,
+            notEmpty: true
+        },
+        username: {
             type: Sequelize.STRING,
             notEmpty: true
         },
