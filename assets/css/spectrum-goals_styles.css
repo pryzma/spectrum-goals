@@ -1,3 +1,58 @@
-header nav#headerNav{
-    background-color: #5f9fab;
+@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
+body{
+    font-family: 'Raleway', sans-serif;
+    background-color: whitesmoke;
+}
+header {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100 */
+background: #5f9fab; /* Old browsers */
+background: -moz-linear-gradient(top,  #5f9fab 0%, #7db9e8 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #5f9fab 0%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #5f9fab 0%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+
+}
+header a{
+    color:whitesmoke;
+}
+header a:hover{
+    color:whitesmoke;
+    text-decoration: none ;
+}
+header .navbar-brand{
+    padding-left: 25px;
+}
+header #headerNav {
+    position: absolute;
+    right: 10px;
+}
+header #headerNav li{
+    list-style: none;
+    display: inline;
+    padding-right: 55px;
+}
+
+header #accountTopInfo {
+    position: absolute;
+    right: 55px;
+    top : 85px;
+    color: #666;
+}
+header #accountTopInfo a{
+    color: #666;
+}
+
+main {
+    margin-top: 85px;
+}
+main.container-fluid{
+    padding-left: 55px;
+    padding-right: 55px;
+}
+.custom-control-input:checked,.btn.btn-primary{
+    background-color: #5F9FAB;
+}
+.btn.btn-yellow{
+    background-color: #fac031;
+    border-color: #fac031;
 }

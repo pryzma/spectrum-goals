@@ -1,8 +1,8 @@
 'use strict'
-/*
+/** 
 * assets/js/components.js
-*/
-
+* Component
+ */
 const component = (() => {
   const methods = { 
     form : { 
@@ -15,7 +15,20 @@ const component = (() => {
         row : formRow
       } 
     },
+    /** 
+     * @description Table Component, optional before or callback function arguments
+     * @param {function} before
+     * @param {object} args
+     * @param {string} args.class
+     * @param {string} args.model
+     * @param {object} args.data
+     * @param {string} args.data.url
+     * @param {function} args.data.modify
+     * @param {function} args.data.callback
+     * @param {function} callback
+     */
     table : (before,args,callback) => {
+
       if(typeof before === 'object'){
         if(typeof args === 'function'){
           callback = args;
@@ -49,6 +62,12 @@ const component = (() => {
   }
   // .................................................
   // component.date
+  /**
+   * 
+   * @param {object} args 
+   * @param {string} args.format
+   * @param {HTMLElement} args.el
+   */
   function date(args){
     let format = typeof args === 'object' ? args.format : args
     const now = new Date();
@@ -69,6 +88,12 @@ const component = (() => {
     return format;
   }
   // component.time
+   /**
+   * 
+   * @param {object} args 
+   * @param {HTMLElement} args.el
+   * 
+   */
   function time(args){
     let now = new Date();
     let hh = now.getHours();
@@ -86,6 +111,10 @@ const component = (() => {
   }
   // .................................................
   // component.uid
+  /**
+   * 
+   * @param {object} args 
+   */
   function uid(args){  // generate unique id
       const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
       const output = s4() + s4() + '-' + s4();
@@ -115,6 +144,10 @@ const component = (() => {
   })
   */
   const authModels = new Array
+  /**
+   * 
+   * @param {object} args 
+   */
   function auth(args){
    
       // authData
@@ -153,7 +186,11 @@ const component = (() => {
     }
   })
    */
- 
+ /**
+  * 
+  * @param {object} args 
+  * @param {function} callback 
+  */
   function api(args,callback){
     if(!args.method) args.method = 'get';
     axios[args.method](args.url,args.data)
@@ -179,14 +216,22 @@ const component = (() => {
  // component.repeat
  /*
  component.repeat({
-   data : 'api/endpoint',
+   data : { url : 'api/endpoint' },
    template : '{propName} is replaced'
  })
  */
+/**
+ * @description Repeat Component, maps template string to (fetched) data
+ * @param {object} args 
+ * @param {HTMLElement} args.el 
+ * @param {object} args.data 
+ * @param {string} args.data.url 
+ * @param {string} args.template 
+ */
   function repeat(args){
-    if(typeof args.data === 'string'){
+    if(typeof args.data === 'object'){
       const apiObj = args;
-      apiObj.url = args.data
+      apiObj.url = args.data.url
       return api(apiObj,(data)=>{
         apiObj.data = data;
         repeat(apiObj);
@@ -220,10 +265,19 @@ const component = (() => {
     // do something with obj
   })
   */
-
+  /**
+   * 
+   * @param {string} args 
+   */
   function err(args){
     throw args
   }
+  /**
+   * 
+   * @param {object} args 
+   * @param {string} type 
+   * @param {function} callback 
+   */
   function type(args,type,callback){
     // assign callback to args type
     const argsTypeOf = typeof args;
@@ -239,6 +293,13 @@ const component = (() => {
             
         }
   }
+  /**
+   * 
+   * @param {object} args 
+   * @param {object} args.el - jQuery or DOM object
+   * @param {boolean} args.append - append or set html
+   * @param {string} args.output - content to append or set
+   */
   function componentElementOutput(args){
     
       if(typeof args.el === 'object'){
@@ -266,6 +327,15 @@ const component = (() => {
     title : 'Title of Card in myDiv',
     content :'Content of Card in myDiv'
   })
+  */
+ /**
+  * 
+  * @param {Array} args 
+  * @param {string} args[0] - [element:id]
+  * @param {object} args[1] - 
+  * @param {string} args[1].appendTo
+  * @param {string} args[1].id
+  * @param {string} args[1].component
   */
   function el(args){
     
@@ -305,6 +375,9 @@ const component = (() => {
   /*
   const $div = component.$('div:myDiv')
   */
+ /**
+  * 
+  */
   methods.$ = function(args){
     let element
     if(typeof args === 'string'){
@@ -327,6 +400,10 @@ const component = (() => {
     return element
   }
   // componentMethods
+  /**
+   * 
+   * @param {object} args 
+   */
   function componentMethods(args){
     if(!component[name]){
       for(const method in methods){
@@ -347,14 +424,23 @@ const component = (() => {
       content : 'Content of Card'
     })
   */
+ /**
+  * 
+  * @param {object} args 
+  * @param {string} args.title - title of card 
+  * @param {string} args.content - content of card
+  * @param {string} args.footer - content of card footer
+  * @param {HTMLElement} args.el
+  */
   function card(args){
+    
     const card = document.createElement('div'), 
     cardBody = document.createElement('div'),
     cardText = document.createElement('div'),
     cardFragment = document.createDocumentFragment();
     card.setAttribute('class','card');
     cardBody.setAttribute('class','card-body');
-
+    /** */
     if(args.title){
       const cardTitle = document.createElement('h6');
       cardTitle.setAttribute('class','card-title');
@@ -362,10 +448,12 @@ const component = (() => {
       card.appendChild(cardTitle);
     }
     cardText.setAttribute('class','card-text');
+    /**  */
     cardText.innerHTML = args.content;
     cardBody.appendChild(cardText);
     
     card.appendChild(cardBody);
+    /**  */
     if(args.footer){
       const cardFooter = document.createElement('h6div');
       cardFooter.setAttribute('class','card-footer');
@@ -382,7 +470,21 @@ const component = (() => {
   }
   // .................................................
   // component.btn
-  /* https://getbootstrap.com/docs/4.3/components/buttons/
+  /** 
+   * @param {object} args
+   * @param {string} args.class - class attribute, defaults to '[btn-]primary' 
+   * @param {string} args.id - id attribute, defaults to [uid]
+   * @param {string} args.html - html content of button
+   * @param {string} args.txt - text content of button
+   * @param {object} args.tooltip - button tooltip object
+   * @param {string} args.tooltip.title - button tooltip title
+   * @param {string} args.tooltip.trigger - button tooltip trigger, defaults to 'hover focus'
+   * @param {object} args.confirm - button confirm (popover) object
+   * @param {function} args.confirm.confirm - button confirm callback
+   * @param {boolean} args.confirm.hideOnConfirm - hide modal after confirm callback
+   * @param {string} args.confirm.msg - message to show on confirm, content of popover
+   * @param {object} args.el - [componentElementOutput] object
+   * 
   component.btn({
     class : 'primary',
     txt : 'Button Text',
@@ -397,34 +499,46 @@ const component = (() => {
     }
   })
   */
+ 
   function btn(args){
     const btn = document.createElement('button');
     if(!args.class) args.class = 'primary'
+    /** */
     btn.setAttribute('class',`btn btn-${args.class}`);
+    /**  */
     if(!args.id) args.id = uid();
     btn.setAttribute('id',args.id);
+    /**  */
+    /**  */
     btn.innerHTML = args.html ? args.html : args.txt;
     if(args.event){
       btn.addEventListener(args.event[0],(event)=>args.event[1](event));
     }
+    /**   */
     if(args.tooltip){
       btn.setAttribute('data-toggle','tooltip')
       btn.setAttribute('data-placement','top')
+      /**  */
       args.tooltip.title ? btn.setAttribute('title',args.tooltip) : btn.setAttribute('title',args.tooltip)
+       /**  */
       args.tooltip.trigger ? $(btn).tooltip({trigger : args.tooltip.trigger }) : $(btn).tooltip({trigger : 'hover focus'})
     }
     // confirm
+    /**  */
     if(typeof args.confirm === 'object'){ 
       
       // confirm(args.confirm)
+      /**  */
       const $amModal = $('#amModal')
       const confirm = () => {
         args.confirm.confirm();
+        /**   */
         if(args.confirm.hideOnConfirm)$amModal.modal('hide');
       }
       const cancel = () => $(btn).popover('hide');
       
       args.confirm.trigger = 'focus';
+      /**   */
       args.confirm.content = args.confirm.msg;
       args.confirm.html = true;
       $(btn).popover(args.confirm).on('shown.bs.popover', () => { // popover is shown
@@ -465,6 +579,15 @@ const component = (() => {
       }
     });
   */
+ /**
+  * @description Confirm Component, uses popover for confirmation message
+  * @param {object} args
+  * @param {HTMLElement} args.el  
+  *  @param {object} args.confirm - button confirm (popover) object
+   * @param {function} args.confirm.confirm - button confirm callback
+   * @param {boolean} args.confirm.hideOnConfirm - hide modal after confirm callback
+   * @param {string} args.confirm.msg - message to show on confirm, content of popover
+  */
   function confirm(args){
    
       const $amModal = $('$amModal'),
@@ -502,7 +625,7 @@ const component = (() => {
   }
   // .................................................
   // component.modal
-  /*
+  /** 
   component.modal({
     title : 'Title of modal',
     body : 'Body of modal',
@@ -521,6 +644,16 @@ const component = (() => {
       }}
     ]
   })
+  */
+ /**
+  * @description Modal Component, uses modal and optional tabs 
+  * @param {object} args 
+  * @param {string} args.title 
+  * @param {Array} args.tabs
+  * @param {string} args.body 
+  * @param {Array} args.buttons
+  * @param {function} args.open
+  * @param {function} args.close
   */
   function modal(args){
     const $amModal = $('#amModal').modal();
@@ -563,16 +696,23 @@ const component = (() => {
       $('#button_container').remove();
       if(typeof args.close === 'function') args.close();
     });
-    
+    return $amModal
   }
   // nav 
   
   // .................................................
   // tabs 
   /* https://getbootstrap.com/docs/4.3/components/navs/#tabs
-  component.nav.tabs([
+  component.nav.tabs({ tabs : [
     { label : 'Tab#1', content : 'Content for Tab#1' }
-  ])
+  ]})
+  */
+ /**
+  * @description Tabs Component, uses nav-tabs
+  * @param {object} args 
+  * @param {Array} args.tabs 
+  * @param {HTMLElement} args.el 
+  * 
   */
   function navTabs(args) {
     const tabsElement = document.createElement('ul'),
@@ -582,12 +722,12 @@ const component = (() => {
     tabsElement.setAttribute('role','tablist');
     const tabsContent = document.createElement('div');
     tabsContent.setAttribute('class','tab-content');
-    const tabs = args;
+    const tabs = args.tabs;
     let tabIndex = 0;
 
     for(let tab of tabs){
-      
-      const tabId = uid(),
+      if(tab.label){
+        const tabId = uid(),
       tabElement = document.createElement('li'),
       tabLink = document.createElement('a'),
       tabContent = document.createElement('div'),
@@ -615,6 +755,8 @@ const component = (() => {
       tabContent.innerHTML = tab.content;
       tabsContent.appendChild(tabContent);
       tabIndex++;
+      }
+      
     }
     tabsFragment.appendChild(tabsElement);
     tabsFragment.appendChild(tabsContent);
@@ -658,6 +800,16 @@ const component = (() => {
       }
     }
   })
+  */
+ /**
+  * @description Table Component, uses table
+  * @param {object} args 
+  * @param {string} args.class
+  * @param {string} args.model
+  * @param {object} args.data
+  * @param {string} args.data.url
+  * @param {function} args.data.modify
+  * @param {function} args.data.callback
   */
   function table(args){
     let table = document.createElement('table');
@@ -772,6 +924,12 @@ const component = (() => {
   // .................................................
   // form
   // form.data
+  /**
+   * @description FormData Component
+   * @param {object} args 
+   * @param {object} args.el
+   *  
+   */
   function formData(args){
     const form = typeof args === 'object' ? args.el : args
     const formData = new FormData(form),formObj = {};
@@ -791,6 +949,14 @@ const component = (() => {
     // do something after axios.post has finished
   })
   */
+
+  /**
+   * @description Form Post Component, optional callback function argument
+   * @param {object} args  
+   * @param {string} args.el
+   * @param {string} args.url
+   * @param {function} callback
+   */
   function formPost(args,callback){
     const form = document.getElementById(args.el);
     let formObj;
@@ -826,6 +992,16 @@ const component = (() => {
   })
   */
   // create form with model
+  /**
+   * @description Form Model Component
+   * @param {object} args 
+   * @param {string} args.btnSaveTxt
+   * @param {string} args.model
+   * @param {Array} args.model
+   * @param {Array} args.fields
+   * @param {function} args.onSubmit
+   * 
+   */
   function formFromModel(args){
     const models = application.config.models,
           form = document.createElement('form'),
@@ -974,7 +1150,15 @@ const component = (() => {
   }
   // .................................................
   // alert 
+  /**
+   * @description Alert Component,uses alert
+   * @param {object} args 
+   * @param {string} args.class
+   * @param {string} args.message
+   * @param {number} args.fadeOut
+   */
   function alert(args){
+    args.class = args.class ? args.class : 'primary'
     const alert = $('<div></div>')
       .addClass(`alert alert-${args.class}`)
       .html(args.message);
@@ -992,6 +1176,17 @@ const component = (() => {
   }
   // .................................................
   // calendar
+  /**
+   * @description Calendar Component,uses table
+   * @param {object} args 
+   * @param {number} args.d
+   * @param {number} args.m
+   * @param {number} args.y
+   * @param {object} args.data
+   * @param {object} args.data.url
+   * @param {function} args.data.callback
+   * @param {function} args.data.modify
+   */
   function calendar(args){
     //const view = args.view ? args.view : 'month'
     const $documentFragment = $(document.createDocumentFragment());

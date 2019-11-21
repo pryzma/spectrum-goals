@@ -17,11 +17,11 @@ auth = (app)=>{
     
         if(!username || !password ) { return done(null, false, req.flash('message','All fields are required.')); }
         var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
-        connection.query("select * from accounts where email = ?", [username], function(err, rows){
+        connection.query("select * from Accounts where email = ?", [username], function(err, rows){
             
           if (err) return done(req.flash('message',err));
 
-          if(!rows.length){ return done(null, false, req.flash('message','Invalid username or password!')); }
+          if(!rows.length){ return done(null, false, req.flash('message','Ongeldige gebruikersnaam en/of wachtwoord')); }
           salt = salt+''+password;
           var encPassword = crypto.createHash('sha1').update(salt).digest('hex');
           var dbPassword  = rows[0].password;

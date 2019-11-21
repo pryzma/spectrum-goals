@@ -1,6 +1,6 @@
 'use strict'
 
-/*
+/** 
 * Application Client 0.12
 * assets/js/application.js
 * TODO: 
@@ -8,6 +8,7 @@
 * replace application.object[getRoute().endpoint] with application.module() wherever appropiate
 */
 // 
+
 const application = (function(){
   let debug,
       config, // configuration object -> initConfig
@@ -21,6 +22,7 @@ const application = (function(){
       
 //..............................................................................
 // defaults properties are overwritten if defined in config/app.json
+/** @constructor */
   const defaults = {
     template : 'pageLayout', // file default template assets/[templateEngine]/[template].[templateEngine]
     templateEngine : 'html', // template file folder & extension
@@ -63,9 +65,12 @@ const application = (function(){
 
 //..............................................................................
 // adds (module) property to application object
+/**
+ * @param {string} name
+ */
   add = function(name,module,callback) {
     //if(application.config.debug) console.log(`application.add : ${name}`);
-    
+    if(!typeof name==='string') throw 'application.add: module name was expected as string but is '+typeof name
     if(name.includes('.')){
       name = name.split('.');
       name[1] ? object[name[0]][name[1]] = module : object[name[0]] = module;
@@ -115,7 +120,7 @@ const application = (function(){
 //..............................................................................
 // 
   initModules = () => {
-    require(`modules/${object.modules[position]}`, () =>{ // async request
+    require(`modules/${object.modules[position]}`, () =>{ 
       debug(`application.initModules : modules/${object.modules[position]} loaded`);
       if(position === object.modules.length-1){
         finish = new Date
@@ -198,21 +203,14 @@ const application = (function(){
           if(config.modules) {
             loadModules = new Set(config.modules).values();
             if(config.require){
-              initRequire(config.require,()=>{ // load require if provided
-                initModules(loadModules); // load modules if require is loaded
+              initRequire(config.require,()=>{ 
+                initModules(loadModules); 
               })
             }else{
-              initModules(loadModules); // // load modules
+              initModules(loadModules); 
             }
-          }else{
-            // call load; calls page & module; application.oject should be ready & complete...
-            // and in the right order... Let's wait 500 ms and hope everything is OK
-            console.warn('config.modules is undefined')
-            setTimeout( () => load(), 500)
-            //load()
-            window.addEventListener( 'hashchange', () => load() );
           }
-          application.config = config; // set config object of application object
+          application.config = config; 
         })
 
       });
@@ -369,17 +367,17 @@ const application = (function(){
       _route = getRoute().endpoint;
     }
     if(!_route) _route = getRoute().endpoint;
-    let _template = template(_route); // get template
+    let _template = template(_route); 
 
     let thisObj =  _route[1] ? application.object[_route[0]][_route[1]] : application.object[_route];
-    $(`#${_template} h2`).html(thisObj.name); // set template header title
+    $(`#${_template} h2`).html(thisObj.name);
 
-    title(_route); // set document title
-    elements(); // set elements
-      if(config.nav) nav(); // set navigation
+    title(_route); 
+    elements(); 
+      if(config.nav) nav(); 
       for(let property in object[_route]){
         if(typeof object[_route][property] === 'string' ){
-          // set values of properties of elements with corresponding class names
+          
           const selClassElement = $(`#${_template} .${property}`)
           if(selClassElement){
             selClassElement.html(str(object[_route][property])); // element html & parse with str
@@ -554,9 +552,7 @@ const application = (function(){
     event(_element, _event, callback )
   }
 
-
-  // return public methods & variables
-  return {
+  const methods = {
     route : route,
     endpoint : endpoint,
     object : object,
@@ -566,6 +562,7 @@ const application = (function(){
     config : config,
     require : require,
     requireCallback : undefined,
+    /** Adds module to application object */
     add : add,
     remove : remove,
     init : init,
@@ -582,5 +579,8 @@ const application = (function(){
     title : title,
     debug : []
   }
+  // return public methods & variables
+  /** @namespace */
+  return methods
 })();
 

@@ -9,3 +9,6 @@ const express = require('express'),
       
 const router = express.Router();
 const controller = require('../controllers/checklist');
+router.get('/', controller.isAuthenticated, (req, res) => {
+    controller.getAll(req,res);
+});

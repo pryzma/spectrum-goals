@@ -13,4 +13,4 @@ function checklistOverview(){
     }
     return component.table(checklistOverviewTable)
 }
-application.add(checklist);
+application.add('checklist',checklist);

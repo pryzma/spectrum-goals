@@ -14,6 +14,10 @@ router.get('/', controller.isAuthenticated, (req, res) => {
   controller.getAll(req,res);
 });
 
+router.get('/medients', controller.isAuthenticated, (req, res) => {
+  controller.getMedients(req,res);
+});
+
 router.post('/', bodyParserJSON, (req, res) => {
   controller.createAccount(req,res);
 });

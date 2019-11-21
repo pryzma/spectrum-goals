@@ -18,10 +18,11 @@
         ],
         "menu" : ["accounts","targets","checklist"],
         "routes" : {
-            "dashboard" : "dashboard",
             "account" : "account",
             "accounts" : "acccounts",
-            "accounts/add" : "accounts.add"
+            "checklist" : "checklist",
+            "dashboard" : "dashboard"
+            
         },
         "default" : "dashboard",
         "main" : "section#mainContent",

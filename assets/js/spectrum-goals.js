@@ -1,4 +1,4 @@
-const spectrumGoals = ()=>{
+const spectrumGoals = (()=>{
 
     if(websocket){
         websocket({ // websocket connection
@@ -11,8 +11,16 @@ const spectrumGoals = ()=>{
     }
     const spectrumGoalsObj = new Object;
     spectrumGoalsObj.render = application.ejs 
+    spectrumGoalsObj.breadcrumbs = breadCrumbs;
     application.spectrumGoals = spectrumGoalsObj;
     return spectrumGoalsObj;
+})()
+
+function breadCrumbs(){
+    const breadCrumbRoot = $('<a></a>').html(application.object[application.object.default].name).attr('href','#').html();
+    application.object.modules.map((module)=>{
+        application.object[module].breadcrumbs = application.object[module].name
+    })
 }
 
 function serverStatus(){

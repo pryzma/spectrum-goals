@@ -9,18 +9,19 @@
     <link rel="stylesheet" href="css/spectrum-goals_styles.css" />
   </head>
   <body>
-    <header class="d-flex flex-column flex-md-row align-items-center p-2 px-md-3 mb-2 bg-white fixed-top">
+    <header class="d-flex flex-column flex-md-row align-items-center p-2 px-md-3 mb-2 fixed-top">
       <a class="navbar-brand col-sm-3 col-md-3 mr-0" href="#"><span class="inner">SpectrumGoals</span></a>
-      <nav id="headerNav" class="my-2 my-md-0 mr-auto">
+      <nav id="headerNav" class="my-2 my-md-0 mr-auto float-right">
 
       </nav>
       <div id="accountTopInfo" >
-          <a href="#account"><i class="fas fa-user"></i> <%= full_name %></a> | <a href="/logout" >Logout</a>
+          <span class="text-muted">Ingelogd als:</span> <br> 
+          <a href="#account"><i class="fas fa-user"></i> <%= full_name %></a> | <a href="/logout" >Uitloggen</a>
       </div>
     </header>
     <main role="main" class="container-fluid">
       <div class="row">
-        <section class="col-md-9 ml-sm-auto col-lg-9 px-4" id="mainContent">
+        <section id="mainContent">
           <div class="text-muted" style="margin: auto; position: absolute;"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>
         </section>
       </div>
@@ -34,12 +35,12 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Server Connection Lost</h5>
+        <h5 class="modal-title" id="exampleModalCenterTitle">Verbinding verbroken</h5>
        
       </div>
       <div class="modal-body">
-        <p>SpectrumGoals failed to connect with server backend.</p>
-        <p class="text-muted"><i class="fas fa-circle-notch fa-spin"></i> Trying to reconnect...</p>
+        <p>Kan geen verbinding krijgen met server</p>
+        <p class="text-muted"><i class="fas fa-circle-notch fa-spin"></i> Opnieuw proberen te verbinden...</p>
       </div>
       
     </div>

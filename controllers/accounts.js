@@ -101,6 +101,18 @@ controller.getAll = (req,res) => {
     });
 }
 
+controller.getMedients = (req,res) => {
+    Account.findAll({where: {profile: 'medient'}, order:[['id','DESC']]}).then((accounts) => {
+        res.json(accounts)
+    });
+}
+
+controller.getTeamMembers = (req,res) => {
+    Account.findAll({where: {profile: 'teammember'}, order:[['id','DESC']]}).then((accounts) => {
+        res.json(accounts)
+    });
+}
+
 controller.getOne = (req,res) => {
     console.log(`controller.getOne(${req})`)
     //return connection.query(`SELECT * FROM accounts WHERE id='${req}'`, (err,result) => result);

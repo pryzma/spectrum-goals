@@ -26,6 +26,7 @@ app.module({
     }
 })
 */
+/** @constructor */
 ( function client() {
     const app = client.app ? client.app : {
         config : new Object, 

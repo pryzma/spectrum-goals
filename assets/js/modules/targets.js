@@ -75,4 +75,4 @@ function targetsOverview(){
 function targetView(id){
 
 }
-application.add(targets);
+application.add('targets',targets);

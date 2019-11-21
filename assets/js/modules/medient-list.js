@@ -1,10 +1,8 @@
- /** dashboard module object */
-const dashboard = {
-    name : 'Dashboard',
+const medient_list = {
+    name : 'Mediëntenlijst',
     default : medientOverview,
-    template : 'dashboard'
+    template : 'medient_list'
 }
- /** API data component object */
 const medientData = {
     url : 'api/accounts/medients',
     modify : (medient) => {
@@ -19,4 +17,4 @@ function medientOverview(){
     }
     return component.table(medientOverviewTable)
 }
-application.add('dashboard',dashboard);
+application.add('medient-list',medient_list);
