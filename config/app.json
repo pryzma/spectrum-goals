@@ -64,6 +64,9 @@
             "/status" : "status",
             "/config" : "config",
             "/api/accounts" : "accounts",
+            "/api/targets" : "targets",
+            "/api/subjects" : "subjects",
+            "/api/checklist" : "checklist",
             "/api/contacts" : "contacts",
             "/api/account" : "account"
         },

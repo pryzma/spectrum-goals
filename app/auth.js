@@ -16,7 +16,7 @@ auth = (app)=>{
     
     
         if(!username || !password ) { return done(null, false, req.flash('message','All fields are required.')); }
-        const salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
+        let salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
         connection.query("select * from Accounts where email = ?", [username], function(err, rows){
             
           if (err) return done(req.flash('message',err));

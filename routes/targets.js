@@ -12,3 +12,4 @@ const controller = require('../controllers/targets');
 router.get('/', controller.isAuthenticated, (req, res) => {
     controller.getAll(req,res);
   });
+  module.exports = router;
