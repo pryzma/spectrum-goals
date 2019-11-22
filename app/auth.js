@@ -1,7 +1,7 @@
 const  passport = require('passport'),  
-LocalStrategy  = require('passport-local').Strategy,
-connection = require('./dbconn'),
-crypto = require('crypto'),
+       LocalStrategy  = require('passport-local').Strategy,
+       connection = require('./dbconn'),
+       crypto = require('crypto'),
 auth = (app)=>{
     // passport setup
   app.use(passport.initialize());
@@ -16,15 +16,15 @@ auth = (app)=>{
     
     
         if(!username || !password ) { return done(null, false, req.flash('message','All fields are required.')); }
-        var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
+        const salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
         connection.query("select * from Accounts where email = ?", [username], function(err, rows){
             
           if (err) return done(req.flash('message',err));
 
           if(!rows.length){ return done(null, false, req.flash('message','Ongeldige gebruikersnaam en/of wachtwoord')); }
           salt = salt+''+password;
-          var encPassword = crypto.createHash('sha1').update(salt).digest('hex');
-          var dbPassword  = rows[0].password;
+          const encPassword = crypto.createHash('sha1').update(salt).digest('hex'),
+                dbPassword  = rows[0].password;
           
           if(dbPassword !== encPassword){
               console.log('\x1b[1m\x1b[31m',`passport.authenticate() Bad Request\x1b[0m`)
@@ -46,7 +46,7 @@ auth = (app)=>{
 
   passport.deserializeUser(function(id, done){
     
-      connection.query(`select * from accounts where id ='${id}'`, function (err, rows){
+      connection.query(`select * from Accounts where id ='${id}'`, function (err, rows){
         console.log(`passport.deserializeUser : ${id}`)
         done(err, rows[0]);
       });

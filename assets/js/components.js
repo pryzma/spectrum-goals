@@ -1,12 +1,123 @@
 'use strict'
 /** 
 * assets/js/components.js
-* Component
  */
 const component = (() => {
+  /**
+ * @namespace
+ * @borrows el as add
+ * @borrows formPost as form.post
+ */
   const methods = { 
+    /** Add Component
+     * @example component.add(
+    ['div:myDiv',{ 
+      appendTo : 'myDivContainer',
+      id : 'myDiv' 
+    },'content'])
+  
+  component.myDiv.card({
+    title : 'Title of Card in myDiv',
+    content :'Content of Card in myDiv'
+  })
+     */
+    add : el,
+    /** Bootstrap Alert Component
+     * @example component.alert({ message : 'This is a alert' });
+     */
+    alert : alert,
+    /** API Component 
+     * @example component.api({
+    url : 'api/endpoint',
+    method : 'get',
+    modify : (item) => {
+      // do something with returned data item
+    },
+    callback : (data) => {
+      // do something with returned data
+    }
+  });
+    */
+    api : api,
+    /** Auth Component */
+    auth : auth,
+     /** Bootstrap Button Component
+      *  @example component.btn({
+    el : '#myButtonContainer',
+    class : 'primary',
+    txt : 'Button Text',
+    event : ['click',()=>{
+      // do something on click
+    }],
+    confirm : {
+      msg : 'Are you sure?',
+      confirm : () => {
+        console.log("Is confirmed")
+      }
+    }
+  });
+      */
+    btn : btn,
+    /** Calendar Component 
+     * @example component.calendar({
+     el : '#myCalendar',
+     data : {
+       url : 'api/endpoint',
+       method : 'get',
+       modify : (item) => {
+        // do something with returned data item
+      },
+      callback : (data) => {
+        // do something with returned data
+      }
+
+     }
+   })
+    */
+    calendar : calendar,
+    /** Bootstrap Card Component 
+     
+    */
+    card : card,
+    /** Confirm Component */
+    confirm : confirm,
+    /** Date Component */
+    date : date,
+    /** Editor Component */
+    editor : editor,
+    /** Element Component */
+    el : el,
+    /** Form Component */
     form : { 
+      /** Form Post Component 
+       * @example component.form.post({
+    url : 'api/endpoint',
+    el : 'myFormId'
+  },(data) => {
+    // do something after axios.post has finished
+  });
+       */
       post : formPost,
+      /**
+       * Form Model Component
+       * @example component.form.fromModel({
+    model : 'modelName',
+    fields : {
+      propNameOne : {
+        label : 'Label Of PropNameOne',
+      }
+    }
+    fields : [
+      {field : 'propNameOne', label : 'Label Of PropNameOne'},
+      {fields : [ 
+        {field : 'propNameOne', label : 'Label Of PropNameOne'},
+      ]}
+    ]
+    onSubmit : (event) => {
+      // do something on submit
+    }
+  });
+       */
       fromModel : formFromModel,
       data : formData,
       input : {
@@ -15,17 +126,68 @@ const component = (() => {
         row : formRow
       } 
     },
-    /** 
-     * @description Table Component, optional before or callback function arguments
-     * @param {function} before
-     * @param {object} args
-     * @param {string} args.class
-     * @param {string} args.model
-     * @param {object} args.data
-     * @param {string} args.data.url
-     * @param {function} args.data.modify
-     * @param {function} args.data.callback
-     * @param {function} callback
+    /** Bootstrap Modal Component
+     * @example component.modal({
+    title : 'Title of modal',
+    body : 'Body of modal',
+    open : () => {
+      // do something on open
+    },
+    close : () => {
+      // do something on close
+    },
+    save : () => {
+      // do something on save (primary button is clicked)
+    },
+    buttons : [
+      { txt : 'Button text', onClick : () => {
+        // do something on button click
+      }}
+    ]
+  });
+     */
+    modal : modal,
+    /** Nav Component */
+    nav : {
+      /** Bootstrap Nav Tabs Component
+       * @example component.nav.tabs({ tabs : [
+    { label : 'Tab#1', content : 'Content for Tab#1' }
+  ]});
+       */
+      tabs : navTabs
+    },
+    /** Button Repeat Component */
+    repeat : repeat,
+    /** Bootstrap Table Component
+     * @example component.table({
+    el : '#tableContainerId',
+    model : 'modelName',
+    data : {
+      url : 'api/endpoint',
+      modify : (item) => {
+        // modify fetched data
+      }
+    },
+    cols : {
+      propNameOne : {
+        label : 'Label of propNameOne'
+      },
+      propNameTwo : {
+        label : 'Label of propNameTwo'
+      },
+    },
+    options : { // adds row options
+      view : (item) => {
+
+      },
+      edit : (item) => {
+
+      },
+      delete : (item) => {
+
+      }
+    }
+  });
      */
     table : (before,args,callback) => {
 
@@ -40,33 +202,17 @@ const component = (() => {
       table(args);
       if(callback)callback();
     },
-    repeat : repeat,
-    confirm : confirm,
-    type : type,
-    calendar : calendar,
-    editor : editor,
-    nav : {
-      tabs : navTabs
-    },
-    card : card,
-    btn : btn,
-    modal : modal,
-    alert : alert,
-    date : date,
     time : time,
-    uid : uid,
-    auth : auth,
-    api : api,
-    add : el,
-    el : el
+    type : type,
+    uid : uid
   }
   // .................................................
   // component.date
   /**
    * 
-   * @param {object} args 
+   * @param {object} args - Arguments object
    * @param {string} args.format
-   * @param {HTMLElement} args.el
+   * @param {HTMLElement} args.el - Target Element
    */
   function date(args){
     let format = typeof args === 'object' ? args.format : args
@@ -90,8 +236,8 @@ const component = (() => {
   // component.time
    /**
    * 
-   * @param {object} args 
-   * @param {HTMLElement} args.el
+   * @param {object} args - Arguments object
+   * @param {HTMLElement} args.el - Target Element
    * 
    */
   function time(args){
@@ -113,12 +259,12 @@ const component = (() => {
   // component.uid
   /**
    * 
-   * @param {object} args 
+   * @param {object} args - Arguments object
    */
   function uid(args){  // generate unique id
       const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
       const output = s4() + s4() + '-' + s4();
-      if(args.el){
+      if(typeof args === 'object' && args.el){
         componentElementOutput({
           el : args.el,
           output : output
@@ -146,7 +292,7 @@ const component = (() => {
   const authModels = new Array
   /**
    * 
-   * @param {object} args 
+   * @param {object} args - Arguments object
    */
   function auth(args){
    
@@ -174,8 +320,15 @@ const component = (() => {
   }
   // .................................................
   // component.api
-  /*
-  component.api({
+ /**
+  * @description API Component, returns <a href="https://developer.mozilla.org/en-US/docs/Glossary/array"><pre>Array</pre></a>
+  * @param {object} args - Arguments object
+  * @param {string} args.method - Axios method (get,post,delete,update) defaults to get
+  * @param {string} args.data - request body
+  * @param {string} args.url - API url
+  * @param {function} args.modify - modify returned data
+  * @param {function} callback - callback
+  * @example component.api({
     url : 'api/endpoint',
     method : 'get',
     modify : (item) => {
@@ -185,14 +338,10 @@ const component = (() => {
       // do something with returned data
     }
   })
-   */
- /**
-  * 
-  * @param {object} args 
-  * @param {function} callback 
   */
   function api(args,callback){
     if(!args.method) args.method = 'get';
+
     axios[args.method](args.url,args.data)
     .then((res) => {
       const data = [];
@@ -200,15 +349,16 @@ const component = (() => {
         for(let item of res.data){
           if(args.modify) item = args.modify(item);
           data.push(item);
+          
         }
       }
-      
       if(callback) 
-        return callback(data);
-      if(args.callback) 
-        return args.callback(data);
+            return callback(data);
+          if(args.callback) 
+            return args.callback(data);
       
-      return data;
+          return data;
+      
     })
   }
  
@@ -221,9 +371,9 @@ const component = (() => {
  })
  */
 /**
- * @description Repeat Component, maps template string to (fetched) data
- * @param {object} args 
- * @param {HTMLElement} args.el 
+ * @description Repeat Component, maps template string to (fetched) data, returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String"><pre>String</pre></a>
+ * @param {object} args - Arguments object
+ * @param {HTMLElement} args.el - Target Element 
  * @param {object} args.data 
  * @param {string} args.data.url 
  * @param {string} args.template 
@@ -258,31 +408,33 @@ const component = (() => {
     return output;
   }
   // .................................................
-  // type; basic type filter 
+  // 
   /*
-  const obj = {some : 'object'}
-  component.type(obj,'object',()=>{
-    // do something with obj
-  })
+  
   */
   /**
    * 
    * @param {string} args 
+   * 
    */
   function err(args){
     throw args
   }
   /**
-   * 
-   * @param {object} args 
+   * @description type; basic type filter 
+   * @param {object} args - Arguments object
    * @param {string} type 
    * @param {function} callback 
+   * @example const obj = {some : 'object'}
+  component.type(obj,'object',()=>{
+    // do something with obj
+  })
    */
   function type(args,type,callback){
     // assign callback to args type
     const argsTypeOf = typeof args;
     if(args.prototype === Array) argsTypeOf = 'array'
-    if( argsTypeOf != type ) err(`component.type called with type '${typeof type}' but args is  typeof ${argsTypeOf} `);
+    if( argsTypeOf != type ) err(`component.type called with type '${type}' but args is  typeof ${argsTypeOf} `);
         
     switch(argsTypeOf){
             default :
@@ -293,13 +445,7 @@ const component = (() => {
             
         }
   }
-  /**
-   * 
-   * @param {object} args 
-   * @param {object} args.el - jQuery or DOM object
-   * @param {boolean} args.append - append or set html
-   * @param {string} args.output - content to append or set
-   */
+
   function componentElementOutput(args){
     
       if(typeof args.el === 'object'){
@@ -317,7 +463,17 @@ const component = (() => {
   // .................................................
   // component.el
   /*
-  const div = component.el(
+  
+  */
+ /**
+  * @description Component Element
+  * @param {array} args 
+  * @param {string} args[0] - [element:id]
+  * @param {object} args[1] - 
+  * @param {string} args[1].appendTo
+  * @param {string} args[1].id
+  * @param {string} args[1].component
+  * @example const div = component.el(
     ['div:myDiv',{ 
       appendTo : 'myDivContainer',
       id : 'myDiv' 
@@ -327,15 +483,6 @@ const component = (() => {
     title : 'Title of Card in myDiv',
     content :'Content of Card in myDiv'
   })
-  */
- /**
-  * 
-  * @param {Array} args 
-  * @param {string} args[0] - [element:id]
-  * @param {object} args[1] - 
-  * @param {string} args[1].appendTo
-  * @param {string} args[1].id
-  * @param {string} args[1].component
   */
   function el(args){
     
@@ -371,66 +518,23 @@ const component = (() => {
       return element
     }
   }
-  // component.$
-  /*
-  const $div = component.$('div:myDiv')
-  */
- /**
-  * 
-  */
-  methods.$ = function(args){
-    let element
-    if(typeof args === 'string'){
-      if(args.contains('#') || args.contains('.')){
-        element = $(args.split(':')[0])
-      }else{
-        element = $(`<${args.split(':')[0]}></${args.split(':')[0]}>`)
-      }
-      
-    }else if(args.prototype === Array){
-      const name = args[0].split(':')[1]
-      if(!component[name]){
-        componentMethods({
-          element : element,
-          name : name
-        });
-      }
-    }
-    
-    return element
-  }
-  // componentMethods
-  /**
-   * 
-   * @param {object} args 
-   */
-  function componentMethods(args){
-    if(!component[name]){
-      for(const method in methods){
-      
-        component[args.name][method] = (args)=>{
-          args.el = args.element
-          component[method](args)
-        }
-      }
-      component[name].el = args.element
-    }
-  }
+  
   // .................................................
   // component.card
-  /* https://getbootstrap.com/docs/4.3/components/card/
-    component.card({
-      title : 'Title of Card',
-      content : 'Content of Card'
-    })
+  /* 
+    
   */
  /**
-  * 
-  * @param {object} args 
+  * @description Card Component, uses <a href="https://getbootstrap.com/docs/4.3/components/card/">Bootstrap Card</a>, returns <pre>HTMLDivElement</pre>
+  * @param {object} args - Arguments object
   * @param {string} args.title - title of card 
   * @param {string} args.content - content of card
   * @param {string} args.footer - content of card footer
-  * @param {HTMLElement} args.el
+  * @param {HTMLElement} args.el - Target Element
+  * @example component.card({
+      title : 'Title of Card',
+      content : 'Content of Card'
+    });
   */
   function card(args){
     
@@ -471,8 +575,9 @@ const component = (() => {
   // .................................................
   // component.btn
   /** 
+   * @description Button Component, uses <a href="https://getbootstrap.com/docs/4.3/components/buttons/">Bootstap Button</a>, returns <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement"><pre>HTMLButtonElement</pre></a>
    * @param {object} args
-   * @param {string} args.class - class attribute, defaults to '[btn-]primary' 
+   * @param {string} args.class - contextual class; primary, secondary, success, danger, warning, info, light or dark  - class attribute, defaults to '[btn-]primary' 
    * @param {string} args.id - id attribute, defaults to [uid]
    * @param {string} args.html - html content of button
    * @param {string} args.txt - text content of button
@@ -484,7 +589,7 @@ const component = (() => {
    * @param {boolean} args.confirm.hideOnConfirm - hide modal after confirm callback
    * @param {string} args.confirm.msg - message to show on confirm, content of popover
    * @param {object} args.el - [componentElementOutput] object
-   * 
+   * @example
   component.btn({
     class : 'primary',
     txt : 'Button Text',
@@ -497,7 +602,7 @@ const component = (() => {
         console.log("Is confirmed")
       }
     }
-  })
+  });
   */
  
   function btn(args){
@@ -580,9 +685,9 @@ const component = (() => {
     });
   */
  /**
-  * @description Confirm Component, uses popover for confirmation message
+  * @description Confirm Component, uses <a href="https://getbootstrap.com/docs/4.3/components/popovers/">Bootstap Popover</a> for confirmation message, returns <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement"><pre>HTMLElement</pre></a>
   * @param {object} args
-  * @param {HTMLElement} args.el  
+  * @param {HTMLElement} args.el - Target Element  
   *  @param {object} args.confirm - button confirm (popover) object
    * @param {function} args.confirm.confirm - button confirm callback
    * @param {boolean} args.confirm.hideOnConfirm - hide modal after confirm callback
@@ -621,12 +726,23 @@ const component = (() => {
           //button_.removeEventListener('click',confirm);
       });
       
-
+      return $confirmElement
   }
   // .................................................
   // component.modal
-  /** 
-  component.modal({
+ 
+ /**
+  * @description Modal Component, uses <a href="https://getbootstrap.com/docs/4.3/components/modals">Bootstap Modal</a> and optional <a href="https://getbootstrap.com/docs/4.3/components/navs/#tabs">Bootstap Nav Tabs</a>, returns <a href="https://api.jquery.com/element-selector/"><pre>jQuery( "element" ).modal()</pre></a>
+  * @param {object} args - Arguments object
+  * @param {string} args.title 
+  * @param {object} args.tabs {@link component#navTabs}
+  * @param {Array} args.tabs.tabs
+  * @param {string} args.body 
+  * @param {Array} args.buttons {@link component#btn}
+  * @param {function} args.open
+  * @param {function} args.close
+  * @example 
+   component.modal({
     title : 'Title of modal',
     body : 'Body of modal',
     open : () => {
@@ -643,22 +759,13 @@ const component = (() => {
         // do something on button click
       }}
     ]
-  })
-  */
- /**
-  * @description Modal Component, uses modal and optional tabs 
-  * @param {object} args 
-  * @param {string} args.title 
-  * @param {Array} args.tabs
-  * @param {string} args.body 
-  * @param {Array} args.buttons
-  * @param {function} args.open
-  * @param {function} args.close
+  });
   */
   function modal(args){
     const $amModal = $('#amModal').modal();
     $('#amModalTitle').html(args.title)
     $amModal.on('shown.bs.modal', () => { // modal is shown
+      
       args.tabs ? $('#amModalBody').html(navTabs(args.tabs)) : $('#amModalBody').html(args.body);  
       // nav-tabs fix ; https://github.com/pryzma/agenda-manager/issues/22
       $('.nav-tabs .nav-link').each(function(i){
@@ -703,16 +810,16 @@ const component = (() => {
   // .................................................
   // tabs 
   /* https://getbootstrap.com/docs/4.3/components/navs/#tabs
-  component.nav.tabs({ tabs : [
-    { label : 'Tab#1', content : 'Content for Tab#1' }
-  ]})
+  
   */
  /**
-  * @description Tabs Component, uses nav-tabs
-  * @param {object} args 
+  * @description Tabs Component, uses <a href="https://getbootstrap.com/docs/4.3/components/navs/#tabs">Bootstap Nav Tabs</a>
+  * @param {object} args - Arguments object
   * @param {Array} args.tabs 
-  * @param {HTMLElement} args.el 
-  * 
+  * @param {HTMLElement} args.el - Target Element 
+  * @example component.nav.tabs({ tabs : [
+    { label : 'Tab#1', content : 'Content for Tab#1' }
+  ]});
   */
   function navTabs(args) {
     const tabsElement = document.createElement('ul'),
@@ -724,7 +831,7 @@ const component = (() => {
     tabsContent.setAttribute('class','tab-content');
     const tabs = args.tabs;
     let tabIndex = 0;
-
+    if(!tabs.prototype === Array) err('component.navTabs : args.tabs expected as array but is of type ' + typeof tabs)
     for(let tab of tabs){
       if(tab.label){
         const tabId = uid(),
@@ -771,7 +878,18 @@ const component = (() => {
   // .................................................
   // table
   /*
-  component.table({
+  
+  */
+ /**
+  * @description Table Component, uses <a href="https://getbootstrap.com/docs/4.3/content/tables//">Bootstap Table</a>, returns <a href=https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement">HTMLTableElement</a>
+  * @param {object} args - Arguments object
+  * @param {string} args.class - contextual class; primary, secondary, success, danger, warning, info, light or dark 
+  * @param {string} args.model
+  * @param {object} args.data
+  * @param {string} args.data.url
+  * @param {function} args.data.modify
+  * @param {function} args.data.callback
+  * @example component.table({
     el : '#tableContainerId',
     model : 'modelName',
     data : {
@@ -800,16 +918,6 @@ const component = (() => {
       }
     }
   })
-  */
- /**
-  * @description Table Component, uses table
-  * @param {object} args 
-  * @param {string} args.class
-  * @param {string} args.model
-  * @param {object} args.data
-  * @param {string} args.data.url
-  * @param {function} args.data.modify
-  * @param {function} args.data.callback
   */
   function table(args){
     let table = document.createElement('table');
@@ -925,8 +1033,8 @@ const component = (() => {
   // form
   // form.data
   /**
-   * @description FormData Component
-   * @param {object} args 
+   * @description <a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData">FormData</a> Component
+   * @param {object} args - Arguments object
    * @param {object} args.el
    *  
    */
@@ -941,21 +1049,20 @@ const component = (() => {
   }
   // .................................................
   // component.form.post
-  /*
-  component.form.post({
+
+
+  /**
+   * @description Form Post Component, optional callback function argument
+   * @param {object} args - Arguments object 
+   * @param {string} args.el
+   * @param {string} args.url
+   * @param {function} callback
+   * @example component.form.post({
     url : 'api/endpoint',
     el : 'myFormId'
   },(data) => {
     // do something after axios.post has finished
-  })
-  */
-
-  /**
-   * @description Form Post Component, optional callback function argument
-   * @param {object} args  
-   * @param {string} args.el
-   * @param {string} args.url
-   * @param {function} callback
+  });
    */
   function formPost(args,callback){
     const form = document.getElementById(args.el);
@@ -970,16 +1077,29 @@ const component = (() => {
         $(args.el).html(`A error has occured : ${error}`);
       });
     });
+    return form
   }
   // .................................................
   /*
-  component.form.fromModel({
+  
+  */
+  // create form with model
+  /**
+   * @description Form Model Component
+   * @param {object} args - Arguments object
+   * @param {string} [args.btnSaveTxt]
+   * @param {string} args.model
+   * @param {Array} args.model
+   * @param {object} args.fields
+   * @param {Array} args.fields
+   * @param {function} args.onSubmit
+   * @example component.form.fromModel({
     model : 'modelName',
     fields : {
       propNameOne : {
         label : 'Label Of PropNameOne',
       }
-    }
+    },
     fields : [
       {field : 'propNameOne', label : 'Label Of PropNameOne'},
       {fields : [ 
@@ -990,17 +1110,6 @@ const component = (() => {
       // do something on submit
     }
   })
-  */
-  // create form with model
-  /**
-   * @description Form Model Component
-   * @param {object} args 
-   * @param {string} args.btnSaveTxt
-   * @param {string} args.model
-   * @param {Array} args.model
-   * @param {Array} args.fields
-   * @param {function} args.onSubmit
-   * 
    */
   function formFromModel(args){
     const models = application.config.models,
@@ -1151,11 +1260,14 @@ const component = (() => {
   // .................................................
   // alert 
   /**
-   * @description Alert Component,uses alert
-   * @param {object} args 
-   * @param {string} args.class
+   * @description Alert Component,uses <a href="https://getbootstrap.com/docs/4.3/components/alerts/">Bootstap Alert</a>, returns <a href="https://api.jquery.com/element-selector/"><pre>jQuery( "element" )</pre></a>
+   * @external "jQuery.fn"
+   * @see {@link https://getbootstrap.com/docs/4.3/components/alerts/}
+   * @param {object} args - Arguments object
+   * @param {string} args.class - contextual class (defaults to 'primary'); primary, secondary, success, danger, warning, info, light or dark  - contextual class; primary, secondary, success, danger, warning, info, light or dark 
    * @param {string} args.message
    * @param {number} args.fadeOut
+   * @example component.alert({ message : 'This is a alert' });
    */
   function alert(args){
     args.class = args.class ? args.class : 'primary'
@@ -1173,12 +1285,13 @@ const component = (() => {
        
       },args.fadeOut);
     }
+    return alert
   }
   // .................................................
   // calendar
   /**
-   * @description Calendar Component,uses table
-   * @param {object} args 
+   * @description Calendar Component,uses <a href="https://getbootstrap.com/docs/4.3/content/tables/">Bootstap Table</a>, returns <a href="https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment"><pre>DocumentFragment</pre></a>
+   * @param {object} args - Arguments object
    * @param {number} args.d
    * @param {number} args.m
    * @param {number} args.y
@@ -1186,6 +1299,20 @@ const component = (() => {
    * @param {object} args.data.url
    * @param {function} args.data.callback
    * @param {function} args.data.modify
+   * @example component.calendar({
+     el : '#myCalendar',
+     data : {
+       url : 'api/endpoint',
+       method : 'get',
+       modify : (item) => {
+        // do something with returned data item
+      },
+      callback : (data) => {
+        // do something with returned data
+      }
+
+     }
+   })
    */
   function calendar(args){
     //const view = args.view ? args.view : 'month'
@@ -1405,6 +1532,47 @@ const component = (() => {
     //api call
     api(editorData)
   }
+  // component.$
+  /*
+  const $div = component.$('div:myDiv')
+  */
+
+ methods.$ = function(args){
+  let element
+  if(typeof args === 'string'){
+    if(args.contains('#') || args.contains('.')){
+      element = $(args.split(':')[0])
+    }else{
+      const el = args.split(':')[0]
+      element = $(`<${el}></${el}>`)
+    }
+    
+  }else if(args.prototype === Array){
+    const name = args[0].split(':')[1]
+    if(!component[name]){
+      componentMethods({
+        element : element,
+        name : name
+      });
+    }
+  }
+  
+  return element
+}
+// componentMethods
+
+function componentMethods(args){
+  if(!component[name]){
+    for(const method in methods){
+    
+      component[args.name][method] = (args)=>{
+        args.el = args.element
+        component[method](args)
+      }
+    }
+    component[name].el = args.element
+  }
+}
   return methods
 })() // invoke
 //export default component;
