@@ -11,6 +11,12 @@ const connection = require('../app/dbconn'),
 
 const router = express.Router();
 const models = require('../models').sequelize.models
-const api = () => {
 
+const setRoute = (http,controller,route, method,req,res) => {
+
+    return router[http](route, controller.isAuthenticated, (req, res) => {
+        controller[method](req,res);
+    });
+  
 }
+module.exports = setRoute;

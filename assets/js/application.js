@@ -14,18 +14,22 @@ const application = (function(){
       config, // configuration object -> initConfig
       object = {}, // application object -> initObj
       output, // private output object -> page
-      position = 0, // private global position integer -> initModules
+      position = 0, // private global position index -> initModules
       start,_start, // start timestamp object
       finish,_finish, // start timestamp object
-      loadtime,_loadtime, // load time integer
+      loadtime,_loadtime, // load time values
       loadModules; // modules array set values
       
 //..............................................................................
-// defaults properties are overwritten if defined in config/app.json
-/** @constructor */
+// 
+/** @constructor
+ * @description defaults properties are overwritten if defined in config/app.json
+ * @param {string} template file default template assets/[templateEngine]/[template].[templateEngine]
+ * @param {string} templateEngine template file folder & extension
+ */
   const defaults = {
-    template : 'pageLayout', // file default template assets/[templateEngine]/[template].[templateEngine]
-    templateEngine : 'html', // template file folder & extension
+    template : 'pageLayout', 
+    templateEngine : 'html', 
     templatePath : '{templateEngine}/templates/{template}.{templateEngine}', // template file path
     modulesPath : 'js/modules/{module}.js'
   }
@@ -49,8 +53,8 @@ const application = (function(){
 
 //..............................................................................
 
-  const element = {},
-  elements = () => {
+  const element = {}
+  const elements = () => {
     const isElement = (obj,property) =>
       (typeof obj[property] === 'string')
       && obj[property].includes('#');
@@ -61,14 +65,15 @@ const application = (function(){
     setElements(config)
     debug(`application.elements : ${Object.getOwnPropertyNames(element).join(',')}`);
     return element;
-  },
+  }
 
 //..............................................................................
-// adds (module) property to application object
+// 
 /**
+ * @description  adds (module) property to application object
  * @param {string} name
  */
-  add = function(name,module,callback) {
+const add = function(name,module,callback) {
     //if(application.config.debug) console.log(`application.add : ${name}`);
     if(!typeof name==='string') throw 'application.add: module name was expected as string but is '+typeof name
     if(name.includes('.')){
@@ -88,19 +93,19 @@ const application = (function(){
     if(typeof callback === 'function') callback()
     if(module) return module;
 
-  },
+  }
 
 //..............................................................................
 // removes (module) property from application object
-  remove = function(name) {
+const remove = function(name) {
     
     const obj = {}
     for(let module in object)
       if(module != name ) obj[module] = module;
     object = obj;
-  },
+  }
 // call require for given (object.require) array
-  initRequire = (_require,callback) => {
+const initRequire = (_require,callback) => {
     if(_require.length>0){
       for(let item of _require) {
 
@@ -116,10 +121,10 @@ const application = (function(){
     }else{
       require(_require,callback)
     }
-  },
+  }
 //..............................................................................
 // 
-  initModules = () => {
+const initModules = () => {
     require(`modules/${object.modules[position]}`, () =>{ 
       debug(`application.initModules : modules/${object.modules[position]} loaded`);
       if(position === object.modules.length-1){
@@ -144,9 +149,9 @@ const application = (function(){
         initModules();
       }
     });
-  },
+  }
 //..............................................................................
-  initObj = (_application) => {
+const initObj = (_application) => {
     if( _application && object ){ // checks if application object exists
       if(typeof _application === 'function'){
          _application()
@@ -163,15 +168,15 @@ const application = (function(){
       // BUG:
       //object = application.object; // use existing object
     }
-  },
+  }
 //..............................................................................
-  initConfig = (callback) => {
+const initConfig = (callback) => {
     // get config object from server
     $.get(`config`,(data) =>{
       config = data;
       object.config = config;
       object.default = config.default;
-      object.modules = config.modules
+      object.modules = config.modules.map((module)=>module.module)
       object.routes = config.routes;
       //debug(`application.initConfig : json/config.json loaded`);
       //debug(config);
@@ -188,11 +193,11 @@ const application = (function(){
     }).always(()=>{
       if(callback)callback()
     })
-  },
+  }
 
 //..............................................................................
 
-  init = (( _application ) => { // initialize application
+const init = (( _application ) => { // initialize application
     start = new Date;
 
       initObj(_application); // assigns given, existing or merged application object
@@ -216,10 +221,10 @@ const application = (function(){
       });
       return object
 
-  })(),
+  })()
 
 //..............................................................................
-  getRoute = (_route) => {
+const getRoute = (_route) => {
     
     _route = _route ? _route : hash()
     if(!_route) _route = endpoint() // get config.default if hash route not provided
@@ -237,9 +242,9 @@ const application = (function(){
       parameter : _parameter,
       endpoint : _endpoint
     }
-  },
+  }
   //..............................................................................
-  moduleRouter = (_route) => {
+  const moduleRouter = (_route) => {
     _start = new Date
     let callback
     if(typeof _route === 'function' ) {
@@ -274,10 +279,10 @@ const application = (function(){
     }
     if(callback) callback();
   },
-  load = moduleRouter,
+  load = moduleRouter
 //..............................................................................
 // displays page from template, execute callback and call render
-  page = ( _module ) => {
+const page = ( _module ) => {
     
     // view.main doesn't exist before first render
     // BUG:
@@ -296,8 +301,8 @@ const application = (function(){
 
 //..............................................................................
 
-  templates = {},
-  template = (_route, html, callback) => {
+  templates = {}
+  const template = (_route, html, callback) => {
     // gets template for given or current route
 
     if(typeof _route === 'function' ) {
@@ -339,12 +344,12 @@ const application = (function(){
 
 
     return _template;
-  },
+  }
 
 //..............................................................................
 // updates page view with module properties
 
-  render = ( _this, callback ) => {
+const render = ( _this, callback ) => {
     let _route,_event = ''
     
     if(typeof _this === 'function' ) {
@@ -402,11 +407,11 @@ const application = (function(){
       //if(config.debug && application.debug) application.debug.debugger()
     //}
     return application;
-  },
+  }
 
 //..............................................................................
 // creates/updates nav element
-  nav = () => {
+const nav = () => {
     
 
     const prefix = config.navMenuItemPrefix ?
@@ -436,26 +441,31 @@ const application = (function(){
       $( active ).attr('style',`${str(config.style)}`);
     }
     return view.nav;
-  },
+  }
 
 //..............................................................................
 // sets document title with name property of module object
-  title = (route) => {
+const title = (route) => {
     
     if(!route) route = getRoute().endpoint;
     const obj = route[1] ? application.object[route[0]][route[1]] : application.object[route];
-    let pageTitle = ( route === '') ?
-    config.name
-    : `${obj.name} - ${config.name}`;
+    let pageTitle = ( route === '') ? config.name : `${obj.name} - ${config.name}`;
     $('title').html(pageTitle);
     debug(`application.title : ${pageTitle}`);
     return pageTitle;
-  },
+  }
 
 //..............................................................................
-
-  event = (_element, _event, callback ) => {
-    // adds event to events object
+/**
+ * @description adds event to events object
+ * @param {string} _element element to call event on
+ * @param {string} _event event to call on element
+ * @param {function} callback function to call on event
+ * @param {string} callback module to call on event
+ * @param {object} callback request to call on event
+ */
+const event = (_element, _event, callback ) => {
+    // 
     if(typeof _element === 'string')
       element[_element] ?
       _element = element[_element]
@@ -491,7 +501,7 @@ const application = (function(){
 
       _element.on(_event,(event) => {
         _start = new Date;
-        callback(event);
+        if (typeof callback === 'function')callback(event);
         render(event); // event render
       });
     }
@@ -499,11 +509,13 @@ const application = (function(){
     let _events = id ?  events[id] : events
     return _events
   },
-  events = {},
+  events = {}
 
 //..............................................................................
-
-  modules = function(){
+/**
+ * @description
+ */
+const  modules = function(){
     // get modules as array
     let _modules
     //if(config.modules){
@@ -523,10 +535,10 @@ const application = (function(){
     obj = route[1] ? object[route[0]][route[1]] : object[route];
     return obj;
   },
-  module = moduleObj,
+  module = moduleObj
 //..............................................................................
 
-  str = (str) => {
+const str = (str) => {
     // replace {template} strings with module properties
     const _endpoint = getRoute().endpoint[0];
     const obj = application.object[_endpoint];
@@ -580,7 +592,7 @@ const application = (function(){
     debug : []
   }
   // return public methods & variables
-  /** @namespace */
+  /** @namespace application */
   return methods
 })();
 

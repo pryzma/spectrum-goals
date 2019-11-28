@@ -1,5 +1,5 @@
 {
-    "name" : "Spectrum Goals",
+    "name" : "SpectrumGoals",
     "app" : "spectrum-goals",
     "client" :{
         "require" : [ 
@@ -10,10 +10,10 @@
             "spectrum-goals" 
         ],
         "modules" : [
-            "dashboard",
-            "targets",    
-            "checklist",
-            "accounts"
+            {"module" : "dashboard" },
+            {"module" : "targets" },    
+            {"module" : "checklist" },
+            {"module" : "accounts" }
             
         ],
         "menu" : ["accounts","targets","checklist"],
@@ -33,8 +33,6 @@
             "templatePath" : "html/templates/{template}.html"
         },
         "cdns" : [
-            
-           
             { "name" : "jQuery", "url" : "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", "type" : "script", "sri" : "sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="},
             { "name" : "Axios", "url" : "https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js", "type" : "script", "sri" : "sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs="},
             { "name" : "Bootstrap (JS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js", "type" : "script", "sri" : "sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" },    

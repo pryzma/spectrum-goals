@@ -41,6 +41,10 @@ const component = (() => {
     api : api,
     /** Auth Component */
     auth : auth,
+    /** Bootstrap Breadcrumb Component
+      *  @example component.breadcrumb(['First','Second']);
+     */
+    breadcrumb : breadcrumb,
      /** Bootstrap Button Component
       *  @example component.btn({
     el : '#myButtonContainer',
@@ -58,21 +62,24 @@ const component = (() => {
   });
       */
     btn : btn,
+    /** Bootstrap Button Group 
+     * @example component.btn_group({ btns : [{ txt : 'Button' },{ txt : 'Button' }]})
+     */
+    btn_group : btn_group,
     /** Calendar Component 
      * @example component.calendar({
-     el : '#myCalendar',
-     data : {
-       url : 'api/endpoint',
-       method : 'get',
-       modify : (item) => {
-        // do something with returned data item
-      },
-      callback : (data) => {
-        // do something with returned data
-      }
-
-     }
-   })
+        el : '#myCalendar',
+        data : {
+          url : 'api/endpoint',
+          method : 'get',
+          modify : (item) => {
+            // do something with returned data item
+          },
+          callback : (data) => {
+            // do something with returned data
+          }
+        }
+      });
     */
     calendar : calendar,
     /** Bootstrap Card Component 
@@ -156,9 +163,11 @@ const component = (() => {
        */
       tabs : navTabs
     },
+    navs : navs,
     /** Button Repeat Component */
     repeat : repeat,
     /** Bootstrap Table Component
+     * @see {@link https://getbootstrap.com/docs/4.3/content/tables/}
      * @example component.table({
     el : '#tableContainerId',
     model : 'modelName',
@@ -209,7 +218,7 @@ const component = (() => {
   // .................................................
   // component.date
   /**
-   * 
+   * @description Date Component
    * @param {object} args - Arguments object
    * @param {string} args.format
    * @param {HTMLElement} args.el - Target Element
@@ -225,12 +234,14 @@ const component = (() => {
     if (mm < 10) mm = '0' + mm;
     format = format ? format : 'mm-dd-yyyy';
     format = format.replace('dd',dd).replace('mm',mm).replace('yyyy',yyyy);
+    if(typeof args.modify === 'function') format = args.modify(format)
     if(args.el){
       componentElementOutput({
         el : args.el,
         output : format
       });
     }
+   
     return format;
   }
   // component.time
@@ -247,23 +258,28 @@ const component = (() => {
     let mm = now.getMinutes();
     mm = mm.toString().length === 1 ? `${mm}0` : mm
     now = `${hh}:${mm}`;
+    if(typeof args.modify === 'function') now = args.modify(now);
     if(args.el){
       componentElementOutput({
         el : args.el,
         output : now
       });
     }
+    
     return now;
   }
   // .................................................
   // component.uid
   /**
-   * 
-   * @param {object} args - Arguments object
+   * uid Component
+   * @param {object} args 
+   * @param {string} args.format - format string
+   * @param {HTMLElement} args.el - Target Element
    */
-  function uid(args){  // generate unique id
+  function uid(args){  
       const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      const output = s4() + s4() + '-' + s4();
+      const format = args.format ? args.format : 's4s4-s4'
+      const output = format.replace(new RegExp('s4', 'g'), s4())
       if(typeof args === 'object' && args.el){
         componentElementOutput({
           el : args.el,
@@ -292,7 +308,9 @@ const component = (() => {
   const authModels = new Array
   /**
    * 
-   * @param {object} args - Arguments object
+   * @param {object} args 
+   * @param {object} args.data - Data Object
+   * @param {object} args.data.model - Data Model Object
    */
   function auth(args){
    
@@ -321,7 +339,7 @@ const component = (() => {
   // .................................................
   // component.api
  /**
-  * @description API Component, returns <a href="https://developer.mozilla.org/en-US/docs/Glossary/array"><pre>Array</pre></a>
+  * @description API Component
   * @param {object} args - Arguments object
   * @param {string} args.method - Axios method (get,post,delete,update) defaults to get
   * @param {string} args.data - request body
@@ -407,21 +425,15 @@ const component = (() => {
     
     return output;
   }
-  // .................................................
-  // 
-  /*
-  
-  */
+ 
   /**
-   * 
    * @param {string} args 
-   * 
    */
   function err(args){
     throw args
   }
   /**
-   * @description type; basic type filter 
+   * @description Type Component
    * @param {object} args - Arguments object
    * @param {string} type 
    * @param {function} callback 
@@ -431,19 +443,10 @@ const component = (() => {
   })
    */
   function type(args,type,callback){
-    // assign callback to args type
     const argsTypeOf = typeof args;
     if(args.prototype === Array) argsTypeOf = 'array'
     if( argsTypeOf != type ) err(`component.type called with type '${type}' but args is  typeof ${argsTypeOf} `);
-        
-    switch(argsTypeOf){
-            default :
-                typeof callback === 'function' ?  callback(args) : err('component.type callback is not a function')
-                break;
-            
-            
-            
-        }
+    typeof callback === 'function' ?  callback(args) : err('component.type callback is not a function')
   }
 
   function componentElementOutput(args){
@@ -460,11 +463,7 @@ const component = (() => {
       
     
   }
-  // .................................................
-  // component.el
-  /*
-  
-  */
+
  /**
   * @description Component Element
   * @param {array} args 
@@ -518,12 +517,35 @@ const component = (() => {
       return element
     }
   }
-  
-  // .................................................
-  // component.card
-  /* 
-    
-  */
+  /**
+   * @description Breadcrumb Component, uses <a href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">Bootstrap Breadcrumb</a>, returns <pre>HTMLElement</pre>
+   * @param {object} args 
+   * @param {array} args.breadcrumbs
+   */
+  function breadcrumb(args){
+    const breadcrumbsElement = document.createElement('nav');
+    breadcrumbsElement.setAttribute('aria-label','breadcrumb')
+    const olElement = document.createElement('ol');
+    let breadcrumbs
+    if(typeof args === 'object'){
+      breadcrumbs = args.breadcrumbs
+    }else if(args.prototype === Array){
+      breadcrumbs = args
+    }
+    breadcrumbs.map((breadcrumb)=>{
+      const liElement = document.createElement('ol');
+      liElement.setAttribute('class','breadcrumb-item')
+      liElement.innerHTML = breadcrumb
+      olElement.appendChild(liElement)
+    })
+    breadcrumbsElement.appendChild(olElement)
+    componentElementOutput({
+      el : args.el,
+      output : breadcrumbsElement
+    });
+    return breadcrumbsElement
+  }
+
  /**
   * @description Card Component, uses <a href="https://getbootstrap.com/docs/4.3/components/card/">Bootstrap Card</a>, returns <pre>HTMLDivElement</pre>
   * @param {object} args - Arguments object
@@ -672,10 +694,38 @@ const component = (() => {
     }
     return btn;
   }  
-  // .................................................
-  // component.confirm
-  /*
-    component.confirm({
+  /**
+   * 
+   * @param {object} args 
+   * @param {array} args.btns
+   * @param {HTMLElement} [args.el]
+   */
+  function btn_group(args){
+
+    const btn_group = document.createElement('div');
+    btn_group.setAttribute('class','btn-group')
+    btn_group.setAttribute('role','group')
+    args.btns.map((btn)=>{
+      btn_group.appendChild(btn(btn))
+    });
+    if(args.el){
+      componentElementOutput({
+        el : args.el,
+        output : btn_group
+      });
+    }
+    return btn_group
+  }
+
+ /**
+  * @description Confirm Component, uses <a href="https://getbootstrap.com/docs/4.3/components/popovers/">Bootstap Popover</a> for confirmation message, returns <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement"><pre>HTMLElement</pre></a>
+  * @param {object} args
+  * @param {HTMLElement} args.el - Target Element  
+  * @param {object} args.confirm - button confirm (popover) object
+  * @param {function} args.confirm.confirm - button confirm callback
+  * @param {boolean} args.confirm.hideOnConfirm - hide modal after confirm callback
+  * @param {string} args.confirm.msg - message to show on confirm, content of popover
+  * @example component.confirm({
       el : $('<button>Confirm me</button>),
       msg : 'Are you sure?',
       closeModal : true, // confirm closes modal
@@ -683,15 +733,6 @@ const component = (() => {
         console.log('Is confirmed');
       }
     });
-  */
- /**
-  * @description Confirm Component, uses <a href="https://getbootstrap.com/docs/4.3/components/popovers/">Bootstap Popover</a> for confirmation message, returns <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement"><pre>HTMLElement</pre></a>
-  * @param {object} args
-  * @param {HTMLElement} args.el - Target Element  
-  *  @param {object} args.confirm - button confirm (popover) object
-   * @param {function} args.confirm.confirm - button confirm callback
-   * @param {boolean} args.confirm.hideOnConfirm - hide modal after confirm callback
-   * @param {string} args.confirm.msg - message to show on confirm, content of popover
   */
   function confirm(args){
    
@@ -805,13 +846,7 @@ const component = (() => {
     });
     return $amModal
   }
-  // nav 
   
-  // .................................................
-  // tabs 
-  /* https://getbootstrap.com/docs/4.3/components/navs/#tabs
-  
-  */
  /**
   * @description Tabs Component, uses <a href="https://getbootstrap.com/docs/4.3/components/navs/#tabs">Bootstap Nav Tabs</a>
   * @param {object} args - Arguments object
@@ -875,11 +910,67 @@ const component = (() => {
     }
     return tabsFragment;
   }
-  // .................................................
-  // table
-  /*
-  
-  */
+  /**
+   * 
+   * @param {object} args 
+   * @param {string} args.type - pill or tab
+   * @param {array} args.navs 
+   * @param {HTMLElement} [args.el]
+   */
+  function navs(args) {
+    const navsElement = document.createElement('ul'),
+    navsFragment = document.createDocumentFragment();
+    navsElement.setAttribute('class',`nav nav-${args.type}s`);
+    navsElement.setAttribute('id',`navs_${uid()}`);
+    navsElement.setAttribute('role','tablist');
+    const navsContent = document.createElement('div');
+    navsContent.setAttribute('class','nav-content');
+    const navs = args.navs;
+    let navIndex = 0;
+    if(!navs.prototype === Array) err('component.navs : args.navs expected as array but is of type ' + typeof navs)
+    for(let nav of navs){
+      if(nav.label){
+        const navId = uid(),
+      navElement = document.createElement('li'),
+      navLink = document.createElement('a'),
+      navContent = document.createElement('div'),
+      navClass = navIndex === 0 ? 'tab-pane fade show active' : 'tab-pane fade',
+      navLinkClass = navIndex === 0 ? 'nav-link active' : 'nav-link' ;
+      // navElement
+      navLink.setAttribute('href',`#${navId}`);
+      navLink.setAttribute('class',navLinkClass);
+      navLink.setAttribute('role','tab');
+      navLink.setAttribute('aria-controls',navId)
+      navLink.setAttribute('data-toggle',args.type);
+      navLink.innerHTML = nav.label;
+      navLink.addEventListener('click',(event)=>{
+        
+        $(`nav-${args.type}s a[href="` + event.target.href + '"]').tab('show');
+      })
+      navElement.setAttribute('class','nav-item');
+      navElement.appendChild(navLink);
+      navsElement.appendChild(navElement);
+      // navContent
+      navContent.setAttribute('class',navClass);
+      navContent.setAttribute('aria-labelledby',`${navId}-nav`);
+      navContent.setAttribute('id',navId);
+      navContent.setAttribute('role','tabpanel');
+      navContent.innerHTML = nav.content;
+      navsContent.appendChild(navContent);
+      navIndex++;
+      }
+      
+    }
+    navsFragment.appendChild(navsElement);
+    navsFragment.appendChild(navsContent);
+    if(args.el){
+      componentElementOutput({
+        el : args.el,
+        output : navsFragment
+      });
+    }
+    return navsFragment;
+  }
  /**
   * @description Table Component, uses <a href="https://getbootstrap.com/docs/4.3/content/tables//">Bootstap Table</a>, returns <a href=https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement">HTMLTableElement</a>
   * @param {object} args - Arguments object
@@ -1296,9 +1387,10 @@ const component = (() => {
    * @param {number} args.m
    * @param {number} args.y
    * @param {object} args.data
-   * @param {object} args.data.url
+   * @param {string} args.data.url
    * @param {function} args.data.callback
    * @param {function} args.data.modify
+   * @see {@link https://getbootstrap.com/docs/4.3/content/tables/}
    * @example component.calendar({
      el : '#myCalendar',
      data : {
@@ -1358,12 +1450,16 @@ const component = (() => {
         }
       }
       if(args.data.modify) apiObj.modify = args.data.modify;
-      api(apiObj); // fetch data from api
+      api(apiObj); 
     }else{
       calendarBuild()
     }
+    /**
+     * 
+     * @param {array} data 
+     */
     function calendarBuild(data){
-      // previous month
+      
       while(prevMonthStart < prevMonthDays ){
         weekDayNum = new Date(`${yyyy}-${prevMonth}-${prevMonthStart}`).getDay()
         if(weekDayNum===0)$calendarTableRow = $('<tr></tr>')
@@ -1374,7 +1470,7 @@ const component = (() => {
           for(let item of data){
             
             if(item.date.split('T')[0] === `${yyyy}-${prevMonth}-${prevMonthStart}`){
-              // add items for specified date
+              
               let $eventItem = $('<div></div>')
                     .attr('class','event begin end')
                     .html(`<i class="far fa-calendar"></i> ${item.name}`);
@@ -1574,5 +1670,4 @@ function componentMethods(args){
   }
 }
   return methods
-})() // invoke
-//export default component;
+})();

@@ -1,2 +1,2 @@
 # spectrum-goals
-App for managing learning targets
+App for managing learning targets for team members and medients(students). Team members can add targets to learning goals and assign these learning goals to each medient. Medients can send progress requests when achieving a learning goal. Medients will recieve badges when completing a assigned learning goal. Team members will be notified of important tasks and issues relating to medients.

@@ -1,0 +1,54 @@
+<section id="medientDashboard" class="container-fluid">
+    <div class="row">
+      <div class="col-md-3"><h3>Persoonlijk</h3> 
+        <span class="float-right" id="medientPersonalInfoOptions">
+          <span id="medientEdit">
+            <button class="btn btn-nobg yellow" id="medientEditBtn">
+              <i class="fas fa-user-edit"></i>
+            </button>
+          </span>
+          <span id="medientSave" style="display: none;">
+              <button class="btn btn-nobg green" id="medientSaveBtn"><i class="fas fa-check"></i></button>
+              <button class="btn btn-nobg red" id="medientEditCancelBtn"><i class="fas fa-times"></i></button>
+          </span>
+      </div>
+      <div class="col-md-9"><h3>Contacten (<span id="medientContactsNum">0</span>)</h3></div>
+    </div>
+        <div class="row" id="medientPersonalInfoContainer">
+          <div class="col-md-3" id="medientPersonalInfo">
+
+          </div>
+          
+        </div>
+                
+        
+</section>
+<div style="display: none;" id="medientDashboard_templates">
+  <div class="col-md-3" id="medientContact">
+
+  </div>
+  <form id="medientPersonalInfoEdit">
+      <div class="form-group">
+          <label for="firstName">Voornaam</label>
+          <input type="text" class="form-control" id="firstName" disabled>
+      </div>
+      <div class="form-group">
+          <label for="lastName">Achternaam</label>
+          <input type="text" class="form-control" id="lastName" disabled>
+      </div>
+      <div class="form-group">
+          <label for="exampleInputEmail1">E-mail</label>
+          <input type="text" class="form-control" id="email" disabled>
+      </div>
+      <div class="form-group">
+          <label for="exampleInputEmail1">Mobiel</label>
+          <input type="text" class="form-control" id="mobile" disabled>
+      </div>
+      <div class="form-group">
+          <label for="exampleInputEmail1">Laatste Indicatie</label>
+          <input type="text" class="form-control" id="lastIndication" disabled>
+      </div>
+
+
+  </form>
+</div>
