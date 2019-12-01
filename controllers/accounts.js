@@ -83,9 +83,10 @@ controller.verifyAccount = (req,res) => {
 controller.updateAccount = (req,res) => {
     console.log(req.body)
     Account.update(req.body,{returning : true,where: { id: req.body.id } })
-    .then(function([[account]]) {
+    .then(function([[ rowsUpdate, account]]) {
         callback(account);
-    });
+    })
+    .catch(next);
 }
 
 controller.deleteAccount = (req,res) => {

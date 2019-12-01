@@ -102,7 +102,7 @@ function medientPersonalInfo(medient){
         $('#medientSave').show();
         $('#medientSaveBtn').on('click',()=>{
             const medientFormData = component.form.data({ el : 'form#medientPersonalInfo', model : 'Account'});
-            console.log(medientFormData)
+           
             component.api({
                 method : 'put',
                 url : 'api/accounts',

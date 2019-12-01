@@ -362,6 +362,7 @@ const component = (() => {
 
     axios[args.method](args.url,args.data)
     .then((res) => {
+      console.log(res)
       const data = [];
       if(res.data.length > 0){
         for(let item of res.data){
@@ -370,14 +371,15 @@ const component = (() => {
           
         }
       }
-      if(callback || args.callback) 
+      if(callback || args.callback) {
           if(callback)
             return callback(data);
           if(args.callback) 
+            
             return args.callback(data);
       
           return data;
-      
+      }
     })
   }
  
@@ -1139,9 +1141,9 @@ const component = (() => {
     for (let item in model) { 
       if($('#'+item).val()) formData.append(item, $('#'+item).val())
     }
-    console.log(formData)
+   
     for(let field of formData.entries()){
-      console.log(field[0] + ':' + field[1])
+  
       formObj[field[0]] = field[1];
     }
     

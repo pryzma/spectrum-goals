@@ -1,6 +1,7 @@
 const websocket = (args) => {
     if ('WebSocket' in window){
-        const wsConnection = new WebSocket('ws://emerald-dust.org:8080/');
+        console.log(application.config)
+        const wsConnection = new WebSocket('ws://' + application.config.ref_adr + ':8080/');
         // websocket connection is open
         wsConnection.onopen = function(){
             if(args.onopen) args.onopen();
