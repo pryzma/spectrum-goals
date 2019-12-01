@@ -95,13 +95,26 @@ function medientDashboard(id){
 function medientPersonalInfo(medient){
     const  medientPersonalInfoElement = $('#medientPersonalInfo');
     $('#medientPersonalInfo').html($('#medientPersonalInfoEdit').html())
-    Object.keys(medient[0]).map((key, index) => {
-      $(`input#${key}`).val(medient[0][key]);  
-    });
+    Object.keys(medient[0]).map((key, index) => $(`input#${key}`).val(medient[0][key]));
     $('button#medientEditBtn').on('click',()=>{
         $('#medientPersonalInfo input').removeAttr('disabled');
         $('#medientEdit').hide();
         $('#medientSave').show();
+        $('#medientSaveBtn').on('click',()=>{
+            const medientFormData = component.form.data({ el : 'form#medientPersonalInfo', model : 'Account'});
+            console.log(medientFormData)
+            component.api({
+                method : 'put',
+                url : 'api/accounts',
+                data : medientFormData,
+                callback : (data)=> {
+                    $('#medientPersonalInfo input').attr('disabled','disabled');
+                    $('#medientEdit').show();
+                    $('#medientSave').hide();
+                }
+            })
+          
+        });
         $('#medientEditCancelBtn').on('click',()=>{
             $('#medientPersonalInfo input').attr('disabled','disabled');
             $('#medientEdit').show();

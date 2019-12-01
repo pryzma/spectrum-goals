@@ -370,7 +370,7 @@ const component = (() => {
           
         }
       }
-      if(callback) 
+      if(callback || args.callback) 
             return callback(data);
           if(args.callback) 
             return args.callback(data);
@@ -1130,11 +1130,19 @@ const component = (() => {
    *  
    */
   function formData(args){
-    const form = typeof args === 'object' ? args.el : args
+    let form = typeof args === 'object' ? args.el : args
+    form = form instanceof HTMLElement ? form :  document.querySelector(form)
+    const model = application.config.models[args.model]
     const formData = new FormData(form),formObj = {};
-   
-    for(let [key,value] of formData.entries())
-      formObj[key] = value;
+  
+    for (let item in model) { 
+      if($('#'+item).val()) formData.append(item, $('#'+item).val())
+    }
+    console.log(formData)
+    for(let field of formData.entries()){
+      console.log(field[0] + ':' + field[1])
+      formObj[field[0]] = field[1];
+    }
     
     return formObj
   }
