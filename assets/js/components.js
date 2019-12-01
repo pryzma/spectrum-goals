@@ -371,6 +371,7 @@ const component = (() => {
         }
       }
       if(callback || args.callback) 
+          if(callback)
             return callback(data);
           if(args.callback) 
             return args.callback(data);
