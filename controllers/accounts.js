@@ -80,11 +80,11 @@ controller.verifyAccount = (req,res) => {
     });
     
 }
-controller.updateAccount = (req,res) => {
+controller.updateAccount = (req,res,next) => {
    
-    Account.update(req.body,{returning : true,where: { id: req.body.id } })
-    .then(function([rowsUpdate, [account]]) {
-        callback(account);
+    Account.update(req.body,{where: { id: req.body.id } })
+    .then(function(rowsUpdated) {
+        res.json(rowsUpdated)
     })
     .catch(next);
 }

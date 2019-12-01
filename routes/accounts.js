@@ -23,8 +23,8 @@ router.post('/', bodyParserJSON, (req, res) => {
 });
 
 
-router.put('/', bodyParserJSON, (req, res) => {
-  controller.updateAccount(req,res);
+router.put('/', bodyParserJSON, (req, res, next) => {
+  controller.updateAccount(req,res,next);
 });
 
 router.delete('/',bodyParserJSON, (req,res) => {

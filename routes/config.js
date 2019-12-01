@@ -13,7 +13,7 @@ router.get('/', controller.isAuthenticated, (req, res) => {
     obj.name = _config.name;
     obj.version = _config.version;
     obj.ref_adr = process.env.REF_ADR;
-    console.log(obj)
+    
     res.json(obj)
 });
 module.exports = router;
