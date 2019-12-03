@@ -1,17 +1,23 @@
-
 module.exports = (app) => {
 
-    const webSocket = require('websocket'),
-          fs = require('fs'),
-          privateKey = fs.readFileSync('/etc/letsencrypt/live/emerald-dust.org/privkey.pem', 'utf8'),
-          certificate = fs.readFileSync('/etc/letsencrypt/live/emerald-dust.org/fullchain.pem', 'utf8'),
-          credentials = { key: privateKey, cert: certificate };
+    const webSocket = require('websocket');
           webSocketServer = webSocket.server,
           http = require('http'),
           https = require('https');
+    
     const env = process.env;
-    const server =  process.env.REF_HTTP_PROTOCOL === 'http' ? http : https;
-    server.createServer(credentials);
+    let server;
+    if(process.env.REF_HTTP_PROTOCOL === 'https'){
+        const fs = require('fs'),
+        privateKey = fs.readFileSync('/etc/letsencrypt/live/emerald-dust.org/privkey.pem', 'utf8'),
+        certificate = fs.readFileSync('/etc/letsencrypt/live/emerald-dust.org/fullchain.pem', 'utf8'),
+        credentials = { key: privateKey, cert: certificate };
+        server = https.createServer(credentials);
+    }else{
+        server = http.createServer();
+    }
+    
+    
     
     const wsServerPort = env.REF_WS_PORT;
     server.listen(wsServerPort);
