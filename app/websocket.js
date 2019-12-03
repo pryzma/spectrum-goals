@@ -10,8 +10,8 @@ module.exports = (app) => {
           http = require('http'),
           https = require('https');
     const env = process.env;
-    const server =  process.env.REF_HTTP_PROTOCOL === 'http' ?
-    http.createServer(credentials) : https.createServer(credentials);
+    const server =  process.env.REF_HTTP_PROTOCOL === 'http' ? http : https;
+    server.createServer(credentials);
     
     const wsServerPort = env.REF_WS_PORT;
     server.listen(wsServerPort);
