@@ -7,11 +7,12 @@ module.exports = (app) => {
           certificate = fs.readFileSync('/etc/letsencrypt/live/emerald-dust.org/fullchain.pem', 'utf8'),
           credentials = { key: privateKey, cert: certificate };
           webSocketServer = webSocket.server,
-          // http = require('http'),
-          https = require('https'),
-          server = https.createServer(credentials);
-
+          http = require('http'),
+          https = require('https');
     const env = process.env;
+    const server =  process.env.REF_HTTP_PROTOCOL === 'http' ?
+    http.createServer(credentials) : https.createServer(credentials);
+    
     const wsServerPort = env.REF_WS_PORT;
     server.listen(wsServerPort);
     server.on('upgrade', (req, socket) => {
