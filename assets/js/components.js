@@ -278,7 +278,7 @@ const component = (() => {
    */
   function uid(args){  
       const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      const format = args.format ? args.format : 's4s4-s4'
+      const format = args ? args.format : 's4s4-s4'
       const output = format.replace(new RegExp('s4', 'g'), s4())
       if(typeof args === 'object' && args.el){
         componentElementOutput({
