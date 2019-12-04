@@ -278,7 +278,7 @@ const component = (() => {
    */
   function uid(args){  
       const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      const format = args.format ? args.format : 's4s4-s4'
+      const format = args ? args.format : 's4s4-s4'
       const output = format.replace(new RegExp('s4', 'g'), s4())
       if(typeof args === 'object' && args.el){
         componentElementOutput({
@@ -1139,7 +1139,7 @@ const component = (() => {
     const formData = new FormData(form),formObj = {};
   
     for (let item in model) { 
-      if($('#'+item).val()) formData.append(item, $('#'+item).val())
+      if($('#'+form.id+' #'+item).val()) formData.append(item, $('#'+form.id+' #'+item).val())
     }
    
     for(let field of formData.entries()){
@@ -1168,17 +1168,27 @@ const component = (() => {
    */
   function formPost(args,callback){
     const form = document.getElementById(args.el);
-    let formObj;
-    form.addEventListener( 'submit', ( event ) => {
-      formObj = formData(form);
+    const formDataObj = args.model ? {el : form,model : args.model} : {el :form}
+    if(args.forceSubmit){
+      submitForm(formDataObj);
+    } else{
+      form.addEventListener( 'submit', () => {
+        submitForm(formDataObj);
+      });
+    }
+    
+    function submitForm(formDataObj){
+      const formObj = formData(formDataObj);
+     
       event.preventDefault();
       axios.post(args.url,formObj)
       .then((formObj) => {
-        callback(formObj)
+        if(typeof callback==='function') callback(formObj)
+        if(typeof args.callback==='function') args.callback(formObj)
       }).catch(function(error){
         $(args.el).html(`A error has occured : ${error}`);
       });
-    });
+    }
     return form
   }
   // .................................................

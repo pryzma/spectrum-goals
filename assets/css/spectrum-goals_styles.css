@@ -150,7 +150,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', end
   }
 
 
-  #medientPersonalInfo input[type="text"]:disabled{
+  #medientPersonalInfo input[type="text"]:disabled, .medient_contact input[type="text"]:disabled{
       color : whitesmoke;
       /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9b9898+0,bfbfbf+100 */
 background: #9b9898; /* Old browsers */

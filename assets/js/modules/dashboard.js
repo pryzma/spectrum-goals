@@ -101,26 +101,27 @@ function medientPersonalInfo(medient){
         $('#medientPersonalInfo input').removeAttr('disabled');
         $('#medientEdit').hide();
         $('#medientSave').show();
-        $('#medientSaveBtn').on('click',()=>{
-            const medientFormData = component.form.data({ el : 'form#medientPersonalInfo', model : 'Account'});
-           
-            component.api({
-                method : 'put',
-                url : 'api/accounts',
-                data : medientFormData,
-                callback : (data)=> {
-                    $('#medientPersonalInfo input').attr('disabled','disabled');
-                    $('#medientEdit').show();
-                    $('#medientSave').hide();
-                }
-            })
-          
-        });
+        $('#medientSaveBtn').on('click',medientPersonalInfoSave);
         $('#medientEditCancelBtn').on('click',()=>{
             $('#medientPersonalInfo input').attr('disabled','disabled');
             $('#medientEdit').show();
             $('#medientSave').hide();
         })
+    })
+}
+/** saves medient personal info edit  */
+function medientPersonalInfoSave(){
+    const medientFormData = component.form.data({ el : 'form#medientPersonalInfo', model : 'Account'});
+           
+    component.api({
+        method : 'put',
+        url : 'api/accounts',
+        data : medientFormData,
+        callback : (data)=> {
+            $('#medientPersonalInfo input').attr('disabled','disabled');
+            $('#medientEdit').show();
+            $('#medientSave').hide();
+        }
     })
 }
 // ........................................
@@ -129,46 +130,83 @@ function medientPersonalInfo(medient){
  * @param {*} id 
  */
 function medientContacts(id){
-    const  $medientContactElement = $('#medientContact'),
-           $medientPersonalInfoElement = $('#medientPersonalInfo');
-    /** fetch medient contacts data */
-    const medientContactsData = {
-        url : 'api/contacts/medient/'+id,
-        callback : (contacts)=>{
-            contacts.map((contact)=>{
-                $medientPersonalInfoElement.after(medientContact(contact));
-                Object.keys(contact[0]).map((key, index) => $(`input#${key}`).val(contact[0][key]));
-            })
-        }
-    }
     
-    component.api(medientContactsData);
-    /** creates medient contact element */
-    function medientContact(contact){
-        const $medientContact = $('<form></form>')
+    /** fetch medient contacts data */
+    medientGetContacts(id);
+    
+    /** add medient contact */
+    $('#medientAddContactBtn').on('click',()=>{
+        medientAddContact(id)
+    });
+
+}
+// ........................................
+/** creates & inserts medient add contact form  */
+function medientAddContact(id){
+    const $medientContactForm = medientContact({id:'medientAddContactForm'}),
+          $medientPersonalInfoElement = $('#medientPersonalInfo');
+    $medientPersonalInfoElement.after($medientContactForm);
+    $('#medientAddContactForm input').removeAttr('disabled');
+    $('#medientAddContactForm input#medient').val(id);
+    $('#medientAddContact').hide();
+    $('#medientAddContactSave').show();
+    /** saves medient contact */
+    $('#medientAddContactSaveBtn').on('click',medientPostAddContactForm);
+    /** cancels add medient contact */
+    $('#medientAddContactCancelBtn').on('click',()=>{
+        $medientContactForm.remove();
+        $('#medientAddContact').show();
+        $('#medientAddContactSave').hide()
+    });
+}
+// ........................................
+ /** creates medient contact element */
+ function medientContact(contact){
+    const $medientContactElement = $('#medientContact'),
+          $medientContact = $('<form></form>')
             .attr('id',contact.id)
             .attr('class','col-md-3')
             .html($medientContactElement.html());
-        return $medientContact
+    return $medientContact
+}
+// ........................................
+/** gets medient contacts data */
+function medientGetContacts(id){
+    console.log(id)
+    const $medientPersonalInfoElement = $('#medientPersonalInfo'),
+        medientContactsData = {
+        url : 'api/contacts/medient/'+id,
+        callback : (contacts)=>{
+            $('.medient_contact').remove();
+            $('#medientContactsNum').html(contacts.length)
+            /** map each contact to medientContact  */
+            contacts.map((contact)=>{
+                const $medientContact = medientContact(contact).addClass('medient_contact')
+                $medientPersonalInfoElement.after($medientContact);
+                /** map contact object keys to  */
+                Object.keys(contact).map((key, index) => $(`#${contact.id} input#${key}`).val(contact[key]));
+            })
+        }
     }
-    /** add medient contact */
-    $('#medientAddContactBtn').on('click',()=>{
-        const $medientContactForm = medientContact({id:'medientAddContactForm'})
-        $medientPersonalInfoElement.after($medientContactForm);
-        $('#medientAddContactForm input').removeAttr('disabled');
-        $('#medientAddContact').hide();
-        $('#medientAddContactSave').show();
-        $('#medientAddContactCancelBtn').on('click',()=>{
-            $medientContactForm.remove();
+    component.api(medientContactsData);
+}
+// ........................................
+/** posts add medient contact form */
+function medientPostAddContactForm(){
+    component.form.post({
+        url : 'api/contacts',
+        el : 'medientAddContactForm',
+        model : 'Contact',
+        forceSubmit : true,
+        callback : (res)=>{
+            
+            $('#medientAddContactForm').remove();
             $('#medientAddContact').show();
-            $('#medientAddContactSave').hide()
-        })
-    });
-    
-
-
-
-
+            $('#medientAddContactSave').hide();
+            medientGetContacts(res.data.medient)
+            component.alert({class:'success',message:res.data.first_name + ' '+ res.data.last_name +' toegevoegd aan Contacten'});
+        }
+    })
 }
 // ........................................
 /**
