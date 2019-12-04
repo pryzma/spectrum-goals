@@ -58,7 +58,8 @@ function accountsOverview() {
     data : teamData
   };
 
-  return component.table(medientListTable), component.table(teamListTable);
+  component.table(medientListTable);
+  component.table(teamListTable);
 }
 
 application.add('accounts', accounts);
