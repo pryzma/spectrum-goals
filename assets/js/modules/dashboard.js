@@ -128,7 +128,26 @@ function medientPersonalInfo(medient){
  * @param {*} id 
  */
 function medientContacts(id){
-    const  medientContactsElement = $('#medientContacts');
+    const  $medientContactElement = $('#medientContact'),
+           $medientPersonalInfoElement = $('#medientPersonalInfo');
+    const $medientContactForm = $('<form></form>')
+            .attr('id','medientContactForm')
+            .attr('class','col-md-3')
+            .html($medientContactElement.html());
+    $('#medientAddContactBtn').on('click',()=>{
+        $medientPersonalInfoElement.after($medientContactForm);
+        $('#medientContactForm input').removeAttr('disabled');
+        $('#medientAddContact').hide();
+        $('#medientAddContactSave').show();
+        $('#medientAddContactCancelBtn').on('click',()=>{
+            $medientContactForm.remove();
+            $('#medientAddContact').show();
+            $('#medientAddContactSave').hide()
+        })
+    });
+    
+
+
 
 
 }

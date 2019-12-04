@@ -79,11 +79,11 @@ nav .breadcrumb{
 
 /** dashboard */
 
-#medientPersonalInfoOptions{
+#medientPersonalInfoOptions,#medientAddContactOptions{
     
     margin-top: -36px;
 }
-#medientPersonalInfoOptions i{
+#medientPersonalInfoOptions i,#medientAddContactOptions i{
     font-size: 1.3em;
 }
 #medientOverview table tbody{
