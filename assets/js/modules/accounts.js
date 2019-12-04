@@ -15,13 +15,25 @@ const accountDataModify = (account) => {
 };
 
  /** API data component object */
-const accountsData = {
-  url : 'api/accounts',
-  modify : accountDataModify,
-  callback : (data) => accountList.data = data
+const medientsData = {
+  url : 'api/accounts/medients',
+  modify : medientDataModify,
+  callback : (data) => medientList.data = data
 };
 
-const accountListTableLabels = {
+const medientListTableLabels = {
+  name : { label : 'Naam' },
+  username : { label : 'Gebruikersnaam' },
+  email : { label : 'E-Mail'}
+};
+
+const teamData = {
+  url : 'api/accounts/teammembers',
+  modify : medientDataModify,
+  callback : (data) => teamList.data = data
+};
+
+const teamListTableLabels = {
   name : { label : 'Naam' },
   username : { label : 'Gebruikersnaam' },
   email : { label : 'E-Mail'}
@@ -30,14 +42,23 @@ const accountListTableLabels = {
 /** Overview of accounts */
 function accountsOverview() {
   /** Table component object */
-  const accountsListTable = {
-    el : '#accountsList',
+  const medientListTable = {
+    el : '#medientList',
     model : 'Account',
     class : 'table-striped table-hover',
-    cols : accountListTableLabels,
-    data : accountsData
+    cols : medientListTableLabels,
+    data : medientsData
   };
-  return component.table(accountsListTable);
+
+  const teamListTable = {
+    el : '#teamList',
+    model : 'Account',
+    class : 'table-striped table-hover',
+    cols : teamListTableLabels,
+    data : teamData
+  };
+
+  return component.table(medientListTable), component.table(teamListTable);
 }
 
 application.add('accounts', accounts);

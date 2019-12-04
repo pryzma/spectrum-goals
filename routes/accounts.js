@@ -6,7 +6,7 @@ const express = require('express'),
       app = express(),
       bodyParserJSON = app.use(bodyParser.urlencoded({extended : true}));
       app.use(bodyParser.json());
-      
+
 const router = express.Router();
 const controller = require('../controllers/accounts');
 
@@ -16,6 +16,10 @@ router.get('/', controller.isAuthenticated, (req, res) => {
 
 router.get('/medients', controller.isAuthenticated, (req, res) => {
   controller.getMedients(req,res);
+});
+
+router.get('/teammembers', controller.isAuthenticated, (req, res) => {
+  controller.getTeamMembers(req,res);
 });
 
 router.post('/', bodyParserJSON, (req, res) => {
@@ -28,7 +32,7 @@ router.put('/', bodyParserJSON, (req, res, next) => {
 });
 
 router.delete('/',bodyParserJSON, (req,res) => {
- 
+
   controller.deleteAccount(req,res);
 });
 
