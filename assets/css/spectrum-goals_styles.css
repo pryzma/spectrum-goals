@@ -22,10 +22,7 @@ header a:hover{
 header .navbar-brand{
     padding-left: 25px;
 }
-header #headerNav {
-    position: absolute;
-    right: 10px;
-}
+
 header #headerNav li{
     list-style: none;
     display: inline;
@@ -74,7 +71,7 @@ nav .breadcrumb{
 #accountTopInfo {
     background-color: #eaecef;
     padding: 10px;
-    border-radius: 5px;;
+    border-radius: 5px;
 }
 
 /** dashboard */
@@ -86,11 +83,24 @@ nav .breadcrumb{
 #medientPersonalInfoOptions i,#medientAddContactOptions i{
     font-size: 1.3em;
 }
-#medientOverview table tbody{
-    border-spacing: 0 4px!important;
+
+#medientOverview td, #medientOverview th {
+    margin-top:3px;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    
 }
+
 #medientOverview table tbody tr:hover{
-    opacity: 0.75;
+    opacity: 0.99;
+    border: 1px solid whitesmoke;
+    font-weight: bold;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+text-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);;
 }
 #medientOverview table tbody tr td{
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9b9898+0,bfbfbf+100 */
@@ -171,4 +181,44 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
 }
 .medientContactOptions {
     margin-top:-7px;
+}
+@media (max-width: 768px) {
+    #headerNav{
+        display: none;
+        position: relative;
+        margin-top :50px;
+        margin-bottom: 25px;
+    }
+    #headerNav li{
+        font-size: 1.2em;
+    }
+    body{
+        font-size: smaller;
+    }
+    #headerNavShow{
+        display:block;
+        position: absolute !important;
+        right: 25px;
+    }
+    .medient-contact{
+        border-top:1px solid #ccc;
+        margin-top: 15px;
+    }
+}
+#headerNavShow .btn{
+    color: whitesmoke;
+}
+@media (min-width: 768px) {
+    #headerNav{
+        display: block;
+        position: absolute;
+        right: 10px;
+       
+        
+        
+    }
+    
+    #headerNavShow{
+        display:none;
+    }
 }

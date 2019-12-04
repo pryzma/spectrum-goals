@@ -12,6 +12,9 @@ const spectrumGoals = (()=>{
     window.addEventListener('scroll', function(e) {
         (window.scrollY > 100) ?  $('#accountTopInfo').fadeOut() : $('#accountTopInfo').fadeIn();
     });
+    $('#headerNavShow .btn').on('click',(event)=>{
+        $( "#headerNav" ).toggle();
+    });
     const spectrumGoalsObj = new Object;
     spectrumGoalsObj.render = application.ejs 
     spectrumGoalsObj.breadCrumbs = breadCrumbs();
