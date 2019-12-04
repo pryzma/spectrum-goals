@@ -8,7 +8,7 @@ function config(package,app){
   _config.version = require('../package.json').version;
   _config.npm_lifecycle_event = process.env.npm_lifecycle_event;
   _config.ref_ws_port = process.env.REF_WS_PORT;
-  console.log(process.env.REF_WS_PORT);
+  //console.log(process.env.REF_WS_PORT);
   const models = require('../models');
 
 
