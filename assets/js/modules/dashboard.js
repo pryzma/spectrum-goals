@@ -167,6 +167,7 @@ function medientAddContact(id){
             .attr('id',contact.id)
             .attr('class','col-md-3')
             .html($medientContactElement.html());
+    if(contact.id === 'medientAddContactForm') $('#medientAddContactForm .medientContactOptions').remove()
     return $medientContact
 }
 // ........................................
@@ -183,12 +184,38 @@ function medientGetContacts(id){
             contacts.map((contact)=>{
                 const $medientContact = medientContact(contact).addClass('medient_contact')
                 $medientPersonalInfoElement.after($medientContact);
-                /** map contact object keys to  */
+                /** map contact object keys to input fields */
                 Object.keys(contact).map((key, index) => $(`#${contact.id} input#${key}`).val(contact[key]));
+                /** update medient contact */
+                $(`#${contact.id} .medientContactOptions button.medientEditContact`).on('click',medientContactUpdate);
             })
         }
     }
     component.api(medientContactsData);
+}
+/** updates medient contact */
+function medientContactUpdate(event){
+    event.preventDefault()
+    const medientContactId = event.target.parentElement.parentElement.parentElement.parentElement.id;
+    if(medientContactId != 'medientPersonalInfoContainer'){
+        $(`#${medientContactId} input`).removeAttr('disabled')
+       
+        $(`#${medientContactId} input#first_name`).focus()
+        $(`#${medientContactId} .medientContactEditSave`).show()
+        $(`#${medientContactId} .medientContactEdit`).hide()
+        $(`#${medientContactId} .medientAddContactEditCancelBtn`).on('click',(event)=>{
+            event.preventDefault()
+            $(`#${medientContactId} input`).attr('disabled','disabled')
+            $(`#${medientContactId} .medientContactEdit`).show()
+            $(`#${medientContactId} .medientContactEditSave`).hide()
+        });
+        $(`#${medientContactId} .medientAddContactEditSaveBtn`).on('click',(event)=>{
+            event.preventDefault();
+        });
+    }
+    
+    
+    
 }
 // ........................................
 /** posts add medient contact form */
