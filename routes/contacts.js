@@ -13,6 +13,9 @@ const controller = require('../controllers/contacts');
 router.get('/', controller.isAuthenticated, (req, res) => {
   controller.getAll(req,res);
 });
+router.get('/medient/:id', controller.isAuthenticated, (req, res) => {
+  controller.getMedientContacts(req.params.id,res);
+});
 
 router.get('/:id', controller.isAuthenticated, (req, res) => {
   controller.getOne(req.id);

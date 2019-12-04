@@ -18,11 +18,15 @@ controller.createContact = (req,res) => {
 }
 
 controller.getAll = (req,res) => {
-    Contact.findAll({order:[['id','DESC']]}).then((accounts) => {
-        res.json(accounts)
+    Contact.findAll({order:[['id','DESC']]}).then((contacts) => {
+        res.json(contacts)
     });
 }
-
+controller.getMedientContacts = (req,res) => {
+    Contact.findAll({where : {medient : req },order:[['id','DESC']]}).then((contacts) => {
+        res.json(contacts)
+    });
+}
 
 controller.getOne = (req,res) => {
     Contact.findOne(req).then(contact => {

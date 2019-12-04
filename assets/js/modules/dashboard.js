@@ -2,7 +2,8 @@
 const dashboard = {
     name : 'Dashboard',
     default : medientOverview,
-    template : 'dashboard'
+    template : 'dashboard',
+    medientContacts : []
 }
 // ........................................
 /** medients data */
@@ -130,13 +131,31 @@ function medientPersonalInfo(medient){
 function medientContacts(id){
     const  $medientContactElement = $('#medientContact'),
            $medientPersonalInfoElement = $('#medientPersonalInfo');
-    const $medientContactForm = $('<form></form>')
-            .attr('id','medientContactForm')
+    /** fetch medient contacts data */
+    const medientContactsData = {
+        url : 'api/contacts/medient/'+id,
+        callback : (contacts)=>{
+            contacts.map((contact)=>{
+                $medientPersonalInfoElement.after(medientContact(contact));
+                Object.keys(contact[0]).map((key, index) => $(`input#${key}`).val(contact[0][key]));
+            })
+        }
+    }
+    
+    component.api(medientContactsData);
+    /** creates medient contact element */
+    function medientContact(contact){
+        const $medientContact = $('<form></form>')
+            .attr('id',contact.id)
             .attr('class','col-md-3')
             .html($medientContactElement.html());
+        return $medientContact
+    }
+    /** add medient contact */
     $('#medientAddContactBtn').on('click',()=>{
+        const $medientContactForm = medientContact({id:'medientAddContactForm'})
         $medientPersonalInfoElement.after($medientContactForm);
-        $('#medientContactForm input').removeAttr('disabled');
+        $('#medientAddContactForm input').removeAttr('disabled');
         $('#medientAddContact').hide();
         $('#medientAddContactSave').show();
         $('#medientAddContactCancelBtn').on('click',()=>{
