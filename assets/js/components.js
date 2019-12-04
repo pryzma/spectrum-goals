@@ -362,7 +362,7 @@ const component = (() => {
 
     axios[args.method](args.url,args.data)
     .then((res) => {
-      console.log(res)
+      //console.log(res)
       const data = [];
       if(res.data.length > 0){
         for(let item of res.data){

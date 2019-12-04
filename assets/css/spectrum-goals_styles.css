@@ -163,9 +163,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
   #medientAddContactForm .medientContactOptions{
       display: none;
   }
-  .medient_contact .medientContactOptions{
+  .medient_contact .medientEditContact{
       display: none;
   }
-  .medient_contact:hover .medientContactOptions{
+  .medient_contact:hover .medientEditContact{
     display: block;
+}
+.medientContactOptions {
+    margin-top:-7px;
 }

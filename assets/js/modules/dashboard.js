@@ -73,7 +73,7 @@ function medientDashboard(id){
           medient = medients.data.filter((medient)=>medient.id===id);
           $('.breadcrumb-item').removeClass('active');
           $('#medientBreadCrumb').remove();
-          console.log(medient[0].name)
+          //console.log(medient[0].name)
           const medientBreadCrumb = $('<li></li>')
             .attr('class','breadcrumb-item active')
             .attr('id','medientBreadCrumb')
@@ -173,7 +173,7 @@ function medientAddContact(id){
 // ........................................
 /** gets medient contacts data */
 function medientGetContacts(id){
-    console.log(id)
+    //console.log(id)
     const $medientPersonalInfoElement = $('#medientPersonalInfo'),
         medientContactsData = {
         url : 'api/contacts/medient/'+id,
