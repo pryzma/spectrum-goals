@@ -197,6 +197,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
 .medientContactOptions {
     margin-top:-7px;
 }
+
+
+/** accounts */
+#accountsMain .table thead :nth-child(1) {
+    width : 250px;
+}
+
+#accountsMain .table thead :nth-child(2) {
+    width : 250px;
+}
+
+#accountsMain .table tr:hover {
+    cursor:pointer;
+}
+
 @media (max-width: 768px) {
     #headerNav{
         display: none;
