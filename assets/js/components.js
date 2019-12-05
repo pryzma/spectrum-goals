@@ -126,6 +126,16 @@ const component = (() => {
   });
        */
       fromModel : formFromModel,
+      /**
+       * get fields from element as object
+       * @description creates new object from html collection in document.querySelector
+       * @param {object} args 
+       * @param {string } args.el document.querySelectorAll selector
+       * @example component.form.fields({
+       *  el : '#myFielsContainer'
+       * })
+       */
+      fields : formFieldsObj,
       data : formData,
       input : {
         datepicker : formInputDatepicker,
@@ -278,7 +288,7 @@ const component = (() => {
    */
   function uid(args){  
       const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      const format = args.format ? args.format : 's4s4-s4'
+      const format = args ? args.format : 's4s4-s4'
       const output = format.replace(new RegExp('s4', 'g'), s4())
       if(typeof args === 'object' && args.el){
         componentElementOutput({
@@ -362,7 +372,7 @@ const component = (() => {
 
     axios[args.method](args.url,args.data)
     .then((res) => {
-      console.log(res)
+      //console.log(res)
       const data = [];
       if(res.data.length > 0){
         for(let item of res.data){
@@ -1139,7 +1149,7 @@ const component = (() => {
     const formData = new FormData(form),formObj = {};
   
     for (let item in model) { 
-      if($('#'+item).val()) formData.append(item, $('#'+item).val())
+      if($('#'+form.id+' #'+item).val()) formData.append(item, $('#'+form.id+' #'+item).val())
     }
    
     for(let field of formData.entries()){
@@ -1168,18 +1178,34 @@ const component = (() => {
    */
   function formPost(args,callback){
     const form = document.getElementById(args.el);
-    let formObj;
-    form.addEventListener( 'submit', ( event ) => {
-      formObj = formData(form);
-      event.preventDefault();
+    const formDataObj = args.model ? {el : form,model : args.model} : {el :form}
+    const formObj = formData(formDataObj);
+    
+    
       axios.post(args.url,formObj)
       .then((formObj) => {
-        callback(formObj)
+        if(typeof callback==='function') callback(formObj)
+        if(typeof args.callback==='function') args.callback(formObj)
       }).catch(function(error){
         $(args.el).html(`A error has occured : ${error}`);
       });
-    });
+    
     return form
+  }
+
+/**
+ * @description create object from input elements in element
+ * @param {object} args
+ * @param {string} args.el 
+ */
+  function formFieldsObj(args){
+    const formElement = document.querySelectorAll(`${args.el} input`),
+          dataObject = new Object,
+          dataArray = Array.prototype.slice.call(formElement);
+    console.log(formElement)
+    for(const el in dataArray)
+      dataObject[dataArray[el].id] = dataArray[el].value;
+    return dataObject
   }
   // .................................................
   /*

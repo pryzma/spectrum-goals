@@ -42,6 +42,10 @@ const teamListTableLabels = {
 
 /** Overview of accounts */
 function accountsOverview() {
+  $.get('html/templates/accounts.html', (data) => {
+    $(application.config.main).html(data);
+
+  });
   /** Table component object */
   const medientListTable = {
     el : '#medientList',
@@ -51,7 +55,7 @@ function accountsOverview() {
     data : medientsData,
     methods: {
       onRowClick : (event) => {
-        account(event.target.parentElement.id);
+        account(event.target.parentElement.id, "medient");
       }
     }
   };
@@ -64,7 +68,7 @@ function accountsOverview() {
     data : teamData,
     methods: {
       onRowClick : (event) => {
-        account(event.target.parentElement.id);
+        account(event.target.parentElement.id, "team");
       }
     }
   };
@@ -78,11 +82,17 @@ function accountsOverview() {
  * loads account for selected medient
  * @param {string} id
  */
-function account(id) {
+function account(id, type) {
   const accountsElement = $('#accounts'),
         accountsMainElement = $('#accountsMain'),
-        accountsMainHtml = accountsMainElement.html(),
-        account = medientList.data.filter((account) => account.id === id);
+        accountsMainHtml = accountsMainElement.html();
+  let account;
+  if (type === "medient") {
+    account = medientList.data.filter((account) => account.id === id);
+  } else {
+    account = teamList.data.filter((account) => account.id === id);
+  }
+
   $('.breadcrumb-item').removeClass('active');
   $('#accountBreadCrumb').remove();
 
@@ -94,10 +104,32 @@ function account(id) {
   accountsElement.data( 'account' , account );
   $.get('html/templates/accountDashboard.html', (data) => {
     accountsMainElement.html(data);
+    accountDelete(id);
     accountPersonalInfo(account);
   });
 }
+/**
+ *
+ * @param {string} id
+ */
+function accountDelete(id){
 
+  $('#accountDeleteBtn').on('click',()=>{
+
+
+      component.api({
+        method : 'delete',
+        url : 'api/accounts/'+id,
+        method : 'delete',
+        callback : () => {
+          component.alert({ class : 'danger', message : '<i class="fas fa-times"></i> Account verwijderd' })
+          accountsOverview()
+        }
+      })
+
+  });
+
+}
 // ........................................
 /**
  * gets personal info for selected medient
@@ -106,20 +138,19 @@ function account(id) {
 function accountPersonalInfo(account) {
   $('#accountInfoEdit').html()
   Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
-  $('#medientSaveBtn').on('click', () => {
+  $('#accountSaveBtn').on('click', () => {
+    const accountFormData = component.form.data({ el : 'form#accountInfoEdit', model : 'Account'});
     component.api({
       method : 'put',
       url : 'api/accounts',
-      data : medientFormData,
+      data : accountFormData,
       callback : (data) => {
-        $('#medientPersonalInfo input').attr('disabled','disabled');
-        $('#medientEdit').show();
-        $('#medientSave').hide();
+        accountsOverview();
       }
     });
   });
   $('#accountEditCancelBtn').on('click', () => {
-    $('#medientPersonalInfo input').attr('disabled','disabled');
+    accountsOverview();
   });
 }
 

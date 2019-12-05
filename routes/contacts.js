@@ -13,6 +13,9 @@ const controller = require('../controllers/contacts');
 router.get('/', controller.isAuthenticated, (req, res) => {
   controller.getAll(req,res);
 });
+router.get('/medient/:id', controller.isAuthenticated, (req, res) => {
+  controller.getMedientContacts(req.params.id,res);
+});
 
 router.get('/:id', controller.isAuthenticated, (req, res) => {
   controller.getOne(req.id);
@@ -20,5 +23,11 @@ router.get('/:id', controller.isAuthenticated, (req, res) => {
 router.post('/', bodyParserJSON, (req, res) => {
   controller.createContact(req,res);
 });
-
+router.put('/', bodyParserJSON, (req, res, next) => {
+  console.log(req.body)
+  controller.updateContact(req,res, next);
+});
+router.delete('/:id',bodyParserJSON, (req,res) => {
+  controller.deleteContact(req,res);
+});
 module.exports = router;
