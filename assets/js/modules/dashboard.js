@@ -114,19 +114,20 @@ function medientPersonalInfoSave(){
     const medientPersonalInfoData = component.form.fields({
         el : 'form#medientPersonalInfo'
     })
-    console.log(medientPersonalInfoData)
-    function  accountsPut(){
+
+  
         component.api({
             method : 'put',
             url : 'api/accounts',
-            data : medientFormData,
+            data : medientPersonalInfoData,
             callback : (data)=> {
                 $('#medientPersonalInfo input').attr('disabled','disabled');
                 $('#medientEdit').show();
                 $('#medientSave').hide();
+                component.alert({class:'success',message:'<i class="fas fa-check"></i> Gegevens medient aangepast'});
             }
         })
-    }
+    
 }
 // ........................................
 /**
@@ -185,14 +186,18 @@ function medientGetContacts(id){
             $('.medient_contact').remove();
             $('#medientContactsNum').html(contacts.length)
             /** map each contact to medientContact  */
-            contacts.map((contact)=>{
-                const $medientContact = medientContact(contact).addClass('medient_contact')
+            contacts.map((contact, index)=>{
+                const medientContactElementId = 'medient_contact_'+index;
+                const $medientContact = medientContact(contact)
+                    .attr('id',medientContactElementId)
+                    .attr('data-id',contact.id)
+                    .addClass('medient_contact')
                 $medientPersonalInfoElement.after($medientContact);
                 /** map contact object keys to input fields */
-                Object.keys(contact).map((key, index) => $(`#${contact.id} input#${key}`).val(contact[key]));
+                Object.keys(contact).map((key, index) => $(`#${medientContactElementId} input#${key}`).val(contact[key]));
                 /** update medient contact */
-                $(`#${contact.id} .medientContactOptions button.medientEditContact`).on('click',medientContactUpdate);
-                $(`#${contact.id} .medientContactOptions button.medientDeleteContact`).on('click',medientContactDelete);
+                $(`#${medientContactElementId} .medientContactOptions button.medientEditContact`).on('click',medientContactUpdate);
+                $(`#${medientContactElementId} .medientContactOptions button.medientDeleteContact`).on('click',medientContactDelete);
             })
         }
     }
@@ -200,9 +205,10 @@ function medientGetContacts(id){
 }
 function medientContactDelete(event){
     event.preventDefault();
-    const medientContactId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id;
-    const medientId = $(`#${medientContactId} input#medient`).val();
-    const medientName = $(`#${medientContactId} input#first_name`).val() + ' ' + $(`#${medientContactId} input#last_name`).val()
+    const medientContactElementId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
+    const medientContactId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.dataset.id;
+    const medientId = $(`#${medientContactElementId} input#medient`).val();
+    const medientName = $(`#${medientContactElementId} input#first_name`).val() + ' ' + $(`#${medientContactElementId} input#last_name`).val()
     
     console.log(medientContactId)
     component.api({
@@ -211,42 +217,49 @@ function medientContactDelete(event){
         data : { id : medientContactId},
         callback : ()=>{
             medientGetContacts(medientId);
-            component.alert({class:'primary',message:'Contact <b>' + medientName +'</b> verwijderd'});
+            component.alert({class:'primary',message:'<i class="fas fa-user-times"></i> Contact <b>' + medientName +'</b> verwijderd'});
         }
     })
 }
 /** updates medient contact */
 function medientContactUpdate(event){
     event.preventDefault()
-    const medientContactId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id;
-    const medientId = $(`#${medientContactId} input#medient`).val();
-    const medientName = $(`#${medientContactId} input#first_name`).val() + ' ' + $(`#${medientContactId} input#last_name`).val()
+    const medientContactElementId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+    const medientContactId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.dataset.id;
+    const medientId = $(`#${medientContactElementId} input#medient`).val();
+    const medientName = $(`#${medientContactElementId} input#first_name`).val() + ' ' + $(`#${medientContactElementId} input#last_name`).val()
     
-    if(medientContactId != 'medientPersonalInfoContainer'){
-        $(`#${medientContactId} input`).removeAttr('disabled')
+    if(medientContactElementId != 'medientPersonalInfoContainer'){
+        $(`#${medientContactElementId} input`).removeAttr('disabled')
        
-        $(`#${medientContactId} input#first_name`).focus()
-        $(`#${medientContactId} .medientContactEditSave`).show()
-        $(`#${medientContactId} .medientContactEdit`).hide()
-        $(`#${medientContactId} .medientAddContactEditCancelBtn`).on('click',(event)=>{
+        $(`#${medientContactElementId} input#first_name`).focus()
+        $(`#${medientContactElementId} .medientContactEditSave`).show()
+        $(`#${medientContactElementId} .medientContactEdit`).hide()
+        $(`#${medientContactElementId} .medientAddContactEditCancelBtn`).on('click',(event)=>{
             event.preventDefault()
-            $(`#${medientContactId} input`).attr('disabled','disabled')
-            $(`#${medientContactId} .medientContactEdit`).show()
-            $(`#${medientContactId} .medientContactEditSave`).hide()
+            $(`#${medientContactElementId} input`).attr('disabled','disabled')
+            $(`#${medientContactElementId} .medientContactEdit`).show()
+            $(`#${medientContactElementId} .medientContactEditSave`).hide()
         });
-        $(`#${medientContactId} .medientContactEditSaveBtn`).on('click',(event)=>{
+        $(`#${medientContactElementId} .medientContactEditSaveBtn`).on('click',(event)=>{
             event.preventDefault();
-            const medientContactFormData = component.form.data({ el : `#${medientContactId}`, model : 'Contact'});
-            medientContactFormData.id = medientContactId;
-            component.api({
-                method : 'put',
-                url : 'api/contacts',
-                data : medientContactFormData,
-                callback : () => {
-                    medientGetContacts(medientId)
-                    component.alert({class:'success',message:'<i class="fas fa-user-edit"></i> Gegevens <b>' + medientName +'</b> zijn aangepast'});
-                }
+      
+            const medientContactData = component.form.fields({
+                el : `#${medientContactElementId}`
             })
+            medientContactData.id = medientContactId
+     
+                component.api({
+                    method : 'put',
+                    url : 'api/contacts',
+                    data : medientContactData,
+                    callback : () => {
+                        medientGetContacts(medientId)
+                        component.alert({class:'success',message:'<i class="fas fa-user-edit"></i> Gegevens <b>' + medientName +'</b> zijn aangepast'});
+                    }
+                })
+            
+            
         });
     }
     

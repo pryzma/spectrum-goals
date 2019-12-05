@@ -1180,7 +1180,7 @@ const component = (() => {
     const form = document.getElementById(args.el);
     const formDataObj = args.model ? {el : form,model : args.model} : {el :form}
     const formObj = formData(formDataObj);
-    console.log(formObj)
+    
     
       axios.post(args.url,formObj)
       .then((formObj) => {
