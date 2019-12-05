@@ -113,19 +113,16 @@ function accountPersonalInfo(account) {
   $('#accountInfoEdit').html()
   Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
   $('#accountSaveBtn').on('click', () => {
+    const accountFormData = component.form.data({ el : 'form#accountInfoEdit', model : 'Account'});
     component.api({
       method : 'put',
       url : 'api/accounts',
-      data : medientFormData,
+      data : accountFormData,
       callback : (data) => {
-        $('#medientPersonalInfo input').attr('disabled','disabled');
-        $('#medientEdit').show();
-        $('#medientSave').hide();
       }
     });
   });
   $('#accountEditCancelBtn').on('click', () => {
-    $('#medientPersonalInfo input').attr('disabled','disabled');
   });
 }
 
