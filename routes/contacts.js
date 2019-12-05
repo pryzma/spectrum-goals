@@ -23,5 +23,11 @@ router.get('/:id', controller.isAuthenticated, (req, res) => {
 router.post('/', bodyParserJSON, (req, res) => {
   controller.createContact(req,res);
 });
-
+router.put('/', bodyParserJSON, (req, res, next) => {
+  console.log(req.body)
+  controller.updateContact(req,res, next);
+});
+router.delete('/:id',bodyParserJSON, (req,res) => {
+  controller.deleteContact(req,res);
+});
 module.exports = router;

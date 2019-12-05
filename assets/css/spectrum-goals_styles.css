@@ -57,10 +57,14 @@ main.container-fluid{
     color : #fac031;
 }
 .red {
-    color : darkred;
+    color : #d87c7c;
 }
 .green {
-    color: darkgreen;
+    color: #7ea6ad;
+}
+.alert {
+    background:none !important;
+    border : none;
 }
 .btn.btn-nobg {
     background: none;
@@ -114,14 +118,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
     color : whitesmoke;
     
     
+}#medientOverview tbody tr td,#medientOverview thead tr th{
+    text-align: center;
 }
-#medientOverview tbody tr :nth-child(1) {
-    text-align: left;
+#medientOverview tbody tr :nth-child(1),#medientOverview thead tr :nth-child(1) {
+    text-align: left !important;
     border-radius: 10px 0px 0px 10px;
   }
-
+  #medientOverview thead tr :nth-child(2) {
+    color: #9b9898;
+}
+  #medientOverview thead tr :nth-child(3) {
+      color: #d87c7c;
+  }
   #medientOverview tbody tr :nth-child(3) {
-    
+    text-align: center;
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#d64d4d+0,d87c7c+100 */
 background: #d87c7c ; /* Old browsers */
 background: -moz-linear-gradient(top,  #d64d4d 0%, #d87c7c 100%); /* FF3.6-15 */
@@ -130,7 +141,9 @@ background: linear-gradient(to bottom,  #d64d4d 0%,#d87c7c 100%); /* W3C, IE10+,
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d64d4d', endColorstr='#d87c7c',GradientType=0 ); /* IE6-9 */
 
   }
-  
+  #medientOverview thead tr :nth-child(4) {
+    color: #f2be3f;
+}
   #medientOverview tbody tr :nth-child(4) {
     
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e59f3d+0,f2be3f+100 */
@@ -141,7 +154,9 @@ background: linear-gradient(to bottom,  #e59f3d 0%,#f2be3f 100%); /* W3C, IE10+,
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', endColorstr='#f2be3f',GradientType=0 ); /* IE6-9 */
 
   }
-  
+  #medientOverview thead tr :nth-child(5) {
+    color: #7ea6ad;
+}
   #medientOverview tbody tr :nth-child(5) {
    
     border-radius : 0 10px 10px 0 !important;
@@ -173,10 +188,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
   #medientAddContactForm .medientContactOptions{
       display: none;
   }
-  .medient_contact .medientEditContact{
+  .medient_contact .medientEditDeleteContact{
       display: none;
   }
-  .medient_contact:hover .medientEditContact{
+  .medient_contact:hover .medientEditDeleteContact{
     display: block;
 }
 .medientContactOptions {

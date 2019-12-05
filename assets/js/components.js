@@ -1169,18 +1169,9 @@ const component = (() => {
   function formPost(args,callback){
     const form = document.getElementById(args.el);
     const formDataObj = args.model ? {el : form,model : args.model} : {el :form}
-    if(args.forceSubmit){
-      submitForm(formDataObj);
-    } else{
-      form.addEventListener( 'submit', () => {
-        submitForm(formDataObj);
-      });
-    }
+    const formObj = formData(formDataObj);
+    console.log(formObj)
     
-    function submitForm(formDataObj){
-      const formObj = formData(formDataObj);
-     
-      event.preventDefault();
       axios.post(args.url,formObj)
       .then((formObj) => {
         if(typeof callback==='function') callback(formObj)
@@ -1188,7 +1179,7 @@ const component = (() => {
       }).catch(function(error){
         $(args.el).html(`A error has occured : ${error}`);
       });
-    }
+    
     return form
   }
   // .................................................

@@ -37,8 +37,21 @@ controller.getOne = (req,res) => {
     });
 }
 
-controller.updateContact = (req,res) => {
-
+controller.updateContact = (req,res,next) => {
+    Contact.update(req.body,{where: { id: req.body.id } })
+    .then(function(rowsUpdated) {
+        res.json(rowsUpdated)
+    })
+    .catch(next);
 }
+
+controller.deleteContact = (req,res) => {
+    Contact.destroy({
+        where: {id : req.params.id}
+    }).then(()=>{
+        controller.getAll(req,res);
+    });
+}
+
 
 controller.isAuthenticated = auth.isAuthenticated;

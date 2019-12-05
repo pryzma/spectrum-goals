@@ -46,8 +46,8 @@ const medientData = {
  * displays medients overview
  */
 function medientOverview(){
-    
-    const medientOverviewTable = {
+
+    component.table({
         el : '#medientOverview',
         model : 'Account',
         class : 'table-striped table-hover',
@@ -58,8 +58,7 @@ function medientOverview(){
                 medientDashboard(event.target.parentElement.id);         
             }
           }
-    }
-    return component.table(medientOverviewTable)
+    });
 }
 // ........................................
 /**
@@ -188,15 +187,36 @@ function medientGetContacts(id){
                 Object.keys(contact).map((key, index) => $(`#${contact.id} input#${key}`).val(contact[key]));
                 /** update medient contact */
                 $(`#${contact.id} .medientContactOptions button.medientEditContact`).on('click',medientContactUpdate);
+                $(`#${contact.id} .medientContactOptions button.medientDeleteContact`).on('click',medientContactDelete);
             })
         }
     }
     component.api(medientContactsData);
 }
+function medientContactDelete(event){
+    event.preventDefault();
+    const medientContactId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+    const medientId = $(`#${medientContactId} input#medient`).val();
+    const medientName = $(`#${medientContactId} input#first_name`).val() + ' ' + $(`#${medientContactId} input#last_name`).val()
+    
+    console.log(medientContactId)
+    component.api({
+        method : 'delete',
+        url : 'api/contacts/'+medientContactId,
+        data : { id : medientContactId},
+        callback : ()=>{
+            medientGetContacts(medientId);
+            component.alert({class:'primary',message:'Contact <b>' + medientName +'</b> verwijderd'});
+        }
+    })
+}
 /** updates medient contact */
 function medientContactUpdate(event){
     event.preventDefault()
-    const medientContactId = event.target.parentElement.parentElement.parentElement.parentElement.id;
+    const medientContactId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+    const medientId = $(`#${medientContactId} input#medient`).val();
+    const medientName = $(`#${medientContactId} input#first_name`).val() + ' ' + $(`#${medientContactId} input#last_name`).val()
+    
     if(medientContactId != 'medientPersonalInfoContainer'){
         $(`#${medientContactId} input`).removeAttr('disabled')
        
@@ -209,8 +229,19 @@ function medientContactUpdate(event){
             $(`#${medientContactId} .medientContactEdit`).show()
             $(`#${medientContactId} .medientContactEditSave`).hide()
         });
-        $(`#${medientContactId} .medientAddContactEditSaveBtn`).on('click',(event)=>{
+        $(`#${medientContactId} .medientContactEditSaveBtn`).on('click',(event)=>{
             event.preventDefault();
+            const medientContactFormData = component.form.data({ el : `#${medientContactId}`, model : 'Contact'});
+            medientContactFormData.id = medientContactId;
+            component.api({
+                method : 'put',
+                url : 'api/contacts',
+                data : medientContactFormData,
+                callback : () => {
+                    medientGetContacts(medientId)
+                    component.alert({class:'success',message:'<i class="fas fa-user-edit"></i> Gegevens <b>' + medientName +'</b> zijn aangepast'});
+                }
+            })
         });
     }
     
@@ -224,14 +255,13 @@ function medientPostAddContactForm(){
         url : 'api/contacts',
         el : 'medientAddContactForm',
         model : 'Contact',
-        forceSubmit : true,
         callback : (res)=>{
             
             $('#medientAddContactForm').remove();
             $('#medientAddContact').show();
             $('#medientAddContactSave').hide();
             medientGetContacts(res.data.medient)
-            component.alert({class:'success',message:res.data.first_name + ' '+ res.data.last_name +' toegevoegd aan Contacten'});
+            component.alert({class:'success',message:'<i class="fas fa-user-plus"></i> Contact <b>' + res.data.first_name + ' '+ res.data.last_name +'</b> toegevoegd '});
         }
     })
 }
