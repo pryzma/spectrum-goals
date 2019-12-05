@@ -126,6 +126,16 @@ const component = (() => {
   });
        */
       fromModel : formFromModel,
+      /**
+       * get fields from element as object
+       * @description creates new object from html collection in document.querySelector
+       * @param {object} args 
+       * @param {string } args.el document.querySelectorAll selector
+       * @example component.form.fields({
+       *  el : '#myFielsContainer'
+       * })
+       */
+      fields : formFieldsObj,
       data : formData,
       input : {
         datepicker : formInputDatepicker,
@@ -1181,6 +1191,21 @@ const component = (() => {
       });
     
     return form
+  }
+
+/**
+ * @description create object from input elements in element
+ * @param {object} args
+ * @param {string} args.el 
+ */
+  function formFieldsObj(args){
+    const formElement = document.querySelectorAll(`${args.el} input`),
+          dataObject = new Object,
+          dataArray = Array.prototype.slice.call(formElement);
+    console.log(formElement)
+    for(const el in dataArray)
+      dataObject[dataArray[el].id] = dataArray[el].value;
+    return dataObject
   }
   // .................................................
   /*

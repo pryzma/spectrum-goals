@@ -110,18 +110,23 @@ function medientPersonalInfo(medient){
 }
 /** saves medient personal info edit  */
 function medientPersonalInfoSave(){
-    const medientFormData = component.form.data({ el : 'form#medientPersonalInfo', model : 'Account'});
-           
-    component.api({
-        method : 'put',
-        url : 'api/accounts',
-        data : medientFormData,
-        callback : (data)=> {
-            $('#medientPersonalInfo input').attr('disabled','disabled');
-            $('#medientEdit').show();
-            $('#medientSave').hide();
-        }
+    //const medientFormData = component.form.data({ el : 'form#medientPersonalInfo', model : 'Account'});
+    const medientPersonalInfoData = component.form.fields({
+        el : 'form#medientPersonalInfo'
     })
+    console.log(medientPersonalInfoData)
+    function  accountsPut(){
+        component.api({
+            method : 'put',
+            url : 'api/accounts',
+            data : medientFormData,
+            callback : (data)=> {
+                $('#medientPersonalInfo input').attr('disabled','disabled');
+                $('#medientEdit').show();
+                $('#medientSave').hide();
+            }
+        })
+    }
 }
 // ........................................
 /**
