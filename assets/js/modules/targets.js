@@ -1,6 +1,7 @@
 const targets = {
     name : 'Leerdoelen',
-    default : targetsOverview
+    default : targetsOverview,
+    template : 'targets'
 }
 const targetsData = {
     url : 'api/targets',
