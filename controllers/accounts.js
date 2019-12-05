@@ -90,8 +90,9 @@ controller.updateAccount = (req,res,next) => {
 }
 
 controller.deleteAccount = (req,res) => {
+   
     Account.destroy({
-        where: req.body
+        where: {id :req.params.id}
     }).then(()=>{
         controller.getAll(req,res);
     });
