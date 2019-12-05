@@ -109,14 +109,14 @@ function account(id, type) {
   });
 }
 /**
- * 
- * @param {string} id 
+ *
+ * @param {string} id
  */
 function accountDelete(id){
- 
+
   $('#accountDeleteBtn').on('click',()=>{
-   
-   
+
+
       component.api({
         method : 'delete',
         url : 'api/accounts/'+id,
@@ -126,7 +126,7 @@ function accountDelete(id){
           accountsOverview()
         }
       })
-    
+
   });
 
 }
@@ -145,10 +145,12 @@ function accountPersonalInfo(account) {
       url : 'api/accounts',
       data : accountFormData,
       callback : (data) => {
+        accountsOverview();
       }
     });
   });
   $('#accountEditCancelBtn').on('click', () => {
+    accountsOverview();
   });
 }
 
