@@ -44,7 +44,9 @@ const teamListTableLabels = {
 function accountsOverview() {
   $.get('html/templates/accounts.html', (data) => {
     $(application.config.main).html(data);
-
+    $('#newAccount').on('click', () => {
+      newAccount();
+    });
   });
   /** Table component object */
   const medientListTable = {
@@ -154,4 +156,12 @@ function accountPersonalInfo(account) {
   });
 }
 
+function newAccount() {
+  $.get('html/templates/newAccount.html', (data) => {
+    $('#accountsMain').html(data);
+  });
+  $('#accountEditCancelBtn').on('click', () => {
+    accountsOverview();
+  });
+}
 application.add('accounts', accounts);
