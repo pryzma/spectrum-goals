@@ -42,6 +42,10 @@ const teamListTableLabels = {
 
 /** Overview of accounts */
 function accountsOverview() {
+  $.get('html/templates/accounts.html', (data) => {
+    $(application.config.main).html(data);
+
+  });
   /** Table component object */
   const medientListTable = {
     el : '#medientList',
@@ -100,10 +104,32 @@ function account(id, type) {
   accountsElement.data( 'account' , account );
   $.get('html/templates/accountDashboard.html', (data) => {
     accountsMainElement.html(data);
+    accountDelete(id);
     accountPersonalInfo(account);
   });
 }
+/**
+ * 
+ * @param {string} id 
+ */
+function accountDelete(id){
+ 
+  $('#accountDeleteBtn').on('click',()=>{
+   
+   
+      component.api({
+        method : 'delete',
+        url : 'api/accounts/'+id,
+        method : 'delete',
+        callback : () => {
+          component.alert({ class : 'danger', message : '<i class="fas fa-times"></i> Account verwijderd' })
+          accountsOverview()
+        }
+      })
+    
+  });
 
+}
 // ........................................
 /**
  * gets personal info for selected medient

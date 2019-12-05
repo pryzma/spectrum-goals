@@ -31,7 +31,7 @@ router.put('/', bodyParserJSON, (req, res, next) => {
   controller.updateAccount(req,res,next);
 });
 
-router.delete('/',bodyParserJSON, (req,res) => {
+router.delete('/:id',bodyParserJSON, (req,res) => {
 
   controller.deleteAccount(req,res);
 });
