@@ -51,7 +51,7 @@ function accountsOverview() {
     data : medientsData,
     methods: {
       onRowClick : (event) => {
-        account(event.target.parentElement.id);
+        account(event.target.parentElement.id, "medient");
       }
     }
   };
@@ -64,7 +64,7 @@ function accountsOverview() {
     data : teamData,
     methods: {
       onRowClick : (event) => {
-        account(event.target.parentElement.id);
+        account(event.target.parentElement.id, "team");
       }
     }
   };
@@ -78,11 +78,17 @@ function accountsOverview() {
  * loads account for selected medient
  * @param {string} id
  */
-function account(id) {
+function account(id, type) {
   const accountsElement = $('#accounts'),
         accountsMainElement = $('#accountsMain'),
-        accountsMainHtml = accountsMainElement.html(),
-        account = medientList.data.filter((account) => account.id === id);
+        accountsMainHtml = accountsMainElement.html();
+  let account;
+  if (type === "medient") {
+    account = medientList.data.filter((account) => account.id === id);
+  } else {
+    account = teamList.data.filter((account) => account.id === id);
+  }
+
   $('.breadcrumb-item').removeClass('active');
   $('#accountBreadCrumb').remove();
 
@@ -106,7 +112,7 @@ function account(id) {
 function accountPersonalInfo(account) {
   $('#accountInfoEdit').html()
   Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
-  $('#medientSaveBtn').on('click', () => {
+  $('#accountSaveBtn').on('click', () => {
     component.api({
       method : 'put',
       url : 'api/accounts',
