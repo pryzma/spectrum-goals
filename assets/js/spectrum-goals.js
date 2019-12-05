@@ -9,12 +9,19 @@ const spectrumGoals = (()=>{
             }
         });
     }
+    window.addEventListener('scroll', function(e) {
+        (window.scrollY > 100) ?  $('#accountTopInfo').fadeOut() : $('#accountTopInfo').fadeIn();
+    });
+    $('#headerNavShow .btn').on('click',(event)=>{
+        $( "#headerNav" ).toggle();
+    });
     const spectrumGoalsObj = new Object;
     spectrumGoalsObj.render = application.ejs 
     spectrumGoalsObj.breadCrumbs = breadCrumbs();
     application.spectrumGoals = spectrumGoalsObj;
-    return spectrumGoalsObj;
     
+  
+    return spectrumGoalsObj;
 })()
 /**
  * sets breadcrumbs for current page/module

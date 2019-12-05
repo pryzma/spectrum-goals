@@ -17,6 +17,12 @@ module.exports =  (sequelize, Sequelize) => {
         email: {
             type: Sequelize.STRING
         },
+        relation: {
+            type: Sequelize.STRING
+        },
+        medient: {
+            type: Sequelize.STRING
+        },
         organisation: {
             type: Sequelize.STRING
         },
