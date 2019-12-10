@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v3.8.5">
-    <title>Activate account · <% firstName %> <% lastName %></title>
+    <title>Activeer je Account · <% firstName %> <% lastName %></title>
 
 	<!-- bootstrap  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY=" crossorigin="anonymous" />
@@ -16,30 +16,9 @@
     <!-- fontawesome  -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 
-    <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/img/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="/img/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/img/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-icon-180x180.png">
-<link rel="icon" type="image/png" sizes="192x192"  href="/img/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="/img/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
-
 
     
-    <!-- Custom styles for this template -->
-    <style>
-      body{
-        background-image: url('img/bg.png');
-        background-attachment: fixed;
-        background-size: cover;
-      }
-    </style>
+   
     <link rel="stylesheet" href="css/spectrum-goals_styles.css" />
   </head>
   <body >
@@ -53,54 +32,37 @@
               <div class="card shadow" style="margin: auto;background: none;">
                   <div class="card-body">
                   <div class="py-5 text-center">
-                      <img class="d-block mx-auto mb-4" src="img/logo_sm_300.png" alt="">
-                      <h2>Activate your account,  <%=firstName %> <%= lastName %></h2>
-                      <p class="lead text-muted">Please complete the form below by entering your password to activate your account</p>
+                     
+                      <h2>Activeer je account,  <%=firstName %> <%= lastName %></h2>
+                      <p class="lead text-muted">Geef hieronder je wachtwoord op om je account te activeren.</p>
                     </div>
               
               <form class="needs-validation" novalidate="" id="activateProfileForm">
-                  <h4 class="mb-3">Enter your password</h4>
+                
                   <p></p>
                 <input type="hidden" id="id" name="id" value="">
                 <input type="hidden" id="createdBy" name="createdBy" value="">
-                <!--
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="firstName">First name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="" value="" required="" value="<%- firstName %>">
-                    <div class="invalid-feedback">
-                      Valid first name is required.
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="lastName">Last name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" value="" required="">
-                    <div class="invalid-feedback">
-                      Valid last name is required.
-                    </div>
-                  </div>
-                </div>
-                -->
+                
                
         
                 <div class="mb-3">
-                  <label for="email">Password </label>
+                  <label for="password">Wachtwoord</label>
                   <input type="password" class="form-control" id="password" name="password">
                   <div class="invalid-feedback">
-                    Please enter a valid password
+                    Geef een geldig wachtwoord op
                   </div>
                 </div>
                 
                 <div class="mb-3">
-                  <label for="email">Repeat Password </label>
+                  <label for="repeat_password">Wachtwoord (opnieuw) </label>
                   <input type="password" class="form-control" id="repeat_password" name="repeat_password">
                   <div class="invalid-feedback">
-                    Please enter a valid password
+                    Geef een geldig wachtwoord op
                   </div>
                 </div>
                 
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Activate your account</button>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Activeer je account</button>
               </form>
               </div>
             </div>
