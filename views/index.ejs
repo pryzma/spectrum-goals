@@ -12,9 +12,13 @@
     <header class="d-flex flex-column flex-md-row align-items-center p-2 px-md-3 mb-2 fixed-top">
       <a class="navbar-brand col-sm-3 col-md-3 mr-0" href="#"><span class="inner">SpectrumGoals</span></a>
       <nav id="headerNav" class="my-2 my-md-0 mr-auto float-right">
-
+       
       </nav>
-      <div id="accountTopInfo" >
+      <nav id="headerNavShow" class="float-right">
+          <button class="btn btn-nobg"><i class="fas fa-bars"></i></button>
+      </nav>
+      
+      <div id="accountTopInfo" class="shadow" >
           <span class="text-muted">Ingelogd als:</span> <br> 
           <a href="#account"><i class="fas fa-user"></i> <%= full_name %></a> | <a href="/logout" >Uitloggen</a>
       </div>
@@ -31,7 +35,7 @@
 
     </footer>
    <!-- Modal -->
-<div class="modal fade" id="serverConnectionLost" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="serverConnectionLost" aria-hidden="true">
+<div class="modal fade shadow" id="serverConnectionLost" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="serverConnectionLost" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">

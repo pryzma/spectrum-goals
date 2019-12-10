@@ -103,7 +103,9 @@ function account(id, type) {
     .attr('class','breadcrumb-item active')
     .attr('id','accountBreadCrumb')
     .html(account[0].name);
+  
   $('.breadcrumb').append(accountBreadCrumb);
+  
   accountsElement.data( 'account' , account );
   $.get('html/templates/accountDashboard.html', (data) => {
     accountsMainElement.html(data);
@@ -138,7 +140,15 @@ function accountDelete(id){
  * @param {object} account
  */
 function accountPersonalInfo(account) {
-  $('#accountInfoEdit').html();
+
+  $('#accountInfoEdit').html()
+  $('#accountName').html(account[0].name)
+  $('.breadcrumb-item.name').html('<a href="#accounts">Accounts</a>').on('click',()=>{
+    console.log('test')
+    accountsOverview()
+ 
+  });
+
   Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
   $('#accountSaveBtn').on('click', () => {
     const accountFormData = component.form.data({ el : 'form#accountInfoEdit', model : 'Account'});

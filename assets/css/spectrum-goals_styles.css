@@ -22,10 +22,7 @@ header a:hover{
 header .navbar-brand{
     padding-left: 25px;
 }
-header #headerNav {
-    position: absolute;
-    right: 10px;
-}
+
 header #headerNav li{
     list-style: none;
     display: inline;
@@ -60,10 +57,14 @@ main.container-fluid{
     color : #fac031;
 }
 .red {
-    color : darkred;
+    color : #d87c7c;
 }
 .green {
-    color: darkgreen;
+    color: #7ea6ad;
+}
+.alert {
+    background:none !important;
+    border : none;
 }
 .btn.btn-nobg {
     background: none;
@@ -74,23 +75,36 @@ nav .breadcrumb{
 #accountTopInfo {
     background-color: #eaecef;
     padding: 10px;
-    border-radius: 5px;;
+    border-radius: 5px;
 }
 
 /** dashboard */
 
-#medientPersonalInfoOptions{
+#medientPersonalInfoOptions,#medientAddContactOptions{
     
     margin-top: -36px;
 }
-#medientPersonalInfoOptions i{
+#medientPersonalInfoOptions i,#medientAddContactOptions i{
     font-size: 1.3em;
 }
-#medientOverview table tbody{
-    border-spacing: 0 4px!important;
+
+#medientOverview td, #medientOverview th {
+    margin-top:3px;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    
 }
+
 #medientOverview table tbody tr:hover{
-    opacity: 0.75;
+    opacity: 0.99;
+    border: 1px solid whitesmoke;
+    font-weight: bold;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+text-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);;
 }
 #medientOverview table tbody tr td{
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9b9898+0,bfbfbf+100 */
@@ -104,14 +118,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
     color : whitesmoke;
     
     
+}#medientOverview tbody tr td,#medientOverview thead tr th{
+    text-align: center;
 }
-#medientOverview tbody tr :nth-child(1) {
-    text-align: left;
+#medientOverview tbody tr :nth-child(1),#medientOverview thead tr :nth-child(1) {
+    text-align: left !important;
     border-radius: 10px 0px 0px 10px;
   }
-
+  #medientOverview thead tr :nth-child(2) {
+    color: #9b9898;
+}
+  #medientOverview thead tr :nth-child(3) {
+      color: #d87c7c;
+  }
   #medientOverview tbody tr :nth-child(3) {
-    
+    text-align: center;
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#d64d4d+0,d87c7c+100 */
 background: #d87c7c ; /* Old browsers */
 background: -moz-linear-gradient(top,  #d64d4d 0%, #d87c7c 100%); /* FF3.6-15 */
@@ -120,7 +141,9 @@ background: linear-gradient(to bottom,  #d64d4d 0%,#d87c7c 100%); /* W3C, IE10+,
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d64d4d', endColorstr='#d87c7c',GradientType=0 ); /* IE6-9 */
 
   }
-  
+  #medientOverview thead tr :nth-child(4) {
+    color: #f2be3f;
+}
   #medientOverview tbody tr :nth-child(4) {
     
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e59f3d+0,f2be3f+100 */
@@ -131,7 +154,9 @@ background: linear-gradient(to bottom,  #e59f3d 0%,#f2be3f 100%); /* W3C, IE10+,
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', endColorstr='#f2be3f',GradientType=0 ); /* IE6-9 */
 
   }
-  
+  #medientOverview thead tr :nth-child(5) {
+    color: #7ea6ad;
+}
   #medientOverview tbody tr :nth-child(5) {
    
     border-radius : 0 10px 10px 0 !important;
@@ -150,7 +175,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', end
   }
 
 
-  #medientPersonalInfo input[type="text"]:disabled{
+  #medientPersonalInfo input[type="text"]:disabled, .medient_contact input[type="text"]:disabled{
       color : whitesmoke;
       /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9b9898+0,bfbfbf+100 */
 background: #9b9898; /* Old browsers */
@@ -160,3 +185,70 @@ background: linear-gradient(to bottom,  #9b9898 0%,#bfbfbf 100%); /* W3C, IE10+,
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', endColorstr='#bfbfbf',GradientType=0 ); /* IE6-9 */
 
   }
+  #medientAddContactForm .medientContactOptions{
+      display: none;
+  }
+  .medient_contact .medientEditDeleteContact{
+      display: none;
+  }
+  .medient_contact:hover .medientEditDeleteContact{
+    display: block;
+}
+.medientContactOptions {
+    margin-top:-7px;
+}
+
+
+/** accounts */
+#accountsMain .table thead :nth-child(1) {
+    width : 250px;
+}
+
+#accountsMain .table thead :nth-child(2) {
+    width : 250px;
+}
+
+#accountsMain .table tr:hover {
+    cursor:pointer;
+}
+
+@media (max-width: 768px) {
+    #headerNav{
+        display: none;
+        position: relative;
+        margin-top :50px;
+        margin-bottom: 25px;
+    }
+    #headerNav li{
+        font-size: 1.2em;
+    }
+    body{
+        font-size: smaller;
+    }
+    #headerNavShow{
+        display:block;
+        position: absolute !important;
+        right: 25px;
+    }
+    .medient-contact{
+        border-top:1px solid #ccc;
+        margin-top: 15px;
+    }
+}
+#headerNavShow .btn{
+    color: whitesmoke;
+}
+@media (min-width: 768px) {
+    #headerNav{
+        display: block;
+        position: absolute;
+        right: 10px;
+       
+        
+        
+    }
+    
+    #headerNavShow{
+        display:none;
+    }
+}
