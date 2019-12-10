@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
  /** accounts module object */
 const accounts = {
   name : 'Accounts',
@@ -44,7 +45,9 @@ const teamListTableLabels = {
 function accountsOverview() {
   $.get('html/templates/accounts.html', (data) => {
     $(application.config.main).html(data);
-
+    $('#newAccount').on('click', () => {
+      newAccount();
+    });
   });
   /** Table component object */
   const medientListTable = {
@@ -122,12 +125,11 @@ function accountDelete(id){
       component.api({
         method : 'delete',
         url : 'api/accounts/'+id,
-        method : 'delete',
         callback : () => {
-          component.alert({ class : 'danger', message : '<i class="fas fa-times"></i> Account verwijderd' })
-          accountsOverview()
+          component.alert({ class : 'danger', message : '<i class="fas fa-times"></i> Account verwijderd' });
+          accountsOverview();
         }
-      })
+      });
 
   });
 
@@ -138,6 +140,7 @@ function accountDelete(id){
  * @param {object} account
  */
 function accountPersonalInfo(account) {
+
   $('#accountInfoEdit').html()
   $('#accountName').html(account[0].name)
   $('.breadcrumb-item.name').html('<a href="#accounts">Accounts</a>').on('click',()=>{
@@ -145,6 +148,7 @@ function accountPersonalInfo(account) {
     accountsOverview()
  
   });
+
   Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
   $('#accountSaveBtn').on('click', () => {
     const accountFormData = component.form.data({ el : 'form#accountInfoEdit', model : 'Account'});
@@ -159,6 +163,34 @@ function accountPersonalInfo(account) {
   });
   $('#accountEditCancelBtn').on('click', () => {
     accountsOverview();
+  });
+}
+
+function newAccount() {
+  $.get('html/templates/newAccount.html', (data) => {
+    $('#accountsMain').html(data);
+    $('#accountEditCancelBtn').on('click', () => {
+      accountsOverview();
+    });
+    $('#accountBreadCrumb').remove();
+
+    const accountBreadCrumb = $('<li></li>')
+      .attr('class','breadcrumb-item active')
+      .attr('id','accountBreadCrumb')
+      .html("New Account");
+    $('.breadcrumb').append(accountBreadCrumb);
+
+    $('#accountSaveBtn').on('click', () => {
+      const accountFormData = component.form.data({ el : 'form#accountInfo', model : 'Account'});
+      component.api({
+        method : 'post',
+        url : 'api/accounts',
+        data : accountFormData,
+        callback : (data) => {
+          accountsOverview();
+        }
+      });
+    });
   });
 }
 
