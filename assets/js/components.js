@@ -1202,7 +1202,7 @@ const component = (() => {
     const formElement = document.querySelectorAll(`${args.el} input`),
           dataObject = new Object,
           dataArray = Array.prototype.slice.call(formElement);
-    console.log(formElement)
+    
     for(const el in dataArray)
       dataObject[dataArray[el].id] = dataArray[el].value;
     return dataObject

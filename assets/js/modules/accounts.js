@@ -180,18 +180,22 @@ function newAccount() {
       .html("New Account");
     $('.breadcrumb').append(accountBreadCrumb);
 
-    $('#accountSaveBtn').on('click', () => {
-      const accountFormData = component.form.data({ el : 'form#accountInfo', model : 'Account'});
-      component.api({
-        method : 'post',
-        url : 'api/accounts',
-        data : accountFormData,
-        callback : (data) => {
-          accountsOverview();
-        }
-      });
-    });
+    $('#accountSaveBtn').on('click', saveAccount);
   });
 }
+
+function saveAccount(){
+  const accountFormData = component.form.fields({ el : 'form#accountInfo', model : 'Account'});
+      
+  component.api({
+    method : 'post',
+    url : 'api/accounts',
+    data : accountFormData,
+    callback : (data) => {
+      accountsOverview();
+    }
+  });
+}
+
 
 application.add('accounts', accounts);

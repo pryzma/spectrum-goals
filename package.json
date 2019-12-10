@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
+    "bcrypt": "^3.0.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
@@ -26,13 +27,13 @@
     "multer": "^1.4.2",
     "mysql": "^2.17.1",
     "mysql2": "^1.6.5",
-    "passport": "^0.4.0",
+    "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "sequelize": "^5.15.1",
     "session-memory-store": "^1.0.0",
     "sha384": "^1.0.0",
     "uuid": "^3.3.2",
-    "websocket": "^1.0.30",
+    "websocket": "^1.0.31",
     "ws": "^7.1.2"
   },
   "devDependencies": {
