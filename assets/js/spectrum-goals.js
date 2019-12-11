@@ -20,7 +20,9 @@ const spectrumGoals = (()=>{
     spectrumGoalsObj.breadCrumbs = breadCrumbs();
     application.spectrumGoals = spectrumGoalsObj;
     
-  
+    if(application.config.user.profile === 'teammember'){
+        $('#profile').html('Team Member')
+    }
     return spectrumGoalsObj;
 })()
 /**

@@ -169,9 +169,7 @@ function accountPersonalInfo(account) {
 function newAccount() {
   $.get('html/templates/newAccount.html', (data) => {
     $('#accountsMain').html(data);
-    $('#accountEditCancelBtn').on('click', () => {
-      accountsOverview();
-    });
+    $('#accountEditCancelBtn').on('click', accountsOverview);
     $('#accountBreadCrumb').remove();
 
     const accountBreadCrumb = $('<li></li>')
