@@ -60,6 +60,7 @@ component.targetOverview = (args)=>{
     return $subjectRow
 }
 function targetsOverview(){
+    $('#targetCreateBtn').on('click',targetCreate)
     const targetsOverviewTable = {
         el : 'targetsOverview',
         model : 'Target',
@@ -75,5 +76,12 @@ function targetsOverview(){
 }
 function targetView(id){
 
+}
+
+function targetCreate(){
+    $.get('html/templates/targetCreate.html', (data) => {
+        $(application.config.main).html(data);
+    
+      });
 }
 application.add('targets',targets);

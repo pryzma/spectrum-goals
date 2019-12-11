@@ -3,7 +3,7 @@
             <h4 class="pageName name"></h4>
             <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                      <li class="breadcrumb-item" aria-current="page">Home</li>
+                      <li class="breadcrumb-item" aria-current="page"><a href="#">Home</a></li>
                       <li class="breadcrumb-item name active" aria-current="page"></li>
                     </ol>
                   </nav>
@@ -13,11 +13,26 @@
             <span class="h2">Navigeren:</span>
         </div>
         <div class="col-md-4">
-                <input type="text" id="targetsSearch" class="form-control float-right" />
+            <div class="input-group has-search shadow" id="targetsSearchContainer">
+                <input type="text" id="targetsSearch" class="form-control float-right" placeholder="Zoek een leerdoel..." /> 
+                <div class="input-group-append"><button class="btn btn-nobg"><i class="fas fa-search"></i></button></div>
+                    
+            </div>
+                
         </div>
         <div class="col-md-4">
-                <button class="btn btn-outline-warning">Nieuw Leerdoel aanmaken</button>
+                <button class="btn btn-outline-warning" id="targetCreateBtn">Nieuw Leerdoel aanmaken</button>
         </div>
+    </div>
+    <div>
+            <ul class="nav nav-tabs" id="targetCategories">
+                <li class="nav-item">
+                    <a class="nav-link active h4" style="margin-bottom:0 !important;" href="#">Werk</a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link h4" style="margin-bottom:0 !important;" href="#">Persoonlijk</a>
+                    </li>
+            </ul>
     </div>
             
     
