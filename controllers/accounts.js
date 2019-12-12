@@ -15,6 +15,7 @@ const auth = require('./auth')
 controller.createAccount = (req,res) => {
     
     const account = req.body
+    console.log(req.body)
     const contact = {} // create contact
     contact.id = uuidv4();
     account.contact = contact.id;

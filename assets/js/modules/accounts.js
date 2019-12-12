@@ -171,7 +171,12 @@ function newAccount() {
     $('#accountsMain').html(data);
     $('#accountEditCancelBtn').on('click', accountsOverview);
     $('#accountBreadCrumb').remove();
-
+    $('#profileSelect').on('change',(e)=>{
+      const selectVal = e.target.value;
+      console.log(selectVal)
+      $('#profile').val(selectVal)
+      $('input[name=profile]').val(selectVal);
+    })
     const accountBreadCrumb = $('<li></li>')
       .attr('class','breadcrumb-item active')
       .attr('id','accountBreadCrumb')
@@ -184,15 +189,21 @@ function newAccount() {
 
 function saveAccount(){
   const accountFormData = component.form.fields({ el : 'form#accountInfo', model : 'Account'});
-      
-  component.api({
+   console.log(accountFormData)   
+  
+   component.api({
     method : 'post',
     url : 'api/accounts',
     data : accountFormData,
     callback : (data) => {
+      setTimeout(()=>{
+        component.alert({message : '<i class="fas fa-user-plus"></i> Account <b>'+ accountFormData.firstName + ' ' + accountFormData.lastName + '</b> is aangemaakt'})
+      },600)
+      
       accountsOverview();
     }
   });
+   
 }
 
 
