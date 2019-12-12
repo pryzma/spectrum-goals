@@ -15,6 +15,7 @@ const auth = require('./auth')
 controller.createAccount = (req,res) => {
     
     const account = req.body
+    console.log(req.body)
     const contact = {} // create contact
     contact.id = uuidv4();
     account.contact = contact.id;
@@ -35,7 +36,7 @@ controller.createAccount = (req,res) => {
           from: `noreply@spectrumgoals.nl`,
           subject: `Activeer je SpectrumGoals Leerdoelen Monitor Account`,
           text: `Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
-          html: `Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
+          html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
         }
         sgMail.send(msg).then(() => {
             console.log('E-mail sent to '+account.email);
@@ -80,7 +81,7 @@ controller.verifyAccount = (req,res) => {
                             from: `noreply@spectrumgoals.nl`,
                             subject: `SpectrumGoals Account ${account[0].firstName} ${account[0].lastName} is geactiveerd `,
                             text: `Het account wat is aangemaakt voor ${account[0].firstName} ${account[0].lastName}(${account[0].email}) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik.`,
-                            html: `Het account wat is aangemaakt voor <b>${account[0].firstName} ${account[0].lastName}</b>(${account[0].email}) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik. `,
+                            html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Het account wat is aangemaakt voor <b>${account[0].firstName} ${account[0].lastName}</b>(${account[0].email}) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik. `,
                         }
                         console.log()
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
