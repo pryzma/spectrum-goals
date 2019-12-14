@@ -48,6 +48,18 @@ function accountsOverview() {
     $('#newAccount').on('click', () => {
       newAccount();
     });
+    $('#search').on('input', () => {
+      let value = $('#search').val();
+      let arr = $('tbody tr');
+      let filter = new RegExp(value, 'i');
+      for (let i = 0; arr.length > i; i++) {
+        if (filter.test(arr[i].textContent)) {
+          arr[i].style.display = "table-row";
+        } else {
+          arr[i].style.display = "none";
+        }
+      }
+    });
   });
   /** Table component object */
   const medientListTable = {
