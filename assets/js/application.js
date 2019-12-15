@@ -74,7 +74,7 @@ const application = (function(){
  * @param {string} name
  */
 const add = function(name,module,callback) {
-    //if(application.config.debug) console.log(`application.add : ${name}`);
+   
     if(!typeof name==='string') throw 'application.add: module name was expected as string but is '+typeof name
     if(name.includes('.')){
       name = name.split('.');

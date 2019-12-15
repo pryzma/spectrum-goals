@@ -3,8 +3,6 @@
     "app" : "spectrum-goals",
     "client" :{
         "require" : [ 
-                     
-            "application-ejs",
             "websocket",
             "components",
             "spectrum-goals",

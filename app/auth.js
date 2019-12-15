@@ -19,7 +19,7 @@ auth = (app)=>{
       
         connection.query("select * from Accounts where email = ?", [username], function(err, rows){
             
-          if (err) return done(req.flash('message',err));
+          if (err) { return done(req.flash('message',err)); }
 
           if(!rows.length){ return done(null, false, req.flash('message','Ongeldige gebruikersnaam en/of wachtwoord')); }
           bcrypt.compare(password, rows[0].password, function(err, res) {

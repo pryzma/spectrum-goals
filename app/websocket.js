@@ -1,6 +1,8 @@
+'use strict';
+
 module.exports = (app) => {
 
-    const webSocket = require('websocket');
+    const webSocket = require('websocket'),
           webSocketServer = webSocket.server,
           http = require('http'),
           https = require('https');
@@ -22,13 +24,13 @@ module.exports = (app) => {
     const wsServerPort = env.REF_WS_PORT;
     server.listen(wsServerPort);
     server.on('upgrade', (req, socket) => {
-        // Make sure that we only handle WebSocket upgrade requests
-        if (req.headers['upgrade'] !== 'websocket') {
+        
+        if (req.headers.upgrade !== 'websocket') {
           socket.end('HTTP/1.1 400 Bad Request');
           return;
         }
-        // More to come…
-        });
+        
+    });
     const wsServer = new webSocketServer({
         httpServer: server
     });
