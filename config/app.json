@@ -7,7 +7,8 @@
             "application-ejs",
             "websocket",
             "components",
-            "spectrum-goals" 
+            "spectrum-goals",
+            "application-dev-env"
         ],
         "modules" : [
             {"module" : "dashboard" },
@@ -53,6 +54,7 @@
             "maxerr" :250
           }, 
         "debug" : false,
+        "logs" : true,
         "manifest" : true
     },
     "server" : {
