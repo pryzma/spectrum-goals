@@ -1,4 +1,4 @@
-/* jshint esversion: 6 */
+/* jshint esversion: 9 */
  /** accounts module object */
 const accounts = {
   name : 'Accounts',
@@ -153,11 +153,11 @@ function accountDelete(id){
  */
 function accountPersonalInfo(account) {
 
-  $('#accountInfoEdit').html()
-  $('#accountName').html(account[0].name)
+  $('#accountInfoEdit').html();
+  $('#accountName').html(account[0].name);
   $('.breadcrumb-item.name').html('<a href="#accounts">Accounts</a>').on('click',()=>{
-    console.log('test')
-    accountsOverview()
+    console.log('test');
+    accountsOverview();
  
   });
 
@@ -185,10 +185,10 @@ function newAccount() {
     $('#accountBreadCrumb').remove();
     $('#profileSelect').on('change',(e)=>{
       const selectVal = e.target.value;
-      console.log(selectVal)
-      $('#profile').val(selectVal)
+      console.log(selectVal);
+      $('#profile').val(selectVal);
       $('input[name=profile]').val(selectVal);
-    })
+    });
     const accountBreadCrumb = $('<li></li>')
       .attr('class','breadcrumb-item active')
       .attr('id','accountBreadCrumb')
@@ -201,7 +201,7 @@ function newAccount() {
 
 function saveAccount(){
   const accountFormData = component.form.fields({ el : 'form#accountInfo', model : 'Account'});
-   console.log(accountFormData)   
+   console.log(accountFormData);
   
    component.api({
     method : 'post',
@@ -209,8 +209,8 @@ function saveAccount(){
     data : accountFormData,
     callback : (data) => {
       setTimeout(()=>{
-        component.alert({message : '<i class="fas fa-user-plus"></i> Account <b>'+ accountFormData.firstName + ' ' + accountFormData.lastName + '</b> is aangemaakt'})
-      },600)
+        component.alert({message : '<i class="fas fa-user-plus"></i> Account <b>'+ accountFormData.firstName + ' ' + accountFormData.lastName + '</b> is aangemaakt'});
+      },600);
       
       accountsOverview();
     }
