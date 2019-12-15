@@ -22,6 +22,8 @@ const spectrumGoals = (()=>{
     
     if(application.config.user.profile === 'teammember'){
         $('#profile').html('Team Member')
+    }else if(application.config.user.profile === 'medient'){
+        $('#profile').html('Medient')
     }
     return spectrumGoalsObj;
 })()
