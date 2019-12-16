@@ -31,4 +31,12 @@ controller.getAll = (req,res) => {
     });
 }
 
+controller.deleteSubject = (req,res) => {
+    Subject.destroy({
+        where: {id : req.params.id}
+    }).then(()=>{
+        controller.getAll(req,res);
+    });
+}
+
 controller.isAuthenticated = auth.isAuthenticated;

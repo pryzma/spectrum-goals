@@ -32,4 +32,6 @@ controller.getAll = (req,res) => {
     });
 }
 
+
+
 controller.isAuthenticated = auth.isAuthenticated;
