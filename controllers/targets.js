@@ -1,8 +1,8 @@
 /*
 * controllers/targets.js
 */
-const controller = module.exports = {}
-const models = require('../models').sequelize.models
+const controller = module.exports = {};
+const models = require('../models').sequelize.models;
 const Target = models.Target;
 const auth = require('./auth');
 
@@ -29,6 +29,14 @@ controller.updateTarget = (req,res,next) => {
 controller.getAll = (req,res) => {
     Target.findAll({order:[['name','DESC']]}).then((items) => {
         res.json(items);
+    });
+}
+
+controller.deleteTarget = (req,res) => {
+    Target.destroy({
+        where: {id : req.params.id}
+    }).then(()=>{
+        controller.getAll(req,res);
     });
 }
 
