@@ -17,15 +17,12 @@ controller.createCategory = (req,res) => {
     });
 }
 
-controller.updateCategory = (req,res) => {
-    const category = req.body,
-    uuid = uuidv4();
-    category.id = uuid;
-    Category.update(category).then((category)=>{
-        res.json(category);
-    }).catch((err)=>{
-        console.log(err);
-    });
+controller.updateCategory = (req,res,next) => {
+    Category.update(req.body,{where: { id: req.body.id } })
+    .then(function(rowsUpdated) {
+        res.json(rowsUpdated)
+    })
+    .catch(next);
 }
 
 controller.getAll = (req,res) => {
