@@ -1,4 +1,4 @@
-/** 
+/**
 * controllers/categories.js
 */
 const controller = module.exports = {}
@@ -11,6 +11,17 @@ controller.createCategory = (req,res) => {
     uuid = uuidv4();
     category.id = uuid;
     Category.create(category).then((category)=>{
+        res.json(category);
+    }).catch((err)=>{
+        console.log(err);
+    });
+}
+
+controller.updateCategory = (req,res) => {
+    const category = req.body,
+    uuid = uuidv4();
+    category.id = uuid;
+    Category.update(category).then((category)=>{
         res.json(category);
     }).catch((err)=>{
         console.log(err);
