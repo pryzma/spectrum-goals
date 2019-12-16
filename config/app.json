@@ -67,7 +67,8 @@
             "/api/checklist" : "checklist",
             "/api/contacts" : "contacts",
             "/api/account" : "account",
-            "/api/categories" : "categories"
+            "/api/categories" : "categories",
+            "/api/levels" : "levels"
         },
         "require" : [
             "dev",

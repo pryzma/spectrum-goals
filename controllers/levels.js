@@ -32,4 +32,12 @@ controller.getAll = (req,res) => {
     });
 }
 
+controller.deleteLevel = (req,res) => {
+    Level.destroy({
+        where: {id : req.params.id}
+    }).then(()=>{
+        controller.getAll(req,res);
+    });
+}
+
 controller.isAuthenticated = auth.isAuthenticated;
