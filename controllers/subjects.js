@@ -5,6 +5,7 @@ const controller = module.exports = {}
 const models = require('../models').sequelize.models
 const Subject = models.Subject;
 const auth = require('./auth');
+const uuidv4 = require('uuid/v4');
 
 controller.createSubject = (req,res) => {
     const subject = req.body,

@@ -1,3 +1,4 @@
+'use strict';
 const targets = {
     name : 'Leerdoelen',
     default : targetsOverview,
@@ -60,24 +61,145 @@ component.targetOverview = (args)=>{
     return $subjectRow
 }
 function targetsOverview(){
-    $('#targetCreateBtn').on('click',targetCreate)
-    const targetsOverviewTable = {
-        el : 'targetsOverview',
-        model : 'Target',
-        data : targetsData,
-        methods : {
-            onRowClick : (event)=>{
-                const id = target.parentElement.id;
-                targetView(id)
-            }
+    $('#targetCategoriesContent .tab-pane').each(function(){
+                        
+        if($(this).hasClass('active')){
+
+            overviewSubjects($(this).attr('data-category'))
         }
-    }
-    return component.table(targetsOverviewTable)
+    });
+ 
+    $('#addSubject').on('click',addSubject)
+    $('#targetCreateBtn').on('click',targetCreate)
+    
 }
 function targetView(id){
 
 }
+function addTarget(subject){
+    const addTargetForm = component.form.fromModel({
+        id : 'addTargetForm',
+        model : 'Target',
+        fields : {
+            name : { label : 'Naam' }
+        }
+    });
+    component.modal({
+        title : 'Leerdoel toevoegen',
+        body : addTargetForm,
+        buttons : [{ txt : 'Opslaan', event : ['click',() => {
+            const AddTargetData = component.form.fields({el : '#addTargetForm' });
+            AddTargetData.subject = subject;
+            
+            component.api({
+                url : 'api/targets',
+                method: 'post',
+                data : AddTargetData,
+                callback : ()=>{
+                    $('#amModal').modal('hide');
+                    $('#targetCategoriesContent .tab-pane').each(function(){
+                        
+                        if($(this).hasClass('active')){
+                
+                            overviewSubjects($(this).attr('data-category'))
+                        }
+                    })
+                }
+            });
+            
+        }]}]
 
+    })
+}
+function addSubject(){
+    const addSubjectForm = component.form.fromModel({
+        id : 'addSubjectForm',
+        model : 'Subject',
+        fields : {
+            name : { label : 'Naam' }
+        }
+    });
+    component.modal({
+        title : 'Onderwerp toevoegen',
+        body : addSubjectForm,
+        buttons : [{ txt : 'Opslaan', event : ['click',() => {
+            const AddSubjectData = component.form.fields({el : '#addSubjectForm' });
+          
+            component.api({
+                url : 'api/subjects',
+                method: 'post',
+                data : AddSubjectData,
+                callback : ()=>{
+                    $('#amModal').modal('hide');
+                
+                    $('#targetCategoriesContent .tab-pane').each(function(){
+                        
+                        if($(this).hasClass('active')){
+
+                            overviewSubjects($(this).attr('data-category'))
+                        }
+                    })
+                }
+            });
+            
+        }]}]
+    })
+}
+function overviewSubjects(category){
+    
+    component.api({
+        url : 'api/subjects',
+        callback : (subjects) =>{
+            const subjectsContainer = $(`#${category}Subjects div.row`)
+            $('.subjectContainer').remove()
+            for(const subject of subjects){
+                //if(subjects.category === category){
+                    const subjectHeader = $('<p></p>')
+                        .addClass('h2 bold green center')
+                        .html(subject.name),
+                        addTargetBtn = component.btn({ 
+                            html : '<i class="fas fa-plus"></i> Leerdoel toevoegen', 
+                            event : ['click',()=>addTarget(subject.id)],
+                            class : 'btn-nobg text-muted'
+                        }),
+                        targetBtnsContainer = $('<div></div>').attr('class','targetBtnsContainer'),
+                      subjectContainer = $('<div></div>')
+                        .attr('id',subject.id)
+                        .attr('class','subjectContainer')
+                        .html(subjectHeader)
+                        .addClass('col-md-3')
+                        .append(targetBtnsContainer)
+                        .append(addTargetBtn)
+                    component.api({
+                        url : 'api/targets',
+                        callback : (targets)=>{
+                            
+                            subjectTargetsBtns({
+                                targets : targets,
+                                container :  targetBtnsContainer,
+                                subject : subject
+                            })
+                        }
+                    })
+                    subjectsContainer.prepend(subjectContainer);
+                //}
+            }
+        }
+    })
+
+}
+function subjectTargetsBtns(args){
+    for(const target of args.targets){
+        if(target.subject === args.subject.id){
+            const targetBtn = component.btn({
+                txt : target.name,
+                class : 'yellow btn-block',
+                id : target.id
+            })
+            args.container.prepend(targetBtn);
+        }
+    }
+}
 function targetCreate(){
     $.get('html/templates/targetCreate.html', (data) => {
         $(application.config.main).html(data);

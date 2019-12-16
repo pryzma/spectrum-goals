@@ -1247,10 +1247,11 @@ const component = (() => {
           formBtnSave = document.createElement('button');
           formBtnSave.setAttribute('class','btn btn-primary btn-lg');
           formBtnSave.innerHTML = args.btnSaveTxt;
-          form.setAttribute('encType','multipart/form-data')
-          form.setAttribute('class','card shadow')
-          formBody.setAttribute('class','card-body')
-          formFooter.setAttribute('class','card-footer')
+          form.setAttribute('encType','multipart/form-data');
+          form.setAttribute('class','card shadow');
+          form.setAttribute('id',args.id);
+          formBody.setAttribute('class','card-body');
+          formFooter.setAttribute('class','card-footer');
           let model,props;
           if(typeof args.model==='string'){
             props = Object.getOwnPropertyNames(models[args.model])
@@ -1286,7 +1287,7 @@ const component = (() => {
     if(!args.el) args.el = application.config.main
     $(args.el)[args.insert](form);
     // submit event
-    formFooter.appendChild(formBtnSave);
+    if(args.btnSaveTxt) { formFooter.appendChild(formBtnSave); }
     form.appendChild(formBody);
     form.appendChild(formFooter)
     form.addEventListener('submit', (event) => {

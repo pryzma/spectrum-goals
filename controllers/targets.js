@@ -5,6 +5,7 @@ const controller = module.exports = {};
 const models = require('../models').sequelize.models;
 const Target = models.Target;
 const auth = require('./auth');
+const uuidv4 = require('uuid/v4');
 
 
 controller.createTarget = (req,res) => {

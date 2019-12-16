@@ -5,7 +5,7 @@ const controller = module.exports = {}
 const models = require('../models').sequelize.models
 const Level = models.Level;
 const auth = require('./auth');
-
+const uuidv4 = require('uuid/v4');
 
 controller.createLevel = (req,res) => {
     const level = req.body,
