@@ -30,4 +30,13 @@ controller.getAll = (req,res) => {
         res.json(items);
     });
 }
+
+controller.deleteCategory = (req,res) => {
+    Category.destroy({
+        where: {id : req.params.id}
+    }).then(()=>{
+        controller.getAll(req,res);
+    });
+}
+
 controller.isAuthenticated = auth.isAuthenticated;
