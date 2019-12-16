@@ -11,7 +11,7 @@ const router = express.Router();
 const controller = require('../controllers/targets');
 
 router.get('/', controller.isAuthenticated, (req, res) => {
-  controller.getAll(req, res);
+  controller.getAll(req,res);
 });
 
 router.post('/', bodyParserJSON, (req, res) => {

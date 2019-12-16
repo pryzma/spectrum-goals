@@ -1,8 +1,8 @@
 /*
 * controllers/targets.js
 */
-const controller = module.exports = {}
-const models = require('../models').sequelize.models
+const controller = module.exports = {};
+const models = require('../models').sequelize.models;
 const Target = models.Target;
 const auth = require('./auth');
 
@@ -32,6 +32,12 @@ controller.getAll = (req,res) => {
     });
 }
 
-
+controller.deleteTarget = (req,res) => {
+    Target.destroy({
+        where: {id : req.params.id}
+    }).then(()=>{
+        controller.getAll(req,res);
+    });
+}
 
 controller.isAuthenticated = auth.isAuthenticated;
