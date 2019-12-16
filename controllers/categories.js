@@ -17,6 +17,14 @@ controller.createCategory = (req,res) => {
     });
 }
 
+controller.updateCategory = (req,res,next) => {
+    Category.update(req.body,{where: { id: req.body.id } })
+    .then(function(rowsUpdated) {
+        res.json(rowsUpdated)
+    })
+    .catch(next);
+}
+
 controller.getAll = (req,res) => {
     Category.findAll({order:[['name','DESC']]}).then((items) => {
         res.json(items);
