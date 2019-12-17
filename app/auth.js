@@ -23,16 +23,17 @@ auth = (app)=>{
 
           if(!rows.length){ return done(null, false, req.flash('message','Ongeldige gebruikersnaam en/of wachtwoord')); }
           bcrypt.compare(password, rows[0].password, function(err, res) {
-            console.log('\x1b[1m\x1b[32m',`${rows[0].id} passport.authenticate() OK\x1b[0m`)
-            req.session.user = rows[0];
-            app.user = rows[0];
-            return done(null, rows[0]);
+            if(res) {
+              console.log('\x1b[1m\x1b[32m',`${rows[0].id} passport.authenticate() OK\x1b[0m`)
+              req.session.user = rows[0];
+              app.user = rows[0];
+              return done(null, rows[0]);
+            }
+            else {
+              console.log('\x1b[1m\x1b[32m',`passport.authenticate() FAILED\x1b[0m`)
+              return done(null, false, req.flash('message','Ongeldige gebruikersnaam en/of wachtwoord'));
+            }
           });
-         
-  
-          
-          
-         
         });
       }
   ));
