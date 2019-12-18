@@ -156,7 +156,7 @@ function medientAddContact(id){
     $('#medientAddContact').hide();
     $('#medientAddContactSave').show();
     /** saves medient contact */
-    $('#medientAddContactSaveBtn').on('click',medientPostAddContactForm);
+    $('#medientAddContactSaveBtn').off().on('click',medientPostAddContactForm);
     /** cancels add medient contact */
     $('#medientAddContactCancelBtn').on('click',()=>{
         $medientContactForm.remove();
@@ -279,7 +279,7 @@ function medientPostAddContactForm(){
             $('#medientAddContact').show();
             $('#medientAddContactSave').hide();
             medientGetContacts(res.data.medient)
-            component.alert({class:'success',message:'<i class="fas fa-user-plus"></i> Contact <b>' + res.data.first_name + ' '+ res.data.last_name +'</b> toegevoegd '});
+            component.alert({class:'success',message:'<i class="fas fa-user-plus"></i> Contact <b>' + res.data.first_name + ' ' + res.data.last_name + '</b> toegevoegd'});
         }
     })
 }

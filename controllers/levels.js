@@ -31,6 +31,11 @@ controller.getAll = (req,res) => {
         res.json(items);
     });
 }
+controller.getTargetLevels = (req,res) => {
+    Level.findAll({where: { target: req.params.target },order:[['name','DESC']]}).then((items) => {
+        res.json(items);
+    });
+}
 
 controller.deleteLevel = (req,res) => {
     Level.destroy({

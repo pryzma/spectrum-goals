@@ -10,7 +10,7 @@ const spectrumGoals = (()=>{
         });
     }
     window.addEventListener('scroll', function(e) {
-        (window.scrollY > 100) ?  $('#accountTopInfo').fadeOut() : $('#accountTopInfo').fadeIn();
+        (window.scrollY > 1) ?  $('#accountTopInfo').fadeOut() : $('#accountTopInfo').fadeIn();
     });
     $('#headerNavShow .btn').on('click',(event)=>{
         $( "#headerNav" ).toggle();

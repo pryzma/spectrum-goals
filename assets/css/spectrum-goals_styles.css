@@ -48,6 +48,7 @@ main.container-fluid{
 }
 .custom-control-input:checked,.btn.btn-primary{
     background-color: #5F9FAB;
+    border: #5F9FAB;
 }
 .btn.btn-yellow{
     background-color: #fac031;
@@ -55,6 +56,12 @@ main.container-fluid{
 }
 .bold{
     font-weight: bold;
+}
+.center {
+    text-align: center;
+}
+.left{
+    text-align: left;
 }
 .yellow{
     color : #fac031;
@@ -252,7 +259,11 @@ div#targetCategoriesContent h2{
     color: #5f9fab;
     text-align: center;
 }
-
+button.btn.addTarget{
+    margin-top:5px;
+    border: 2px dashed #ccc;
+    color: #ccc;
+}
 div#addSubject{
     border: 3px dashed #ccc;
     color: #ccc;
@@ -272,6 +283,13 @@ div#addSubject p{
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%)
+}
+
+div.subjectContainer div.subjectOptions{
+    display: none;
+}
+div.subjectContainer:hover div.subjectOptions{
+    display: block;
 }
 /** accounts */
 #accountsMain .table thead :nth-child(1) {

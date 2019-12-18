@@ -154,38 +154,92 @@ function overviewSubjects(category){
             $('.subjectContainer').remove()
             for(const subject of subjects){
                 //if(subjects.category === category){
-                    const subjectHeader = $('<p></p>')
-                        .addClass('h2 bold green center')
-                        .html(subject.name),
-                        addTargetBtn = component.btn({ 
+                    const addTargetBtn = component.btn({ 
                             html : '<i class="fas fa-plus"></i> Leerdoel toevoegen', 
                             event : ['click',()=>addTarget(subject.id)],
-                            class : 'btn-nobg text-muted'
-                        }),
-                        targetBtnsContainer = $('<div></div>').attr('class','targetBtnsContainer'),
-                      subjectContainer = $('<div></div>')
-                        .attr('id',subject.id)
-                        .attr('class','subjectContainer')
-                        .html(subjectHeader)
-                        .addClass('col-md-3')
-                        .append(targetBtnsContainer)
-                        .append(addTargetBtn)
-                    component.api({
-                        url : 'api/targets',
-                        callback : (targets)=>{
+                            class : 'btn-nobg btn-block text-muted left addTarget'
+                          }),
+                          targetBtnsContainer = $('<div></div>').attr('class','targetBtnsContainer'),
+                          subjectDeleteBtn = $('<button></button>')
+                            .attr('class','btn btn-nobg float-right red')
+                            .attr('style','margin-top:-38px;')
+                            .html('<i class="fas fa-times"></i>')
+                            .on('click',(event)=>{
+                                const subjectId = event.target.parentElement.id ? event.target.parentElement.id : event.target.parentElement.parentElement.id;
+                                component.api({
+                                  method : 'delete',
+                                  url : `api/subjects/${subjectId}`,
+                                  callback : ()=>{
+                                    overviewSubjects(category)
+                                    component.alert({
+                                        message : '<i class="fas fa-times"></i> Onderwerp verwijderd'
+                                    })
+                                  }
+                                })
+                            }),
+                          subjectOptions = $('<div></div>')
+                            .attr('class','subjectOptions float-right')
+                            .append(subjectDeleteBtn),
+                          subjectHeader = $('<p></p>')
+                            .addClass('subjectHeader h4 bold green center')
+                            .attr('id',`subjectHeader_${subject.id}`)
+                            .html(subject.name),
+                          subjectContainer = $('<div></div>')
+                            .attr('id',subject.id)
+                            .attr('class','subjectContainer')
+                            .html(subjectHeader)
+                            .addClass('col-md-3')
+                            .append(targetBtnsContainer)
+                            .append(addTargetBtn)
+                          component.api({
+                            url : 'api/targets',
+                            callback : (targets)=>{
                             
-                            subjectTargetsBtns({
-                                targets : targets,
-                                container :  targetBtnsContainer,
-                                subject : subject
-                            })
-                        }
+                                subjectTargetsBtns({
+                                  targets : targets,
+                                  container :  targetBtnsContainer,
+                                  subject : subject
+                                })
+                          }
                     })
                     subjectsContainer.prepend(subjectContainer);
+                    $(`#subjectHeader_${subject.id}`).after(subjectOptions)
+                    $('#targetsSearch').on('input', (event) => {
+                        let value = $(`#${event.target.id}`).val();
+                        let arr = $(`#${category}Subjects button`);
+                        let filter = new RegExp(value, 'i');
+                        for (let i = 0; arr.length > i; i++) {
+                          if (filter.test(arr[i].textContent)) {
+                            arr[i].style.display = "block";
+                          } else {
+                            arr[i].style.display = "none";
+                          }
+                        }
+                      });
                 //}
             }
         }
     })
+
+}
+function overviewTargetLevels(target){
+
+    component.api({
+        url : `api/levels/${target.id}`,
+        callback : (levels) => {
+            $('#targetCategoriesContent').hide();
+            $('#overviewSubjects').show();
+            $('#overviewTargetSubjectName').html(target.name);
+            for(const levelIndex in levels){
+                const levelBtn = component.btn({
+                    txt : `Level ${levelIndex} : ${levels[levelIndex].name}`
+                })
+                $('#overviewTargetLevelsBtns').append(levelBtn)
+            }
+        }
+    })
+    
+      
 
 }
 function subjectTargetsBtns(args){
@@ -193,7 +247,7 @@ function subjectTargetsBtns(args){
         if(target.subject === args.subject.id){
             const targetBtn = component.btn({
                 txt : target.name,
-                class : 'yellow btn-block',
+                class : 'yellow btn-block left',
                 id : target.id
             })
             args.container.prepend(targetBtn);

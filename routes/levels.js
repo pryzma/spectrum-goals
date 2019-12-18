@@ -14,6 +14,10 @@ router.get('/', controller.isAuthenticated, (req, res) => {
   controller.getAll(req,res);
 });
 
+router.get('/:target', controller.isAuthenticated, (req, res) => {
+  controller.getTargetLevels(req,res);
+});
+
 router.post('/', bodyParserJSON, (req, res) => {
   controller.createLevel(req, res);
 });
