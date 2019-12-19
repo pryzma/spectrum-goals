@@ -65,7 +65,7 @@ function accountsOverview() {
   const medientListTable = {
     el : '#medientList',
     model : 'Account',
-    class : 'table-striped table-hover',
+    class : 'table-striped green table-hover',
     cols : medientListTableLabels,
     data : medientsData,
     methods: {
@@ -78,7 +78,7 @@ function accountsOverview() {
   const teamListTable = {
     el : '#teamList',
     model : 'Account',
-    class : 'table-striped table-hover',
+    class : 'table-striped green table-hover',
     cols : teamListTableLabels,
     data : teamData,
     methods: {

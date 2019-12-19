@@ -17,13 +17,30 @@
           <input type="search" id="search" class="form-control shadow" style="background: none; width: 400px;  padding-left: 15px;" placeholder="Zoek in alle" />
         </div>
       </div>
-      <h5 class="h5">Team Members</h5>
-      <div id="teamList"></div>
-      <h5 class="h5">Medienten</h5>
-      <div id="medientList"></div>
+      <ul class="nav nav-tabs" id="targetCategoriesTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active h4" style="margin-bottom:0 !important;" href="#accountsMedients" data-toggle="tab"  role="tab" aria-controls="accountsMedients" aria-selected="true">Medienten</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link h4" style="margin-bottom:0 !important;" href="#accountsTeammembers" data-toggle="tab"  role="tab" aria-controls="accountsTeammembers" aria-selected="false">Teammembers</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="accountsContent">
+        <div class="tab-pane fade show active" id="accountsMedients" data-category="work" role="tabpanel" aria-labelledby="accountsMedients-tab">
+          
+          <div id="medientList"></div>
+        </div>
+        <div class="tab-pane fade" id="accountsTeammembers" role="tabpanel" aria-labelledby="accountsTeammemberstab">
+         
+          <div id="teamList"></div>
+        </div>
+       
+    </div>
+      
+      
     </div>
     <div class="col-md-4">
-      <button class="btn btn-block btn-outline-primary shadow" id="newAccount"><i class="fas fa-user-plus"></i> Account Aanmaken</button>
+      <button class="btn btn-block btn-outline-primary green shadow" id="newAccount"><i class="fas fa-user-plus"></i> Account Aanmaken</button>
     </div>
   </div>
 </section>

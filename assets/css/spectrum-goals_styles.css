@@ -54,6 +54,14 @@ main.container-fluid{
     background-color: #fac031;
     border-color: #fac031;
 }
+.btn-outline-primary.green {
+    border-color: #5F9FAB;
+    color: #5F9FAB;
+}
+.btn-outline-primary.green:hover {
+    background-color: #5F9FAB;
+    color: whitesmoke;
+}
 .bold{
     font-weight: bold;
 }
@@ -136,7 +144,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
     color : whitesmoke;
     
     
-}#medientOverview tbody tr td,#medientOverview thead tr th{
+}
+table.green tbody tr td {
+     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100 */
+background: #5f9fab; /* Old browsers */
+background: -moz-linear-gradient(top,  #5f9fab 0%, #7db9e8 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #5f9fab 0%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #5f9fab 0%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+cursor: pointer;
+    margin-top: 2px;
+    color : whitesmoke;
+}
+
+
+#medientOverview tbody tr td,#medientOverview thead tr th{
     text-align: center;
 }
 table.table tbody tr :nth-child(1),table.table thead tr :nth-child(1) {
@@ -249,8 +271,8 @@ ul#targetCategoriesTabs li.nav-item.active{
     background-color: whitesmoke;
 }
 
-div#targetCategoriesContent {
-    background-color: #fff;
+div.tab-content {
+    background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);
     padding:35px;
     z-index: 99;
 }
@@ -262,7 +284,13 @@ div#targetCategoriesContent h2{
 button.btn.addTarget{
     margin-top:5px;
     border: 2px dashed #ccc;
-    color: #ccc;
+    color: #ccc !important;
+}
+button.btn.addTarget:hover{
+    background-color: #fff;
+    color: darkgrey;
+    border-color: darkgrey !important;
+    cursor: pointer;
 }
 div#addSubject{
     border: 3px dashed #ccc;

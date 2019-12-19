@@ -643,18 +643,17 @@ const component = (() => {
   function btn(args){
     const btn = document.createElement('button');
     if(!args.class) args.class = 'primary'
-    /** */
+
     btn.setAttribute('class',`btn btn-${args.class}`);
-    /**  */
+    if(args.style) btn.setAttribute('style',args.style)
     if(!args.id) args.id = uid();
     btn.setAttribute('id',args.id);
-    /**  */
-    /**  */
+
     btn.innerHTML = args.html ? args.html : args.txt;
     if(args.event){
       btn.addEventListener(args.event[0],(event)=>args.event[1](event));
     }
-    /**   */
+    
     if(args.tooltip){
       btn.setAttribute('data-toggle','tooltip')
       btn.setAttribute('data-placement','top')
