@@ -292,6 +292,15 @@ button.btn.addTarget:hover{
     border-color: darkgrey !important;
     cursor: pointer;
 }
+.targetContainer{
+    margin-top:5px;
+}
+.targetContainer .targetOptions{
+    display:none;
+}
+.targetContainer:hover .targetOptions{
+    display:block;
+}
 div#addSubject{
     border: 3px dashed #ccc;
     color: #ccc;

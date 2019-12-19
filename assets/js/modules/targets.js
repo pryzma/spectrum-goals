@@ -160,7 +160,24 @@ function overviewSubjects(category){
                             class : 'btn-nobg btn-block text-muted left addTarget'
                           }),
                           targetBtnsContainer = $('<div></div>').attr('class','targetBtnsContainer'),
-                          subjectDeleteBtn = component.btn({
+                          subjectDeleteBtn = $('<button></button>')
+                            .attr('class','btn btn-nobg float-right red')
+                            .attr('style','margin-top:-38px;')
+                            .html('<i class="fas fa-times"></i>')
+                            .on('click',(event)=>{
+                                const subjectId = event.target.parentElement.id ? event.target.parentElement.id : event.target.parentElement.parentElement.id;
+                                component.api({
+                                    method : 'delete',
+                                    url : `api/subjects/${subjectId}`,
+                                    callback : ()=>{
+                                        overviewSubjects(category)
+                                        component.alert({
+                                            message : `<i class="fas fa-times"></i> Onderwerp verwijderd`
+                                        })
+                                    }
+                                });
+                            }),
+                          /*subjectDeleteBtn = component.btn({
                               html : '<i class="fas fa-times"></i>',
                               class : 'nobg float-right red',
                               style : 'margin-top:-38px;', 
@@ -178,7 +195,7 @@ function overviewSubjects(category){
                                 })
                               }]
                               
-                              /*
+                              
                               confirm : {
                                   msg : 'Weet je zeker dat je dit onderwerp wilt verwijderen?',
                                   placement : 'left',
@@ -195,8 +212,8 @@ function overviewSubjects(category){
                                         }
                                     })
                                   }
-                              }*/
-                          }),
+                              }
+                          }),*/
                           subjectOptions = $('<div></div>')
                             .attr('class','subjectOptions float-right')
                             .append(subjectDeleteBtn),
@@ -271,7 +288,32 @@ function subjectTargetsBtns(args){
                 class : 'yellow btn-block left',
                 id : target.id
             })
-            args.container.prepend(targetBtn);
+            const targetDeleteBtn = $('<button></button>')
+                .attr('class','btn btn-nobg')
+                .html('<i class="fas fa-times"></i>')
+                .on('click',(event)=>{
+                     
+                    component.api({
+                        method : 'delete',
+                        url : `api/targets/${target.id}`,
+                        callback : () => {
+                            component.alert({
+                                message : '<i class="fas fa-times"></i> Leerdoel verwijderd'
+                            })
+                        }
+                    })
+                })
+            const targetOptions = $('<div></div>')
+                .attr('class','targetOptions float-right')
+                .attr('style','margin-top:-34px;')
+            const targetContainer = $('<div></div>')
+                .attr('class','targetContainer')
+                
+            targetOptions.append(targetDeleteBtn);
+            targetContainer.append(targetBtn);
+            targetContainer.append(targetOptions);
+            args.container.prepend(targetContainer);
+
         }
     }
 }
