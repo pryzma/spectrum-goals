@@ -1,6 +1,6 @@
 {
-    "esversion":"9",
-    "curly":"true",
-    "asi" : "true",
-    "strict" : "true"
-   }
+  "esversion" : 9,
+  "curly" : true,
+  "asi" : false,
+  "strict" : true
+}
