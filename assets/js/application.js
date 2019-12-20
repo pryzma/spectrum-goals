@@ -206,7 +206,7 @@ const init = (( _application ) => { // initialize application
           debug = application.debug.log;
           debug(`application.init : ${config.name}`);
           if(config.modules) {
-            loadModules = new Set(config.modules).values();
+            loadModules = new Set(config.modules).values(); // SetIterator      
             if(config.require){
               initRequire(config.require,()=>{
                 initModules(loadModules);
