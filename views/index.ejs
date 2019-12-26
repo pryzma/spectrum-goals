@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SpectrumGoals</title>
     <%- css %>
-    
-<link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.json" />
     <link rel="stylesheet" href="css/spectrum-goals_styles.css" />
   </head>
   <body>
@@ -15,61 +15,56 @@
        
       </nav>
       <nav id="headerNavShow" class="float-right">
-          <button class="btn btn-nobg"><i class="fas fa-bars"></i></button>
+        <button class="btn btn-nobg"><i class="fas fa-bars"></i></button>
       </nav>
       
       <div id="accountTopInfo" class="shadow" >
-          <span class="text-muted">Ingelogd als:</span> <br> 
-          <span id="profile"></span><br> 
-          <a href="#account"><i class="fas fa-user"></i> <%= full_name %></a> | <a href="/logout" >Uitloggen</a>
+        <span class="text-muted">Ingelogd als:</span><br /> 
+        <span id="profile"></span><br />
+        <a href="#account"><i class="fas fa-user"></i> <%= full_name %></a> | <a href="/logout" >Uitloggen</a>
       </div>
     </header>
     <main role="main" class="container-fluid">
-      
-        <section id="mainContent">
-          <div class="text-muted" style="margin: auto; position: absolute;"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>
-        </section>
-  
-
+      <section id="mainContent">
+        <div class="text-muted" style="margin: auto; position: absolute;"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>
+      </section>
     </main>
     <footer>
 
     </footer>
    <!-- Modal -->
-<div class="modal fade shadow" id="serverConnectionLost" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="serverConnectionLost" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Verbinding verbroken</h5>
-       
+    <div class="modal fade shadow" id="serverConnectionLost" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="serverConnectionLost" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Verbinding verbroken</h5>
+          </div>
+          <div class="modal-body">
+            <p>Kan geen verbinding krijgen met server</p>
+            <p class="text-muted"><i class="fas fa-circle-notch fa-spin"></i> Opnieuw proberen te verbinden...</p>
+          </div>
+        </div>
       </div>
-      <div class="modal-body">
-        <p>Kan geen verbinding krijgen met server</p>
-        <p class="text-muted"><i class="fas fa-circle-notch fa-spin"></i> Opnieuw proberen te verbinden...</p>
-      </div>
-      
     </div>
-  </div>
-</div>
-<!-- amModal -->
-<div class="modal fade" id="amModal" tabindex="-1" role="dialog" aria-labelledby="amModal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="amModalTitle"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <!-- amModal -->
+    <div class="modal fade" id="amModal" tabindex="-1" role="dialog" aria-labelledby="amModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="amModalTitle"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="amModalBody"> 
+              <div class="text-muted" style="margin: auto; position: absolute;"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>
+          </div>
+          <div class="modal-footer" id="amModalFooter"></div>
+        </div>
       </div>
-      <div class="modal-body" id="amModalBody"> 
-          <div class="text-muted" style="margin: auto; position: absolute;"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>
-      </div>
-      <div class="modal-footer" id="amModalFooter"></div>
     </div>
-  </div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" crossorigin="anonymous"></script>
     <%- js %>
     <script src="js/ejs.min.js"></script>
     <script src="js/application.js"></script>
