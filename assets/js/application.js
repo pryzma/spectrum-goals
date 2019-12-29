@@ -531,6 +531,7 @@ const  modules = function(){
   //module = (route) => route ?  object[route] : object[getRoute().endpoint],
   moduleObj = (moduleRoute) => {
     let obj,route = getRoute(moduleRoute).endpoint;
+    console.log(location.hash)
     obj = route[1] ? object[route[0]][route[1]] : object[route];
     return obj;
   },

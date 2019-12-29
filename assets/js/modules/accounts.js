@@ -3,7 +3,10 @@
 const accounts = {
   name : 'Accounts',
   default : accountsOverview,
-  template : 'accounts'
+  template : 'accounts',
+  view : {
+    default : account
+  }
 };
 
 const medientList = { data : [] };
@@ -120,9 +123,16 @@ function account(id, type) {
   
   accountsElement.data( 'account' , account );
   $.get('html/templates/accountDashboard.html', (data) => {
-    accountsMainElement.html(data);
-    accountDelete(id);
-    accountPersonalInfo(account);
+    //accountsMainElement.html(data);
+    component.modal({
+      title : 'Account '+account[0].name,
+      body : data,
+      open : ()=>{
+        accountDelete(id);
+        accountPersonalInfo(account);
+      }
+    })
+   
   });
 }
 /**
@@ -174,6 +184,7 @@ function accountPersonalInfo(account) {
     });
   });
   $('#accountEditCancelBtn').on('click', () => {
+    $('#amModal').modal('hide')
     accountsOverview();
   });
 }

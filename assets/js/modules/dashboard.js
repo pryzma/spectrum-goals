@@ -3,6 +3,9 @@ const dashboard = {
     name : 'Dashboard',
     default : medientOverview,
     template : 'dashboard',
+    medient_dashboard:{
+        default : medientDashboard
+    },
     medientContacts : []
 }
 // ........................................

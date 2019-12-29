@@ -162,20 +162,32 @@ function overviewSubjects(category){
                           targetBtnsContainer = $('<div></div>').attr('class','targetBtnsContainer'),
                           subjectDeleteBtn = $('<button></button>')
                             .attr('class','btn btn-nobg float-right red')
-                            .attr('style','margin-top:-38px;')
+                            .attr('style','margin-top:-40px;')
                             .html('<i class="fas fa-times"></i>')
                             .on('click',(event)=>{
-                                const subjectId = event.target.parentElement.id ? event.target.parentElement.id : event.target.parentElement.parentElement.id;
-                                component.api({
-                                    method : 'delete',
-                                    url : `api/subjects/${subjectId}`,
-                                    callback : ()=>{
-                                        overviewSubjects(category)
-                                        component.alert({
-                                            message : `<i class="fas fa-times"></i> Onderwerp verwijderd`
-                                        })
-                                    }
-                                });
+                                component.modal({
+                                    title : '<i class="fas fa-times"></i> Onderwerp '+subject.name+' verwijderen',
+                                    body : 'Weet je zeker dat je dit onderwerp wilt verwijderen?',
+                                    buttons : [
+                                        {txt : 'Bevestigen', event:['click',()=>{
+                                            component.api({
+                                                method : 'delete',
+                                                url : `api/subjects/${subject.id}`,
+                                                callback : ()=>{
+                                                    $('#amModal').modal('hide')
+                                                    overviewSubjects(category)
+                                                    component.alert({
+                                                        message : `<i class="fas fa-times"></i> Onderwerp verwijderd`
+                                                    })
+                                                }
+                                            });
+                                        }]},
+                                        {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+                                            $('#amModal').modal('hide')
+                                        }]}
+                                    ]
+                                })
+                                
                             }),
                           /*subjectDeleteBtn = component.btn({
                               html : '<i class="fas fa-times"></i>',

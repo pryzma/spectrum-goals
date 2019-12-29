@@ -99,15 +99,13 @@ nav .breadcrumb{
     border-radius: 5px;
 }
 
-/** dashboard */
+/** modal */
 
-#medientPersonalInfoOptions,#medientAddContactOptions{
-    
-    margin-top: -36px;
+#amModal .modal-footer .btn {
+    margin-left: 3px;;
 }
-#medientPersonalInfoOptions i,#medientAddContactOptions i{
-    font-size: 1.3em;
-}
+
+/** table */
 
 table.table {
     border-collapse: separate;
@@ -157,6 +155,17 @@ cursor: pointer;
     color : whitesmoke;
 }
 
+
+
+/** dashboard */
+
+#medientPersonalInfoOptions,#medientAddContactOptions{
+    
+    margin-top: -36px;
+}
+#medientPersonalInfoOptions i,#medientAddContactOptions i{
+    font-size: 1.3em;
+}
 
 #medientOverview tbody tr td,#medientOverview thead tr th{
     text-align: center;
@@ -285,10 +294,11 @@ button.btn.addTarget{
     margin-top:5px;
     border: 2px dashed #ccc;
     color: #ccc !important;
+    text-align: center;
 }
 button.btn.addTarget:hover{
     background-color: #fff;
-    color: darkgrey;
+    color: darkgrey !important;
     border-color: darkgrey !important;
     cursor: pointer;
 }
@@ -319,7 +329,8 @@ div#addSubject p{
     top: 50%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
 
 div.subjectContainer div.subjectOptions{
