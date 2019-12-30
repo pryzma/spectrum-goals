@@ -70,6 +70,8 @@ function serverStatus(){
         location.reload();
     }}).fail(function(){
         $('#serverConnectionLost').modal()
-    });
+    }).statusCode({ 200 : function(){ 
+        $('#serverConnectionLost').modal('hide');
+    }});
 }
 

@@ -4,6 +4,8 @@
 const controller = module.exports = {}
 const models = require('../models').sequelize.models
 const Subject = models.Subject;
+const Target = models.Target;
+const Level = models.Level;
 const auth = require('./auth');
 const uuidv4 = require('uuid/v4');
 
@@ -35,7 +37,16 @@ controller.getAll = (req,res) => {
 controller.deleteSubject = (req,res) => {
     Subject.destroy({
         where: {id : req.params.id}
+        
     }).then(()=>{
+        Target.destroy({
+            where: {subject : req.params.id}
+        }).then(()=>{
+            Level.destroy({
+                where: {target : req.params.id}
+            })
+        })
+        
         controller.getAll(req,res);
     });
 }

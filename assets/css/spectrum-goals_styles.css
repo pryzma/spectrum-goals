@@ -281,22 +281,20 @@ ul#targetCategoriesTabs li.nav-item.active{
 }
 
 div.tab-content {
-    background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);
-    padding:35px;
-    z-index: 99;
+    background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);padding:35px;z-index: 99;
 }
 
 div#targetCategoriesContent h2{
     color: #5f9fab;
     text-align: center;
 }
-button.btn.addTarget{
+button.btn.addTarget,button.btn#addTargetLevel {
     margin-top:5px;
     border: 2px dashed #ccc;
     color: #ccc !important;
     text-align: center;
 }
-button.btn.addTarget:hover{
+button.btn.addTarget:hover,button.btn#addTargetLevel:hover{
     background-color: #fff;
     color: darkgrey !important;
     border-color: darkgrey !important;

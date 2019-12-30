@@ -17,7 +17,8 @@ dev = (app)=>{
       tokens['response-time'](req, res), 'ms'
     ].join(' ')
   })
-  if(config.npm_lifecycle_event === 'dev') { app.use(morgan('dev')); } 
-
+ 
+  if(process.env.npm_lifecycle_event === 'dev') { app.use(morgan('dev')); } 
+  
 }
 module.exports = dev;

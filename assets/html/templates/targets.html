@@ -46,19 +46,20 @@
                 </div>
                
             </div>
-            <div id="overviewTargetLevels" style="display: none;">
-                <p class="h4 green bold" id="overviewTargetSubjectName"></p>
+            <div id="overviewTargetLevels" style="display: none;background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);padding:35px;z-index: 99;">
+                <p class="h4 green bold" class="overviewTargetSubjectName"></p>
                 <button class="btn yellow overviewTargetName" id="overviewTargetBtn"></button>
                 <div class="row">
                     <div id="overviewTargetLevels" class="col-md-6">
                         <div id="overviewTargetLevelsBtns">
 
                         </div>
-                        <button id="addTargetLevel" class="btn btn-nobg"><i class="fas fa-plus"></i> Nieuw Level toevoegen</button>
+                        <button id="addTargetLevel" class="btn btn-nobg btn-block"><i class="fas fa-plus"></i> Nieuw Level toevoegen</button>
                     </div>
                     <div id="overviewTargetAssignMedient" class="col-md-6">
-                        <p class="h4 green bold"><span class="overviewTargetName"></span> toewijzen aan:</p>
-                        <input class="form-control" id="overviewTargetAssignMedientInput"><button class="btn">Toewijzen</button>
+                        <p class="h4 green bold"><span class="overviewTargetSubjectName"></span> toewijzen aan:</p>
+                        <input class="form-control" id="overviewTargetAssignMedientInput" placeholder="Typ naam om Medient te selecteren... ">
+                        <div id="TargetAssignMedients"></div>
                     </div>
                 </div>
                

@@ -189,43 +189,7 @@ function overviewSubjects(category){
                                 })
                                 
                             }),
-                          /*subjectDeleteBtn = component.btn({
-                              html : '<i class="fas fa-times"></i>',
-                              class : 'nobg float-right red',
-                              style : 'margin-top:-38px;', 
-                              event : ['click',() => {
-                                const subjectId = event.target.parentElement.id ? event.target.parentElement.id : event.target.parentElement.parentElement.id;
-                                component.api({
-                                    method : 'delete',
-                                    url : `api/subjects/${subjectId}`,
-                                    callback : ()=>{
-                                        overviewSubjects(category)
-                                        component.alert({
-                                            message : '<i class="fas fa-times"></i> Onderwerp verwijderd'
-                                        })
-                                    }
-                                })
-                              }]
-                              
-                              
-                              confirm : {
-                                  msg : 'Weet je zeker dat je dit onderwerp wilt verwijderen?',
-                                  placement : 'left',
-                                  confirm : () => {
-                                    const subjectId = event.target.parentElement.id ? event.target.parentElement.id : event.target.parentElement.parentElement.id;
-                                    component.api({
-                                        method : 'delete',
-                                        url : `api/subjects/${subjectId}`,
-                                        callback : ()=>{
-                                            overviewSubjects(category)
-                                            component.alert({
-                                                message : '<i class="fas fa-times"></i> Onderwerp verwijderd'
-                                            })
-                                        }
-                                    })
-                                  }
-                              }
-                          }),*/
+                          
                           subjectOptions = $('<div></div>')
                             .attr('class','subjectOptions float-right')
                             .append(subjectDeleteBtn),
@@ -277,8 +241,9 @@ function overviewTargetLevels(target){
         url : `api/levels/${target.id}`,
         callback : (levels) => {
             $('#targetCategoriesContent').hide();
-            $('#overviewSubjects').show();
-            $('#overviewTargetSubjectName').html(target.name);
+            $('#overviewTargetLevels').show();
+           
+            $('.overviewTargetSubjectName').html(target.name);
             for(const levelIndex in levels){
                 const levelBtn = component.btn({
                     txt : `Level ${levelIndex} : ${levels[levelIndex].name}`,
@@ -298,7 +263,10 @@ function subjectTargetsBtns(args){
             const targetBtn = component.btn({
                 txt : target.name,
                 class : 'yellow btn-block left',
-                id : target.id
+                id : target.id,
+                event : ['click',()=>{
+                    overviewTargetLevels(target)
+                }]
             })
             const targetDeleteBtn = $('<button></button>')
                 .attr('class','btn btn-nobg')
