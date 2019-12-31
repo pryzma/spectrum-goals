@@ -23,35 +23,27 @@ header .navbar-brand{
     padding-left: 25px;
 }
 
-header #headerNav li{
-    list-style: none;
-    display: inline;
-    padding-right: 55px;
-}
 
-header #accountTopInfo {
-    position: absolute;
-    right: 55px;
-    top : 85px;
-    color: #666;
-}
+
+
 header #accountTopInfo a{
     color: #666;
 }
 
-main {
-    margin-top: 85px;
-}
-main.container-fluid{
-    padding-left: 55px;
-    padding-right: 55px;
-}
+
+
 .custom-control-input:checked,.btn.btn-primary{
     background-color: #5F9FAB;
     border: #5F9FAB;
 }
 .btn.btn-yellow{
-    background-color: #fac031;
+   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e59f3d+0,f2be3f+100 */
+background: #f2be3f; /* Old browsers */
+background: -moz-linear-gradient(top,  #e59f3d 0%, #f2be3f 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #e59f3d 0%,#f2be3f 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #e59f3d 0%,#f2be3f 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', endColorstr='#f2be3f',GradientType=0 ); /* IE6-9 */
+
     border-color: #fac031;
 }
 .btn-outline-primary.green {
@@ -93,11 +85,7 @@ main.container-fluid{
 nav .breadcrumb{
     background: none;
 }
-#accountTopInfo {
-    background-color: #eaecef;
-    padding: 10px;
-    border-radius: 5px;
-}
+
 
 /** modal */
 
@@ -351,14 +339,32 @@ div.subjectContainer:hover div.subjectOptions{
 }
 
 @media (max-width: 768px) {
+    main {
+        margin-top: 155px;
+    }
+    header #accountTopInfo {
+        background-color: #eaecef;
+        margin : 10px;
+        padding:10px;
+        border-radius: 5px;
+        position: absolute;
+        top:50px;
+        right: 10px;
+    }
     #headerNav{
         display: none;
         position: relative;
         margin-top :50px;
         margin-bottom: 25px;
+        padding-left: 30px;
     }
     #headerNav li{
         font-size: 1.2em;
+    }
+    header #headerNav li{
+        list-style: none;
+        display: inline;
+        padding-right: 15px;
     }
     body{
         font-size: smaller;
@@ -377,6 +383,27 @@ div.subjectContainer:hover div.subjectOptions{
     color: whitesmoke;
 }
 @media (min-width: 768px) {
+    main {
+        margin-top: 85px;
+    }
+    main.container-fluid{
+        padding-left: 55px;
+        padding-right: 55px;
+    }
+    header #accountTopInfo {
+        background-color: #eaecef;
+        padding: 10px;
+        border-radius: 5px;
+        position: absolute;
+        right: 55px;
+        top : 85px;
+        color: #666;
+    }
+    header #headerNav li{
+        list-style: none;
+        display: inline;
+        padding-right: 55px;
+    }
     #headerNav{
         display: block;
         position: absolute;

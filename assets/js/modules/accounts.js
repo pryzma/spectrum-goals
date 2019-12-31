@@ -46,6 +46,7 @@ const teamListTableLabels = {
 
 /** Overview of accounts */
 function accountsOverview() {
+  $('#amModal').modal('hide')
   $.get('html/templates/accounts.html', (data) => {
     $(application.config.main).html(data);
     $('#newAccount').on('click', () => {
@@ -111,25 +112,21 @@ function account(id, type) {
     account = teamList.data.filter((account) => account.id === id);
   }
 
-  $('.breadcrumb-item').removeClass('active');
-  $('#accountBreadCrumb').remove();
 
-  const accountBreadCrumb = $('<li></li>')
-    .attr('class','breadcrumb-item active')
-    .attr('id','accountBreadCrumb')
-    .html(account[0].name);
+ 
   
-  $('.breadcrumb').append(accountBreadCrumb);
-  
-  accountsElement.data( 'account' , account );
-  $.get('html/templates/accountDashboard.html', (data) => {
-    //accountsMainElement.html(data);
+  accountsElement.data( 'account' , account[0] );
+  $.get('html/templates/accountDashboard.html', (accountDashboard) => {
+    location.hash = '#'+account[0].id
     component.modal({
-      title : 'Account '+account[0].name,
-      body : data,
+      title : '<i class="fas fa-profile"></i> Account '+account[0].name,
+      body : accountDashboard,
       open : ()=>{
-        accountDelete(id);
+        $('#accountDeleteBtn').on('click',()=>accountDelete(id));
         accountPersonalInfo(account);
+      },
+      close : ()=>{
+        location.hash = '#accounts'
       }
     })
    
@@ -141,7 +138,7 @@ function account(id, type) {
  */
 function accountDelete(id){
 
-  $('#accountDeleteBtn').on('click',()=>{
+  
 
 
       component.api({
@@ -153,7 +150,7 @@ function accountDelete(id){
         }
       });
 
-  });
+ 
 
 }
 // ........................................
@@ -190,23 +187,27 @@ function accountPersonalInfo(account) {
 }
 
 function newAccount() {
-  $.get('html/templates/newAccount.html', (data) => {
-    $('#accountsMain').html(data);
-    $('#accountEditCancelBtn').on('click', accountsOverview);
-    $('#accountBreadCrumb').remove();
-    $('#profileSelect').on('change',(e)=>{
-      const selectVal = e.target.value;
-      console.log(selectVal);
-      $('#profile').val(selectVal);
-      $('input[name=profile]').val(selectVal);
+  $.get('html/templates/newAccount.html', (newAccount) => {
+    location.hash = '#accounts/add'
+    //$('#accountsMain').html(data);
+    component.modal({
+      title : '<i class="fas fa-user-plus"></i> Account Aanmaken',
+      body : newAccount,
+      open : ()=>{
+        $('#accountEditCancelBtn').on('click', ()=>$('#amModal').modal('hide'));
+        $('#profileSelect').on('change',(e)=>{
+          const selectVal = e.target.value;
+          console.log(selectVal);
+          $('#profile').val(selectVal);
+          $('input[name=profile]').val(selectVal);
+        });
+        $('#accountSaveBtn').on('click', saveAccount);
+      },
+      close : ()=>{
+        location.hash = '#accounts'
+      }
     });
-    const accountBreadCrumb = $('<li></li>')
-      .attr('class','breadcrumb-item active')
-      .attr('id','accountBreadCrumb')
-      .html("New Account");
-    $('.breadcrumb').append(accountBreadCrumb);
-
-    $('#accountSaveBtn').on('click', saveAccount);
+    
   });
 }
 

@@ -166,8 +166,8 @@ function overviewSubjects(category){
                             .html('<i class="fas fa-times"></i>')
                             .on('click',(event)=>{
                                 component.modal({
-                                    title : '<i class="fas fa-times"></i> Onderwerp '+subject.name+' verwijderen',
-                                    body : 'Weet je zeker dat je dit onderwerp wilt verwijderen?',
+                                    title : '<i class="fas fa-times"></i> Onderwerp  verwijderen',
+                                    body : 'Weet je zeker dat je <b>'+subject.name+ '</b> (en onderliggende leerdoelen) wilt verwijderen?',
                                     buttons : [
                                         {txt : 'Bevestigen', event:['click',()=>{
                                             component.api({
@@ -235,6 +235,36 @@ function overviewSubjects(category){
     })
 
 }
+function addTargetLevel(target){
+    const addTargetLevelForm = component.form.fromModel({
+        id : 'addTargetLevelForm',
+        model : 'Level',
+        fields : {
+            name : { label : 'Naam' }
+        }
+    });
+    component.modal({
+        title : 'Level toevoegen',
+        body : addTargetLevelForm,
+        buttons : [{ txt : 'Opslaan', event : ['click',() => {
+            const AddTargetLevelData = component.form.fields({el : '#addTargetLevelForm' });
+          
+            component.api({
+                url : 'api/levels',
+                method: 'post',
+                data : AddTargetLevelData,
+                callback : ()=>{
+                    $('#amModal').modal('hide');
+                    overviewTargetLevels(target)
+                   
+                }
+            });
+            
+        }]}]
+    });
+}
+
+
 function overviewTargetLevels(target){
 
     component.api({
@@ -242,8 +272,13 @@ function overviewTargetLevels(target){
         callback : (levels) => {
             $('#targetCategoriesContent').hide();
             $('#overviewTargetLevels').show();
-           
+            location.hash = '#'+target.id
+            $('#targetCategoriesTabs').off().on('click',function(){
+                $('#overviewTargetLevels').hide();
+                $('#targetCategoriesContent').show();
+            })
             $('.overviewTargetSubjectName').html(target.name);
+            $('#addTargetLevel').off().on('click',()=>addTargetLevel(target))
             for(const levelIndex in levels){
                 const levelBtn = component.btn({
                     txt : `Level ${levelIndex} : ${levels[levelIndex].name}`,
@@ -262,7 +297,7 @@ function subjectTargetsBtns(args){
         if(target.subject === args.subject.id){
             const targetBtn = component.btn({
                 txt : target.name,
-                class : 'yellow btn-block left',
+                class : 'yellow btn-lg btn-block left',
                 id : target.id,
                 event : ['click',()=>{
                     overviewTargetLevels(target)

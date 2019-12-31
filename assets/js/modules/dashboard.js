@@ -13,6 +13,7 @@ const dashboard = {
 const medients = { data : [] }
 /** medients data modifier */
 const medientDataModify = (medient) => {
+    
     const medientAdd = {
         name : medient.firstName + ' ' +  medient.lastName,
         subjects : 5,
@@ -82,8 +83,9 @@ function medientDashboard(id){
             .html(medient[0].name);
          $('.breadcrumb').append(medientBreadCrumb);
     dashboardElement.data( 'medient' , medient );
-    $.get('html/templates/medientDashboard.html', (data) => {
-        dashboardMainElement.html(data);
+    $.get('html/templates/medientDashboard.html', (medientDashboard) => {
+        location.hash = '#'+medient[0].id;
+        dashboardMainElement.html(medientDashboard);
         medientPersonalInfo(medient)
         medientContacts(id)
         medientTargets(id)
@@ -100,11 +102,13 @@ function medientPersonalInfo(medient){
     $('#medientPersonalInfo').html($('#medientPersonalInfoEdit').html())
     Object.keys(medient[0]).map((key, index) => $(`input#${key}`).val(medient[0][key]));
     $('button#medientEditBtn').on('click',()=>{
+        location.hash = '#'+medient[0].id+'/edit'
         $('#medientPersonalInfo input').removeAttr('disabled');
         $('#medientEdit').hide();
         $('#medientSave').show();
         $('#medientSaveBtn').on('click',medientPersonalInfoSave);
         $('#medientEditCancelBtn').on('click',()=>{
+            location.hash = '#'+medient[0].id
             $('#medientPersonalInfo input').attr('disabled','disabled');
             $('#medientEdit').show();
             $('#medientSave').hide();

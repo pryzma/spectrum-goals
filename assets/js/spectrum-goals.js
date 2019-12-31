@@ -12,9 +12,15 @@ const spectrumGoals = (()=>{
     window.addEventListener('scroll', function(e) {
         (window.scrollY > 1) ?  $('#accountTopInfo').fadeOut() : $('#accountTopInfo').fadeIn();
     });
-    $('#headerNavShow .btn').on('click',(event)=>{
-        $( "#headerNav" ).toggle();
-    });
+    if($(window).width()>768){
+        
+    }else{
+        $('#headerNavShow .btn').on('click',(event)=>{
+            $('#accountTopInfo').toggle();
+            $( "#headerNav" ).toggle();
+        });
+    }
+   
     const spectrumGoalsObj = new Object;
     spectrumGoalsObj.render = application.ejs 
     spectrumGoalsObj.breadCrumbs = breadCrumbs();
