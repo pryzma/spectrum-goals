@@ -67,7 +67,7 @@ function accountsOverview() {
   });
   /** Table component object */
   const medientListTable = {
-    el : '#medientList',
+    el : '#accountsMedients',
     model : 'Account',
     class : 'table-striped green table-hover',
     cols : medientListTableLabels,
@@ -80,7 +80,7 @@ function accountsOverview() {
   };
 
   const teamListTable = {
-    el : '#teamList',
+    el : '#accountsTeammembers',
     model : 'Account',
     class : 'table-striped green table-hover',
     cols : teamListTableLabels,

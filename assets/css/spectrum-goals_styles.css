@@ -83,7 +83,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', end
     background: none;
 }
 nav .breadcrumb{
-    background: none;
+    background: linear-gradient(90deg, rgba(234,236,239,1) 0%, rgba(234,236,239,0) 100%);
 }
 
 
@@ -269,7 +269,8 @@ ul#targetCategoriesTabs li.nav-item.active{
 }
 
 div.tab-content {
-    background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);padding:35px;z-index: 99;
+    background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);
+    
 }
 
 div#targetCategoriesContent h2{
