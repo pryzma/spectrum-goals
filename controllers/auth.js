@@ -14,3 +14,7 @@ controller.isAuthenticated = (req, res, next) => {
         return next();
     res.status(403).end();
 }
+
+controller.session = (req,res) => {
+    return req.session
+}

@@ -26,7 +26,7 @@ function dateTime() {
 
 
 function notifIndication(){
-    if(authController.isAuthenticated){
+    
         connection.query('SELECT indication, username FROM Medients LEFT JOIN Accounts ON Accounts.id = Medients.account;', (err, indications) => {
             let date = new Date();
             const today = new Date();
@@ -44,16 +44,22 @@ function notifIndication(){
                       text: `Beste Bart,<br> De indicatie van Medient ${indication.username} is verlopen.`,
                       html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Beste Bart,<br> De indicatie van Medient ${indication.username} is verlopen.`,
                     };
-                    sgMail.send(msg).then(() => {
-                        console.log('E-mail sent to Bart');
-                    }).catch(error => {
-                      //Log friendly error
-                      console.error(error.toString());
-                      //Extract error msg
-                      const {message, code, response} = error;
-                      //Extract response msg
-                      const {headers, body} = response;
-                    });
+                    connection.query(`SELECT account,action,date FROM Notifications WHERE account= ${indication.username};`, (err, notifs) => {
+                      if(notifs.length===0){
+                        sgMail.send(msg).then(() => {
+                          console.log('E-mail sent to Bart');
+                          connection.query(`INSERT INTO Notifications (account) VALUES ('${indication.account}')`)
+                        }).catch(error => {
+                          //Log friendly error
+                          console.error(error.toString());
+                          //Extract error msg
+                          const {message, code, response} = error;
+                          //Extract response msg
+                          const {headers, body} = response;
+                        });
+                      }
+                    })
+                    
                   } else {
                     console.log(indication.username + "'s indicatie gaat verlopen op " + indication.indication);
                     sgMail.setApiKey(config.sendgrid);
@@ -65,14 +71,11 @@ function notifIndication(){
                       html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Beste Bart,<br> De indicatie van Medient ${indication.username} gaat verlopen op ${indication.indication}.`,
                     };
                     sgMail.send(msg).then(() => {
-                        console.log('E-mail sent to Bart');
+                      console.log('\x1b[1m\x1b[36m[notifs] \x1b[0m \x1b[3m ',`Notification mail sent for ${indication.username} ${indication.account} \x1b[0m`)
                     }).catch(error => {
-                      //Log friendly error
-                      console.error(error.toString());
-                      //Extract error msg
-                      const {message, code, response} = error;
-                      //Extract response msg
-                      const {headers, body} = response;
+                      
+                      console.error('\x1b[1m\x1b[36m[notifs] \x1b[0m \x1b[3m Error : ',error.toString() + '\x1b[0m');
+                     
                     });
                   }
                 } else {
@@ -84,7 +87,11 @@ function notifIndication(){
             }
             connection.end();
           });
-    }
+    
     
 }
-module.exports = notifIndication
+function checkIndicationsOnceADay(){
+  console.log('\x1b[1m\x1b[36m',`[notifs] \x1b[0m \x1b[3m checkIndicationsOnceADay \x1b[0m`)
+  setTimeout(notifIndication,86400000)
+}
+module.exports = checkIndicationsOnceADay
