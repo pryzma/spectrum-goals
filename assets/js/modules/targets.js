@@ -243,12 +243,14 @@ function addTargetLevel(target){
             name : { label : 'Naam' }
         }
     });
+    
     component.modal({
         title : 'Level toevoegen',
         body : addTargetLevelForm,
         buttons : [{ txt : 'Opslaan', event : ['click',() => {
             const AddTargetLevelData = component.form.fields({el : '#addTargetLevelForm' });
-          
+            AddTargetLevelData.subject = target.subject
+            AddTargetLevelData.target = target.id
             component.api({
                 url : 'api/levels',
                 method: 'post',
@@ -266,7 +268,7 @@ function addTargetLevel(target){
 
 
 function overviewTargetLevels(target){
-
+    $('#overviewTargetLevelsBtns').html('');
     component.api({
         url : `api/levels/${target.id}`,
         callback : (levels) => {
@@ -281,8 +283,8 @@ function overviewTargetLevels(target){
             $('#addTargetLevel').off().on('click',()=>addTargetLevel(target))
             for(const levelIndex in levels){
                 const levelBtn = component.btn({
-                    txt : `Level ${levelIndex} : ${levels[levelIndex].name}`,
-                    class : 'primary green'
+                    txt : `Level ${levelIndex/1+1} : ${levels[levelIndex].name}`,
+                    class : 'block left btn-primary btn-green'
                 })
                 $('#overviewTargetLevelsBtns').append(levelBtn)
             }
@@ -297,7 +299,7 @@ function subjectTargetsBtns(args){
         if(target.subject === args.subject.id){
             const targetBtn = component.btn({
                 txt : target.name,
-                class : 'yellow btn-lg btn-block left',
+                class : 'yellow btn-block left',
                 id : target.id,
                 event : ['click',()=>{
                     overviewTargetLevels(target)

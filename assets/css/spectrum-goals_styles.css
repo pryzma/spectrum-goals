@@ -46,6 +46,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', end
 
     border-color: #fac031;
 }
+.btn.btn-green {
+    background: #7ea6ad; /* Old browsers */
+    background: -moz-linear-gradient(top,  #429caa 0%, #7ea6ad 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #429caa 0%,#7ea6ad 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #429caa 0%,#7ea6ad 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', endColorstr='#7ea6ad',GradientType=0 ); /* IE6-9 */
+    border-color: #5F9FAB;
+}
 .btn-outline-primary.green {
     border-color: #5F9FAB;
     color: #5F9FAB;
