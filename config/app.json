@@ -72,6 +72,7 @@
         },
         "require" : [
             "dev",
+            "notifs",
             "session",
             "sequelize",
             "manifest",
