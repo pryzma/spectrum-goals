@@ -2,9 +2,11 @@
     <section class="pageHeader">
             <h4 class="pageName name"></h4>
             <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item" aria-current="page"><a href="#">Home</a></li>
-                      <li class="breadcrumb-item name active" aria-current="page"></li>
+                    <ol id="targetsBreadcrumbs" class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" id="targetsBreadcrumb">Leerdoelen</li>
+                      
+                      
                     </ol>
                   </nav>
         </section>
@@ -46,17 +48,17 @@
             
                 <div class="row">
                     <div id="overviewTargetLevels" class="col-md-6">
-                        <p class="h4 green bold">Leerdoel <span class="overviewTargetSubjectName"></span></p>
-                
-                        <div id="overviewTargetLevelsBtns">
+                        <p class="h4 green bold"><span class="overviewTargetSubjectName"></span></p>
+                        <button class="btn btn-yellow overviewTargetName left" style="width:350px;"></button>
+                        <div id="overviewTargetLevelsBtns" style="margin-top:10px;">
 
                         </div>
                         <button id="addTargetLevel" class="btn btn-nobg btn-block"><i class="fas fa-plus"></i> Nieuw Level toevoegen</button>
                     </div>
                     <div id="overviewTargetAssignMedient" class="col-md-6">
-                        <p class="h4 green bold"><span class="overviewTargetSubjectName"></span> toewijzen aan:</p>
+                        <p class="h4 green bold"><span class="overviewTargetName"></span> toewijzen aan:</p>
                         <input class="form-control" id="overviewTargetAssignMedientInput" placeholder="Typ naam om Medient te selecteren... ">
-                        <div id="TargetAssignMedients"></div>
+                        <div id="TargetAssignMedients" style="padding:10px;border:1px solid #ccc;border-radius: 5px; display:none;"></div>
                     </div>
                 </div>
                

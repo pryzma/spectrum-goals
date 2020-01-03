@@ -37,6 +37,8 @@ header #accountTopInfo a{
     border: #5F9FAB;
 }
 .btn.btn-yellow{
+    color: #666;
+    
    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e59f3d+0,f2be3f+100 */
 background: #f2be3f; /* Old browsers */
 background: -moz-linear-gradient(top,  #e59f3d 0%, #f2be3f 100%); /* FF3.6-15 */
@@ -287,8 +289,8 @@ div#targetCategoriesContent h2{
 }
 button.btn.addTarget,button.btn#addTargetLevel {
     margin-top:5px;
-    border: 2px dashed #ccc;
-    color: #ccc !important;
+    border: 2px dashed #666;
+    color: #666 !important;
     text-align: center;
 }
 button.btn.addTarget:hover,button.btn#addTargetLevel:hover{
@@ -307,8 +309,8 @@ button.btn.addTarget:hover,button.btn#addTargetLevel:hover{
     display:block;
 }
 div#addSubject{
-    border: 3px dashed #ccc;
-    color: #ccc;
+    border: 3px dashed #666;
+    color: #666;
     height: 250px;
     border-radius: 5px;
 }

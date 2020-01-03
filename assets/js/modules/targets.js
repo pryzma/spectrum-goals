@@ -10,6 +10,20 @@ const targetsData = {
 
     }
 }
+const medientsObj = { data : [] };
+const medientObjDataModify = (account) => {
+    const accountAdd = {
+      name : account.firstName + ' ' +  account.lastName
+    };
+    return { ...account, ...accountAdd };
+  };
+
+const medientsObjData = {
+    url : 'api/accounts/medients',
+    modify : medientObjDataModify,
+    callback : (data) => medientsObj.data = data
+  };
+
 component.targetSublevels = (args)=>{
     const targetSublevelsClass = 'target-sublevels'
           $targetSublevelsContainer = $('<div></div>')
@@ -60,7 +74,12 @@ component.targetOverview = (args)=>{
     }
     return $subjectRow
 }
+function categoryName(category){
+    const categories = [{ category : 'work', name : 'Werk' },{ category : 'personal', name : 'Persoonlijk' }]
+    return categories.filter((category)=>category===category.category);
+}
 function targetsOverview(){
+    component.api(medientsObjData)
     $('#targetCategoriesContent .tab-pane').each(function(){
                         
         if($(this).hasClass('active')){
@@ -73,9 +92,7 @@ function targetsOverview(){
     $('#targetCreateBtn').on('click',targetCreate)
     
 }
-function targetView(id){
 
-}
 function addTarget(subject){
     const addTargetForm = component.form.fromModel({
         id : 'addTargetForm',
@@ -146,7 +163,9 @@ function addSubject(){
     })
 }
 function overviewSubjects(category){
-    
+    $('#categoryBreadcrumb').remove();
+    const categoryBreadcrumb = $('<li></li>').addClass('breadcrumb-item active').attr('id','categoryBreadcrumb').html(categoryName(category))
+    //$('#targetsBreadcrumbs').append(categoryBreadcrumb);
     component.api({
         url : 'api/subjects',
         callback : (subjects) =>{
@@ -265,22 +284,51 @@ function addTargetLevel(target){
         }]}]
     });
 }
+function searchTargetAssignMedient(event){
+    
 
+    
+    
+}
 
 function overviewTargetLevels(target){
+    $('#overviewTargetAssignMedientInput').off().on('input',(event)=>{
+        
+        const searchTargetAssignMedientValue = event.target.value
+        searchTargetAssignMedientValue === '' ? $('#TargetAssignMedients').hide() : $('#TargetAssignMedients').show() 
+        $('#TargetAssignMedients').html('')
+        medientsObj.data.map((medient)=>{
+              if(medient.name.includes(searchTargetAssignMedientValue)){
+                $('#TargetAssignMedients').append('<p>'+medient.name+'</p>')
+              }else{
+                $('#TargetAssignMedients').hide();
+              }
+              
+        })
+        
+    })
+    $('.breadcrumb-item').removeClass('active');
+    $('#targetSubjectBreadcrumb').remove();
+    const targetSubjectBreadCrumb = $('<li></li>')
+        .attr('id','targetSubjectBreadcrumb')
+        .addClass('breadcrumb-item')
+        .html(target.name);
+    $('#targetsBreadcrumbs').append(targetSubjectBreadCrumb);
+    
+   
     $('#overviewTargetLevelsBtns').html('');
     component.api({
         url : `api/levels/${target.id}`,
         callback : (levels) => {
             $('#targetCategoriesContent').hide();
             $('#overviewTargetLevels').show();
-            location.hash = '#'+target.id
+            location.hash = '#'+target.id;
             $('#targetCategoriesTabs').off().on('click',function(){
                 $('#overviewTargetLevels').hide();
                 $('#targetCategoriesContent').show();
-            })
-            $('.overviewTargetSubjectName').html(target.name);
-            $('#addTargetLevel').off().on('click',()=>addTargetLevel(target))
+            });
+            $('.overviewTargetName').html(target.name);
+            $('#addTargetLevel').off().on('click',()=>addTargetLevel(target));
             for(const levelIndex in levels){
                 const levelBtn = component.btn({
                     txt : `Level ${levelIndex/1+1} : ${levels[levelIndex].name}`,
@@ -289,11 +337,12 @@ function overviewTargetLevels(target){
                 $('#overviewTargetLevelsBtns').append(levelBtn)
             }
         }
-    })
+    });
     
       
 
 }
+
 function subjectTargetsBtns(args){
     for(const target of args.targets){
         if(target.subject === args.subject.id){
