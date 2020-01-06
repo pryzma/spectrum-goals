@@ -123,10 +123,6 @@ table.table tbody tr:hover{
     border: 1px solid whitesmoke;
     font-weight: bold;
     border-radius: 10px;
-    -webkit-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
-text-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);;
 }
 table.table tbody tr td{
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9b9898+0,bfbfbf+100 */
@@ -289,7 +285,7 @@ div#targetCategoriesContent h2{
 }
 button.btn.addTarget,button.btn#addTargetLevel {
     margin-top:5px;
-    border: 2px dashed #666;
+    border: 1px dashed #ccc;
     color: #666 !important;
     text-align: center;
 }
@@ -309,7 +305,9 @@ button.btn.addTarget:hover,button.btn#addTargetLevel:hover{
     display:block;
 }
 div#addSubject{
-    border: 3px dashed #666;
+    border: 1px dashed #ccc;
+    margin:10px;
+    padding:10px;
     color: #666;
     height: 250px;
     border-radius: 5px;
@@ -328,6 +326,10 @@ div#addSubject p{
     margin-right: -50%;
     transform: translate(-50%, -50%);
     text-align: center;
+}
+div.subjectContainer {
+    margin: 10px;
+    padding: 10px;
 }
 
 div.subjectContainer div.subjectOptions{

@@ -202,9 +202,6 @@ function newAccount() {
           $('input[name=profile]').val(selectVal);
         });
         $('#accountSaveBtn').on('click', saveAccount);
-      },
-      close : ()=>{
-        location.hash = '#accounts'
       }
     });
     

@@ -75,8 +75,12 @@ component.targetOverview = (args)=>{
     return $subjectRow
 }
 function categoryName(category){
-    const categories = [{ category : 'work', name : 'Werk' },{ category : 'personal', name : 'Persoonlijk' }]
-    return categories.filter((category)=>category===category.category);
+    if(category==='work'){
+        return 'Werk'
+    }else{
+        return 'Persoonlijk'
+    }
+    
 }
 function targetsOverview(){
     component.api(medientsObjData)
@@ -164,8 +168,11 @@ function addSubject(){
 }
 function overviewSubjects(category){
     $('#categoryBreadcrumb').remove();
-    const categoryBreadcrumb = $('<li></li>').addClass('breadcrumb-item active').attr('id','categoryBreadcrumb').html(categoryName(category))
-    //$('#targetsBreadcrumbs').append(categoryBreadcrumb);
+    const categoryBreadcrumb = $('<li></li>')
+        .addClass('breadcrumb-item active')
+        .attr('id','categoryBreadcrumb')
+        .html(categoryName(category))
+    $('#targetsBreadcrumbs').append(categoryBreadcrumb);
     component.api({
         url : 'api/subjects',
         callback : (subjects) =>{
@@ -180,7 +187,7 @@ function overviewSubjects(category){
                           }),
                           targetBtnsContainer = $('<div></div>').attr('class','targetBtnsContainer'),
                           subjectDeleteBtn = $('<button></button>')
-                            .attr('class','btn btn-nobg float-right red')
+                            .attr('class','btn btn-nobg float-right')
                             .attr('style','margin-top:-40px;')
                             .html('<i class="fas fa-times"></i>')
                             .on('click',(event)=>{
@@ -218,7 +225,7 @@ function overviewSubjects(category){
                             .html(subject.name),
                           subjectContainer = $('<div></div>')
                             .attr('id',subject.id)
-                            .attr('class','subjectContainer')
+                            .attr('class','subjectContainer card shadow')
                             .html(subjectHeader)
                             .addClass('col-md-3')
                             .append(targetBtnsContainer)
@@ -284,12 +291,7 @@ function addTargetLevel(target){
         }]}]
     });
 }
-function searchTargetAssignMedient(event){
-    
 
-    
-    
-}
 
 function overviewTargetLevels(target){
     $('#overviewTargetAssignMedientInput').off().on('input',(event)=>{
@@ -298,12 +300,9 @@ function overviewTargetLevels(target){
         searchTargetAssignMedientValue === '' ? $('#TargetAssignMedients').hide() : $('#TargetAssignMedients').show() 
         $('#TargetAssignMedients').html('')
         medientsObj.data.map((medient)=>{
-              if(medient.name.includes(searchTargetAssignMedientValue)){
-                $('#TargetAssignMedients').append('<p>'+medient.name+'</p>')
-              }else{
-                $('#TargetAssignMedients').hide();
-              }
               
+            $('#TargetAssignMedients').append('<p>'+medient.name+'</p>')
+             
         })
         
     })
@@ -371,13 +370,13 @@ function subjectTargetsBtns(args){
                 })
             const targetOptions = $('<div></div>')
                 .attr('class','targetOptions float-right')
-                .attr('style','margin-top:-34px;')
+                .attr('style','margin-top:-38px;')
             const targetContainer = $('<div></div>')
                 .attr('class','targetContainer')
                 
             targetOptions.append(targetDeleteBtn);
             targetContainer.append(targetBtn);
-            targetContainer.append(targetOptions);
+            //targetContainer.append(targetOptions);
             args.container.prepend(targetContainer);
 
         }
