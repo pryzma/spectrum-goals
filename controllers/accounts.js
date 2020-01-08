@@ -74,9 +74,7 @@ controller.verifyAccount = (req,res) => {
 
     const account_ = req.body;
     const saltRounds = 10;
-    const myPlaintextPassword = 'kmfHz2FU3B2dSPrC';
-    const someOtherPlaintextPassword = 'not_bacon';
-
+    
     connection.query(`SELECT * FROM Accounts WHERE id='${account_.id}'`, (err,result) => {
         
         if(err){
@@ -84,7 +82,7 @@ controller.verifyAccount = (req,res) => {
         }
         const account = result
         bcrypt.genSalt(saltRounds, function(err, salt) {
-            bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
+            bcrypt.hash(account_.password, salt, function(err, hash) {
                 connection.query(`UPDATE Accounts SET password='${hash}',isActivated=1 WHERE id='${account_.id}'`, (err, result) => {
                     
                     const accountCreatedBy = connection.query(`SELECT * FROM Accounts WHERE id='${account[0].createdBy}'`, (err,result) => {
@@ -95,7 +93,6 @@ controller.verifyAccount = (req,res) => {
                             text: `Het account wat is aangemaakt voor ${account[0].firstName} ${account[0].lastName}(${account[0].email}) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik.`,
                             html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Het account wat is aangemaakt voor <b>${account[0].firstName} ${account[0].lastName}</b>(${account[0].email}) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik. `,
                         }
-                        console.log()
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                         sgMail.send(msg);
                         

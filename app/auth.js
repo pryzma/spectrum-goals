@@ -30,6 +30,7 @@ auth = (app)=>{
               return done(null, rows[0]);
             }else{
               console.log('\x1b[1m\x1b[31m',`passport.authenticate() FAILED\x1b[0m`)
+              console.log(password, rows[0].password)
               return done(null, false, req.flash('message','Ongeldige gebruikersnaam en/of wachtwoord'));
             }
             
