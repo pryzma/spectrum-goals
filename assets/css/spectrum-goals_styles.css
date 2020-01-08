@@ -30,8 +30,12 @@ header #accountTopInfo a{
     color: #666;
 }
 
-
-
+form.submit input:invalid{
+    border-color: #d64d4d;
+}
+input.invalid{
+    border-color: #d64d4d;
+}
 .custom-control-input:checked,.btn.btn-primary{
     background-color: #5F9FAB;
     border: #5F9FAB;
@@ -73,6 +77,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', end
 .left{
     text-align: left;
 }
+.right{
+    text-align:right;
+}
+.pointer {
+    cursor: pointer;
+}
 .yellow{
     color : #fac031;
 }
@@ -81,6 +91,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', end
 }
 .green {
     color: #7ea6ad;
+}
+.blue{
+    color: #7BB6E2;
 }
 .white {
     color: #fff;

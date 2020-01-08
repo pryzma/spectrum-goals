@@ -141,7 +141,8 @@ const component = (() => {
         datepicker : formInputDatepicker,
         timepicker : formInputTimepicker,
         row : formRow
-      } 
+      },
+      validate : formValidate
     },
     /** Bootstrap Modal Component
      * @example component.modal({
@@ -854,7 +855,15 @@ const component = (() => {
       $('#amModalTitle').html('');
       $('#amModalBody').html('');
       $('#button_container').remove();
+
       if(typeof args.close === 'function') args.close();
+      const $amModalElement = $amModal,
+            amModalContainer = $('#amModalContainer');
+      
+
+      $amModal.remove();
+      amModalContainer.html($amModalElement)
+     
     });
     return $amModal
   }
@@ -1384,6 +1393,44 @@ const component = (() => {
   
   function formInputTimepicker(args){
     
+  }
+  // .................................................
+  /** validates form; https://pageclip.co/blog/2018-02-20-you-should-use-html5-form-validation.html */
+  function formValidate(args){
+    const customMessages = {
+      valueMissing:    args.valueMissing,       // `required` attr
+      emailMismatch:   args.emailMismatch,  // Invalid email
+      patternMismatch: args.patternMismatch,// `pattern` attr
+    }
+    
+    function getCustomMessage (type, validity) {
+      if (validity.typeMismatch) {
+        return customMessages[`${type}Mismatch`]
+      } else {
+        for (const invalidKey in customMessages) {
+          if (validity[invalidKey]) {
+            return customMessages[invalidKey]
+          }
+        }
+      }
+    }
+    
+    const formElementInputs = document.querySelectorAll('input, select, textarea')
+    formElementInputs.forEach(function(input){
+      function checkValidity () {
+        const message = input.validity.valid
+          ? null
+          : getCustomMessage(input.type, input.validity, customMessages)
+        input.setCustomValidity(message || '')
+      }
+      input.addEventListener('invalid', function () {
+        input.classList.add('invalid')
+      });
+      input.addEventListener('input', checkValidity);
+      input.addEventListener('invalid', checkValidity);
+    })
+    
+   
   }
   // .................................................
   // alert 

@@ -10,6 +10,7 @@ const connection = require('../app/dbconn'),
 const models = require('../models').sequelize.models;
 const Account = models.Account;
 const Contact = models.Contact;
+const Medient = models.Medient;
 
 const auth = require('./auth')
 controller.createAccount = (req,res) => {
@@ -29,7 +30,15 @@ controller.createAccount = (req,res) => {
     account.createdBy = req.session.user.id;
     
     Account.create(account).then((account)=>{
-        
+        // create medient if account.profile === 'medient'
+        if(account.profile === 'medient'){
+            const medient = {
+                id : uuidv4(),
+                account : account.id,
+                indication : account.indication
+            }
+            Medient.create(medient);
+        }
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const msg = {
           to: `${account.email}`,

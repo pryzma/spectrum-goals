@@ -26,7 +26,7 @@ function dateTime() {
 
 
 function notifIndication(){
-    
+
         connection.query('SELECT indication, username FROM Medients LEFT JOIN Accounts ON Accounts.id = Medients.account;', (err, indications) => {
             let date = new Date();
             const today = new Date();
@@ -35,7 +35,7 @@ function notifIndication(){
               for (let indication of indications) {
                 if (three > indication.indication) {
                   if (today >= indication.indication) {
-                    console.log(indication.username + "'s indicatie is verlopen!");
+                    
                     sgMail.setApiKey(config.sendgrid);
                     const msg = {
                       to: `ccolombijn@gmail.com`,
@@ -46,6 +46,7 @@ function notifIndication(){
                     };
                     connection.query(`SELECT account,action,date FROM Notifications WHERE account= ${indication.username};`, (err, notifs) => {
                       if(notifs.length===0){
+                        console.log(` Indicatie van ${indication.username} verloopt op `);
                         sgMail.send(msg).then(() => {
                           console.log('E-mail sent to Bart');
                           connection.query(`INSERT INTO Notifications (account) VALUES ('${indication.account}')`)
@@ -90,8 +91,8 @@ function notifIndication(){
     
     
 }
-function checkIndicationsOnceADay(){
-  console.log('\x1b[1m\x1b[36m',`[notifs] \x1b[0m \x1b[3m checkIndicationsOnceADay \x1b[0m`)
-  setTimeout(notifIndication,86400000)
+function dayCheck(){
+  console.log('\x1b[1m\x1b[36m',`[notifs] \x1b[0m \x1b[3m notifs. \x1b[0m`)
+  setTimeout(notifIndication,86400000) // fire notifIndication once in 24 hrs
 }
-module.exports = checkIndicationsOnceADay
+module.exports = dayCheck

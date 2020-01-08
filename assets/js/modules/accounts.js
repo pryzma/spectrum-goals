@@ -163,7 +163,6 @@ function accountPersonalInfo(account) {
   $('#accountInfoEdit').html();
   $('#accountName').html(account[0].name);
   $('.breadcrumb-item.name').html('<a href="#accounts">Accounts</a>').on('click',()=>{
-    console.log('test');
     accountsOverview();
  
   });
