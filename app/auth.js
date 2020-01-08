@@ -15,9 +15,9 @@ auth = (app)=>{
    
     
     
-        if(!username || !password ) { return done(null, false, req.flash('message','All evelden zijn verplicht!')); }
+        if(!username || !password ) { return done(null, false, req.flash('message','All velden zijn verplicht!')); }
       
-        connection.query("select * from Accounts where email = ?", [username], function(err, rows){
+        connection.query("select * from Accounts where username = ?", [username], function(err, rows){
             
           if (err) { return done(req.flash('message',err)); }
 
