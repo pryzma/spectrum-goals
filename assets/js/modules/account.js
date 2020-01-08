@@ -1,8 +1,11 @@
-import { application } from "express";
 
 const account = {
     name : 'Account',
     default : accountDashboard,
     template : 'account'
   };
+
+  function accountDashboard(){
+    
+  }
   application.add(account)

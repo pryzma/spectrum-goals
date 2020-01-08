@@ -13,6 +13,7 @@ const medientList = { data : [] };
 const teamList = { data : [] };
 
 const accountDataModify = (account) => {
+
   const accountAdd = {
     name : account.firstName + ' ' +  account.lastName
   };
@@ -122,6 +123,11 @@ function account(id, type) {
       title : '<i class="fas fa-profile"></i> Account '+account[0].name,
       body : accountDashboard,
       open : ()=>{
+        if(account[0].profile === 'teammember'){
+          $('#formGroupMedientIndication').remove()
+        }else{
+          // medient data
+        }
         $('#accountDeleteBtn').on('click',()=>accountDelete(id));
         accountPersonalInfo(account);
       },
@@ -194,11 +200,22 @@ function newAccount() {
       body : newAccount,
       open : ()=>{
         $('#accountEditCancelBtn').on('click', ()=>$('#amModal').modal('hide'));
+        const formGroupMedientIndication = $('#formGroupMedientIndication');
+        console.log(formGroupMedientIndication)
         $('#profileSelect').on('change',(e)=>{
           const selectVal = e.target.value;
-          console.log(selectVal);
+          
+
+          if(selectVal === 'teammember'){
+            formGroupMedientIndication.remove()
+          }else{
+            
+            $('form#accountInfo').append(formGroupMedientIndication);
+          }
+          //console.log(selectVal);
           $('#profile').val(selectVal);
           $('input[name=profile]').val(selectVal);
+
         });
         $('#accountSaveBtn').on('click', saveAccount);
       }

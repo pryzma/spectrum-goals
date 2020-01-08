@@ -11,12 +11,13 @@ const models = require('../models').sequelize.models;
 const Account = models.Account;
 const Contact = models.Contact;
 const Medient = models.Medient;
+     
 
 const auth = require('./auth')
 controller.createAccount = (req,res) => {
     
     const account = req.body
-    console.log(req.body)
+    //console.log(account)
     const contact = {} // create contact
     contact.id = uuidv4();
     account.contact = contact.id;
@@ -28,15 +29,17 @@ controller.createAccount = (req,res) => {
     account.password = '';
     account.isActivated = 0;
     account.createdBy = req.session.user.id;
-    
+    const indication = account.indication;
     Account.create(account).then((account)=>{
         // create medient if account.profile === 'medient'
         if(account.profile === 'medient'){
+            
             const medient = {
                 id : uuidv4(),
                 account : account.id,
-                indication : account.indication
+                indication : indication + ' 00:00:00'
             }
+            
             Medient.create(medient);
         }
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -109,9 +112,19 @@ controller.verifyAccount = (req,res) => {
     
 }
 controller.updateAccount = (req,res,next) => {
-   
-    Account.update(req.body,{where: { id: req.body.id } })
+    const account = req.body;
+    let medient 
+    if(account.indication){
+        medient = {
+            indication : account.indication
+        }
+        delete account.indication;
+    }
+    Account.update(account,{where: { id: req.body.id } })
     .then(function(rowsUpdated) {
+        if(medient){
+            Medient.update(medient,{where:{account : account.id}})
+        }
         res.json(rowsUpdated)
     })
     .catch(next);
@@ -134,18 +147,21 @@ controller.getAll = (req,res) => {
 
 controller.getMedients = (req,res) => {
     Account.findAll({where: {profile: 'medient'}, order:[['id','DESC']]}).then((accounts) => {
+        
         res.json(accounts)
+        
     });
 }
 
 controller.getTeamMembers = (req,res) => {
     Account.findAll({where: {profile: 'teammember'}, order:[['id','DESC']]}).then((accounts) => {
+        
         res.json(accounts)
     });
 }
 
 controller.getOne = (req,res) => {
-    console.log(`controller.getOne(${req})`)
+    //console.log(`controller.getOne(${req})`)
     //return connection.query(`SELECT * FROM accounts WHERE id='${req}'`, (err,result) => result);
     Account.findOne({ where: {id: req} }).then(account => {
         return account.get({ plain: true })

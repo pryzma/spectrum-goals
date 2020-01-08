@@ -122,6 +122,9 @@ table.table {
     border-collapse: separate;
     border-spacing: 0 3px;
 }
+table.table th:first-child{
+    width: 35%;
+}
 
 table.table  td, table.table th {
     margin-top:3px;
@@ -130,12 +133,15 @@ table.table  td, table.table th {
     border-bottom: none !important;
     
 }
-
+table.table  td{
+    text-shadow: 1px 1px #666;
+}
 table.table tbody tr:hover{
     opacity: 0.99;
     border: 1px solid whitesmoke;
     font-weight: bold;
     border-radius: 10px;
+    box-shadow: 1p 1px #666;
 }
 table.table tbody tr td{
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9b9898+0,bfbfbf+100 */
@@ -274,7 +280,7 @@ ul#targetCategoriesTabs{
 }
 
 ul#targetCategoriesTabs li.nav-item{
-    box-shadow: 0px -6px 19px rgb(226,226,226);
+    box-shadow: 0px -5px 6px rgb(226,226,226);
     width: 300px;
     text-align: center;
    
@@ -286,7 +292,15 @@ ul#targetCategoriesTabs li.nav-item a{
 ul#targetCategoriesTabs li.nav-item.active{
     background-color: whitesmoke;
 }
-
+div#TargetAssignMedients p {
+    padding: 10px;
+    cursor: pointer;
+}
+div#TargetAssignMedients p:hover {
+    background-color: #429caa;
+    color: whitesmoke;
+    text-shadow: 1px 1px #666;
+}
 div.tab-content {
     background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);
     

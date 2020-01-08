@@ -15,7 +15,7 @@ auth = (app)=>{
    
     
     
-        if(!username || !password ) { return done(null, false, req.flash('message','All fields are required.')); }
+        if(!username || !password ) { return done(null, false, req.flash('message','All evelden zijn verplicht!')); }
       
         connection.query("select * from Accounts where email = ?", [username], function(err, rows){
             

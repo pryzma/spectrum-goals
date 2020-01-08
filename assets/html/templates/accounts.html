@@ -11,8 +11,10 @@
   <div class="row" id="accountsMain">
     <div class="col-md-12">
           
-          <input type="search" id="search" class="form-control shadow" style="background: none; width: 400px;  padding-left: 15px;" placeholder="Zoek in alle" />
-     
+          <input type="search" id="search" class="form-control shadow" style="background: none; width: 400px;  padding-left: 15px;" placeholder="Zoek in alle accounts" />
+          <div class="right">
+            <div id="newAccount" class="h5 blue pointer"><i class="fas fa-user-plus"></i> Account Aanmaken</a></div>
+          </div>
       <ul class="nav nav-tabs" id="targetCategoriesTabs" role="tablist">
         <li class="nav-item">
             <a class="nav-link active h4" style="margin-bottom:0 !important;" href="#accountsMedients" data-toggle="tab"  role="tab" aria-controls="accountsMedients" aria-selected="true">Medienten</a>
@@ -22,19 +24,21 @@
         </li>
     </ul>
     <div class="tab-content" id="accountsContent">
-        <div class="tab-pane fade show active" id="accountsMedients" data-category="work" role="tabpanel" aria-labelledby="accountsMedients-tab">
+      
+      
+        <div class="tab-pane fade show active" id="accountsMedients" data-category="work" role="tabpanel" aria-labelledby="accountsMedients-tab"  style="padding:15px;">
           
           <div id="medientList"></div>
         </div>
-        <div class="tab-pane fade" id="accountsTeammembers" role="tabpanel" aria-labelledby="accountsTeammemberstab">
+        <div class="tab-pane fade" id="accountsTeammembers" role="tabpanel" aria-labelledby="accountsTeammemberstab" style="padding:15px;">
          
-          <div id="teamList"></div>
+          <div id="teamList" style="margin:15px;"></div>
         </div>
        
     </div>
       
       
     </div>
-    <div id="newAccount" class="h5 blue pointer right"><i class="fas fa-user-plus"></i> Account Aanmaken</a></div>
+    
   </div>
 </section>
