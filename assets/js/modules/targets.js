@@ -191,6 +191,7 @@ function overviewSubjects(category){
                             .attr('style','margin-top:-40px;')
                             .html('<i class="fas fa-times"></i>')
                             .on('click',(event)=>{
+                                
                                 component.modal({
                                     title : '<i class="fas fa-times"></i> Onderwerp  verwijderen',
                                     body : 'Weet je zeker dat je <b>'+subject.name+ '</b> (en onderliggende leerdoelen) wilt verwijderen?',
@@ -218,6 +219,7 @@ function overviewSubjects(category){
                           
                           subjectOptions = $('<div></div>')
                             .attr('class','subjectOptions float-right')
+                            .attr('style','z-index:1;')
                             .append(subjectDeleteBtn),
                           subjectHeader = $('<p></p>')
                             .addClass('subjectHeader h4 bold green center')
