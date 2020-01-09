@@ -1,18 +1,27 @@
 'use strict';
 const controller = module.exports = {},
-      connection = require('./dbconn'),
+      connection = require('../app/dbconn'),
       env = process.env.NODE_ENV || "development",
+      sgMail = require('@sendgrid/mail'),
       config = require("../config/config")()[env];
 
 
-
+function dateTime() {
+        let now = new Date();
+        let hour = (now.getHours() < 10 ? "0" + now.getHours() : now.getHours());
+        let minutes = (now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes());
+        let seconds = (now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds());
+        let month = (now.getMonth() + 1 < 10 ? "0" + (now.getMonth() + 1) : (now.getMonth() + 1));
+        let day = (now.getDate() < 10 ? "0" + (now.getDate()) : (now.getDate()));
+        return `${now.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`;
+}
 
 controller.indicationNotification = function(){
     /** E-mail adres waar notificatie naar toe verzonden wordt */
-    const indicationNotificationEmail = 'ccolombijn@gmail.com'
-    connection.query('SELECT indication, username FROM Medients LEFT JOIN Accounts ON Accounts.id = Medients.account;', (err, indications) => {
-        const date = new Date(),
-              today = new Date();
+    const indicationNotificationEmail = 'bart@spectrummultimedia.nl'
+    connection.query('SELECT indication,username,account FROM Medients LEFT JOIN Accounts ON Accounts.id = Medients.account;', (err, indications) => {
+        let date = new Date();
+        const today = new Date();
         /** Datum over 3 maanden; wordt gematched met datum indicatie */
         const indicationNotificationDate = new Date(date.setMonth(date.getMonth() + 3));
         if (!err) {
@@ -28,12 +37,15 @@ controller.indicationNotification = function(){
                   text: `De indicatie van Medient ${indication.username} is verlopen.`,
                   html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png">Indicatie van Medient ${indication.username} is verlopen.`,
                 };
-                connection.query(`SELECT account,action,date FROM Notifications WHERE account= ${indication.username};`, (err, notifs) => {
+                connection.query(`SELECT account FROM Notifications WHERE account='${indication.account}';`, (err, notifs) => {
+                  if(err){
+                    throw err
+                  }
                   if(notifs.length===0){
 
                     sgMail.send(msg).then(() => {
-                      console.log(` Indicatie van ${indication.username} verloopt op ${three}; Bericht verzonden naar ${indicationNotificationEmail} `);
-                      connection.query(`INSERT INTO Notifications (account) VALUES ('${indication.account}')`)
+                      console.log(` Indicatie van ${indication.username} verloopt op ${indicationNotificationDate}; Bericht verzonden naar ${indicationNotificationEmail} `);
+                      connection.query(`INSERT INTO Notifications (id,account,createdAt,updatedAt) VALUES ('${require('uuid/v4')()}','${indication.account}','${dateTime()}','${dateTime()}')`)
                     }).catch(error => {
                       //Log friendly error
                       console.error(error.toString());
@@ -70,12 +82,12 @@ controller.indicationNotification = function(){
         } else {
           throw err;
         }
-        connection.end();
+        //connection.end();
       });
 
 }
 
 
 controller.indicationNotificationCheck = (()=>{
-    setTimeout(indicationNotification,86400000) // fires indicationNotification once in 24h (86400000 ms)
+    setTimeout(controller.indicationNotification,86400000) // fires indicationNotification once in 24h (86400000 ms)
 })()

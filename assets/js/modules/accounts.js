@@ -15,8 +15,13 @@ const teamList = { data : [] };
 const accountDataModify = (account) => {
 
   const accountAdd = {
-    name : account.firstName + ' ' +  account.lastName
+    name : account.firstName + ' ' +  account.lastName,
+    test : account.indication.split('T')[0]
   };
+  
+  if(account.profile === 'medient') {
+    account.indication = account.indication.split('T')[0]
+  }
   return { ...account, ...accountAdd };
 };
 
@@ -113,18 +118,19 @@ function account(id, type) {
     account = teamList.data.filter((account) => account.id === id);
   }
 
-
+  
  
   
   accountsElement.data( 'account' , account[0] );
   $.get('html/templates/accountDashboard.html', (accountDashboard) => {
+
     location.hash = '#'+account[0].id
     component.modal({
       title : '<i class="fas fa-profile"></i> Account '+account[0].name,
       body : accountDashboard,
       open : ()=>{
-        if(account[0].profile === 'teammember'){
-          $('#formGroupMedientIndication').remove()
+        if(account[0].profile === 'teammembere'){
+          $('#formGroupMedientIndication').rmove()
         }else{
           // medient data
         }
@@ -172,8 +178,15 @@ function accountPersonalInfo(account) {
     accountsOverview();
  
   });
-
+  
+  const indication = account[0].indication.split('T')[0]
+  console.log(indication)
+ 
   Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
+  
+  const indicationElement = $('input#indication').val(indication)
+  $('input#indication').remove()
+  $('#indicationContainer').append(indicationElement)
   $('#accountSaveBtn').on('click', () => {
    // const accountFormData = component.form.data({ el : 'form#accountInfoEdit', model : 'Account'});
     const accountFormData = component.form.fields({ el : 'form#accountInfoEdit', model : 'Account'});

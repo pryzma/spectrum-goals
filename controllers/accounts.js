@@ -143,11 +143,16 @@ controller.getAll = (req,res) => {
 }
 
 controller.getMedients = (req,res) => {
+    /*
     Account.findAll({where: {profile: 'medient'}, order:[['id','DESC']]}).then((accounts) => {
         
         res.json(accounts)
         
     });
+    */
+   connection.query('SELECT * FROM Medients LEFT JOIN Accounts ON Accounts.id = Medients.account;', (err, accounts) => {
+        res.json(accounts);
+    })
 }
 
 controller.getTeamMembers = (req,res) => {

@@ -101,7 +101,20 @@ function medientPersonalInfo(medient){
     const  medientPersonalInfoElement = $('#medientPersonalInfo');
     $('#medientPersonalInfo').html($('#medientPersonalInfoEdit').html())
     Object.keys(medient[0]).map((key, index) => $(`input#${key}`).val(medient[0][key]));
+    const indication = medient[0].indication.split('T')[0]
+    const indicationElement = $('input#indication').val(indication)
+    //$('input#indication').remove()
+    //$('#indicationContainer').append(indicationElement)
+    let date = new Date();
+    let three = new Date(date.setMonth(date.getMonth() + 3));
+    const medientIndicationDateExpired = new Date( medient[0].indication)
+    if (three > medientIndicationDateExpired)  {
+        
+        $('input#indication').addClass('medientIndicationExpired')
+        
+    }
     $('button#medientEditBtn').on('click',()=>{
+       // $('input#indication').removeClass('medientIndicationExpired')
         location.hash = '#'+medient[0].id+'/edit'
         $('#medientPersonalInfo input').removeAttr('disabled');
         $('#medientEdit').hide();
@@ -128,6 +141,16 @@ function medientPersonalInfoSave(){
             url : 'api/accounts',
             data : medientPersonalInfoData,
             callback : (data)=> {
+                let date = new Date();
+                let three = new Date(date.setMonth(date.getMonth() + 3));
+                const medientIndicationDateExpired = new Date( medient[0].indication)
+                if (three > medientIndicationDateExpired)  {
+        
+                    $('input#indication').addClass('medientIndicationExpired')
+        
+                }else{
+                    $('input#indication').removeClass('medientIndicationExpired')
+                }
                 $('#medientPersonalInfo input').attr('disabled','disabled');
                 $('#medientEdit').show();
                 $('#medientSave').hide();

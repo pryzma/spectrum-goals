@@ -245,7 +245,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', end
   }
 
 
-  #medientPersonalInfo input[type="text"]:disabled, .medient_contact input[type="text"]:disabled{
+  #medientPersonalInfo input:disabled, .medient_contact input:disabled{
       color : whitesmoke;
       /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9b9898+0,bfbfbf+100 */
 background: #9b9898; /* Old browsers */
@@ -257,6 +257,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
   }
   #medientAddContactForm .medientContactOptions{
       display: none;
+  }
+  .medientIndicationExpired{
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#d64d4d+0,d87c7c+100 */
+background: #d87c7c ; /* Old browsers */
+background: -moz-linear-gradient(top,  #d64d4d 0%, #d87c7c 100%) !important; /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #d64d4d 0%,#d87c7c 100%) !important; /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #d64d4d 0%,#d87c7c 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d64d4d', endColorstr='#d87c7c',GradientType=0 ) !important; /* IE6-9 */
+
   }
   .medient_contact .medientEditDeleteContact{
       display: none;

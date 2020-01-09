@@ -23,6 +23,9 @@ module.exports =  (sequelize, Sequelize) => {
         medient: {
             type: Sequelize.STRING
         },
+        account: {
+            type: Sequelize.STRING
+        },
         organisation: {
             type: Sequelize.STRING
         },
