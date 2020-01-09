@@ -175,7 +175,8 @@ function accountPersonalInfo(account) {
 
   Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
   $('#accountSaveBtn').on('click', () => {
-    const accountFormData = component.form.data({ el : 'form#accountInfoEdit', model : 'Account'});
+   // const accountFormData = component.form.data({ el : 'form#accountInfoEdit', model : 'Account'});
+    const accountFormData = component.form.fields({ el : 'form#accountInfoEdit', model : 'Account'});
     component.api({
       method : 'put',
       url : 'api/accounts',
@@ -218,7 +219,12 @@ function newAccount() {
           $('input[name=profile]').val(selectVal);
 
         });
-        $('#accountSaveBtn').on('click', saveAccount);
+        //$('#accountSaveBtn').on('click', saveAccount);
+        $('#accountInfo').on('submit',(e)=>{
+          e.preventDefault();
+          saveAccount()
+        })
+
       }
     });
     
