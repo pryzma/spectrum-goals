@@ -3,6 +3,10 @@ body{
     font-family: 'Raleway', sans-serif;
     background-color: whitesmoke;
 }
+::selection {
+    background-color: #5f9fab;
+    color: white;
+}
 header {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100 */
 background: #5f9fab; /* Old browsers */
@@ -312,7 +316,7 @@ div#targetCategoriesContent h2{
 }
 button.btn.addTarget,button.btn#addTargetLevel {
     margin-top:5px;
-    border: 1px dashed #ccc;
+    border: 2px dashed #ccc;
     color: #666 !important;
     text-align: center;
 }
@@ -332,7 +336,7 @@ button.btn.addTarget:hover,button.btn#addTargetLevel:hover{
     display:block;
 }
 div#addSubject{
-    border: 1px dashed #ccc;
+    border: 2px dashed #ccc;
     margin:10px;
     padding:10px;
     color: #666;

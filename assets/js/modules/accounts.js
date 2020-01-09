@@ -199,6 +199,7 @@ function newAccount() {
       title : '<i class="fas fa-user-plus"></i> Account Aanmaken',
       body : newAccount,
       open : ()=>{
+        
         $('#accountEditCancelBtn').on('click', ()=>$('#amModal').modal('hide'));
         const formGroupMedientIndication = $('#formGroupMedientIndication');
         console.log(formGroupMedientIndication)
@@ -226,20 +227,33 @@ function newAccount() {
 
 function saveAccount(){
   const accountFormData = component.form.fields({ el : 'form#accountInfo', model : 'Account'});
-   console.log(accountFormData);
-  
-   component.api({
-    method : 'post',
-    url : 'api/accounts',
-    data : accountFormData,
-    callback : (data) => {
-      setTimeout(()=>{
-        component.alert({message : '<i class="fas fa-user-plus"></i> Account <b>'+ accountFormData.firstName + ' ' + accountFormData.lastName + '</b> is aangemaakt'});
-      },600);
-      
-      accountsOverview();
+  console.log(accountFormData)
+  let validated = true
+  $('#accountInfo input').removeClass('invalid')
+  for(const property in accountFormData){
+    const input = $('#'+property)
+    
+    if(input.val()==='' && input.attr('required')){
+      input.addClass('invalid');
+      validated = false
     }
-  });
+  }
+  if(validated){
+    component.api({
+      method : 'post',
+      url : 'api/accounts',
+      data : accountFormData,
+      callback : (data) => {
+        setTimeout(()=>{
+          component.alert({message : '<i class="fas fa-user-plus"></i> Account <b>'+ accountFormData.firstName + ' ' + accountFormData.lastName + '</b> is aangemaakt'});
+        },600);
+        
+        accountsOverview();
+      }
+    });
+  }
+  
+   
    
 }
 

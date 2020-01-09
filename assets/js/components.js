@@ -1398,7 +1398,7 @@ const component = (() => {
   /** validates form; https://pageclip.co/blog/2018-02-20-you-should-use-html5-form-validation.html */
   function formValidate(args){
     const customMessages = {
-      valueMissing:    args.valueMissing,       // `required` attr
+      valueMissing:    args.valueMissing,   // `required` attr
       emailMismatch:   args.emailMismatch,  // Invalid email
       patternMismatch: args.patternMismatch,// `pattern` attr
     }
