@@ -289,13 +289,17 @@ function addTargetLevel(target){
                 }
             });
             
+        }]},
+        {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+            $('#amModal').modal('hide')
         }]}]
     });
 }
 
 
 function overviewTargetLevels(target){
-
+    
+    $('.overviewTargetSubjectName').html(target.subject.name)
     $('#overviewTargetAssignMedientInput').off().on('input',(event)=>{
       
         const searchTargetAssignMedientValue = event.target.value
@@ -323,7 +327,9 @@ function overviewTargetLevels(target){
                                 })
                             }
                         })
-                    }}]
+                    }},{txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+                        $('#amModal').modal('hide')
+                    }]}]
                 })
             })
             $('#TargetAssignMedients')
@@ -366,6 +372,7 @@ function overviewTargetLevels(target){
             $('.overviewTargetName').html(target.name);
             $('#addTargetLevel').off().on('click',()=>addTargetLevel(target));
             for(const levelIndex in levels){
+                levels[levelIndex].target = target
                 const levelBtn = component.btn({
                     txt : `Level ${levelIndex/1+1} : ${levels[levelIndex].name}`,
                     class : 'block left btn-primary btn-green'
@@ -412,6 +419,57 @@ function overviewTargetLevels(target){
       
 
 }
+function levelDelete(level){
+    component.modal({
+        title : '<i class="fas fa-times"></i> Level verwijderen',
+        body : 'Weet je zeker dat je <b>'+level.name+ '</b> wilt verwijderen?',
+        buttons : [
+            {txt : 'Bevestigen', event:['click',()=>{
+                component.api({
+                    method : 'delete',
+                    url : `api/subjects/${level.id}`,
+                    callback : ()=>{
+                        $('#amModal').modal('hide')
+                        overviewTargetLevels(level.target)
+                        component.alert({
+                            message : `<i class="fas fa-times"></i> Level verwijderd`
+                        })
+                    }
+                });
+            }]},
+            {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+                $('#amModal').modal('hide')
+            }]}
+        ]
+    })
+}
+
+function levelUpdate(level){
+    const updateLevelForm = component.form.fromModel({
+        id : 'updateLevelForm',
+        model : 'Level',
+        fields : {
+            name : { label : 'Naam', value : level.name }
+        }
+    });
+    component.modal({
+        title : 'Level aanpassen',
+        body : updateLevelForm,
+        buttons : [{txt : 'Opslaan', event : ['click', () => {
+                
+                subject.name = $('#updateLevelForm #name').val()
+                axios.put('api/levels',level ).then(() => {
+                    $('#amModal').modal('hide')
+                    component.alert({message : '<i class="fas fa-pen"></i> Level aangepast'})
+                    //overviewSubjects($('#targets').data('category'))
+                    overviewTargetLevels(level.target)
+                }).catch(error => {
+                    
+                });
+            }]
+        }]
+    })
+}
 
 function subjectTargetsBtns(args){
     // https://jqueryui.com/sortable/ ; sorteren targets
@@ -423,6 +481,8 @@ function subjectTargetsBtns(args){
                 class : 'yellow btn-block left ui-state-default',
                 id : target.id,
                 event : ['click',()=>{
+                    console.log(args.subject)
+                    target.subject = args.subject
                     overviewTargetLevels(target)
                 }]
             })
@@ -440,6 +500,7 @@ function subjectTargetsBtns(args){
                                          .attr('class','targetElementLabel')
                                          .addClass('pointer')
                                          .on('click',()=>{
+                                            target.subject = args.subject
                                             overviewTargetLevels(target)
                                          })
             targetElement.append(targetElementLabel)
@@ -496,6 +557,9 @@ function targetDelete(target){
                         targetsOverview()
                     }
                 })
+            }]},
+            {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+                $('#amModal').modal('hide')
             }]}
         ]
     })
@@ -523,7 +587,28 @@ function targetUpdate(target){
                     
                 });
             }]
-        }]
+        },
+        {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+            $('#amModal').modal('hide')
+        }]}]
     })
 }
+
+function overviewTargetSubLevels(level){
+
+}
+
+function addSubLevel(){
+
+}
+
+function updateSubLevel(sublevel){
+
+}
+
+function deleteSubLevel(sublevel){
+    
+}
+
+
 application.add('targets',targets);
