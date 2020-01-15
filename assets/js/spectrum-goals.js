@@ -37,6 +37,9 @@ const spectrumGoals = (()=>{
  * sets breadcrumbs for current page/module
  * @example spectrumGoals.breadCrumbs.set() // set breadcrumbs to current module
  */
+
+
+
 function breadCrumbs (){
     const init = ()=>{
         const defaultModuleName = application.object[application.object.default].name,
