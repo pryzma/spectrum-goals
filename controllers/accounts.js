@@ -37,7 +37,7 @@ controller.createAccount = (req,res) => {
             const medient = {
                 id : uuidv4(),
                 account : account.id,
-                indication : indication + ' 00:00:00'
+                indication : indication + ' 03:00:00'
             }
             
             Medient.create(medient);
@@ -112,8 +112,9 @@ controller.updateAccount = (req,res,next) => {
     const account = req.body;
     let medient 
     if(account.indication){
+        const indication = account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]+' 03:00:00'
         medient = {
-            indication : account.indication
+            indication : indication
         }
         delete account.indication;
     }

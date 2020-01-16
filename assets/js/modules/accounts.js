@@ -129,11 +129,13 @@ function account(id, type) {
       title : '<i class="fas fa-profile"></i> Account '+account[0].name,
       body : accountDashboard,
       open : ()=>{
-        if(account[0].profile === 'teammembere'){
-          $('#formGroupMedientIndication').rmove()
+        if(account[0].profile === 'teammember'){
+          $('#formGroupMedientIndication').remove()
         }else{
-          // medient data
+          
+          
         }
+        
         $('#accountDeleteBtn').on('click',()=>accountDelete(id));
         accountPersonalInfo(account);
       },
@@ -179,14 +181,22 @@ function accountPersonalInfo(account) {
  
   });
   
-  const indication = account[0].indication.split('T')[0]
-  console.log(indication)
+  let indication = account[0].indication.split('T')[0]
+  indication = indication.split('-')[2]+'-'+indication.split('-')[1]+'-'+indication.split('-')[0]
+ 
  
   Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
   
   const indicationElement = $('input#indication').val(indication)
   $('input#indication').remove()
   $('#indicationContainer').append(indicationElement)
+  $('input#indication').datepicker({
+    startDate :  new Date(),
+    format: 'dd-mm-yyyy',
+    language : 'nl'
+  }).on('show',(e)=>{
+    $('.datepicker').addClass('shadow-lg').attr('style',$('.datepicker').attr('style').replace('top: 91px;','top: 171px !important;'))
+  });
   $('#accountSaveBtn').on('click', () => {
    // const accountFormData = component.form.data({ el : 'form#accountInfoEdit', model : 'Account'});
     const accountFormData = component.form.fields({ el : 'form#accountInfoEdit', model : 'Account'});
@@ -216,7 +226,14 @@ function newAccount() {
         
         $('#accountEditCancelBtn').on('click', ()=>$('#amModal').modal('hide'));
         const formGroupMedientIndication = $('#formGroupMedientIndication');
-        console.log(formGroupMedientIndication)
+        $('input#indication').datepicker({
+          startDate :  new Date(),
+          format: 'dd-mm-yyyy',
+          language : 'nl'
+        }).on('show',(e)=>{
+          $('.datepicker').addClass('shadow-lg')
+          
+        })
         $('#profileSelect').on('change',(e)=>{
           const selectVal = e.target.value;
           
@@ -226,6 +243,11 @@ function newAccount() {
           }else{
             
             $('form#accountInfo').append(formGroupMedientIndication);
+            $('input#indication').datepicker({
+              startDate :  new Date(),
+              format: 'dd-mm-yyyy',
+              language : 'nl'
+            })
           }
           //console.log(selectVal);
           $('#profile').val(selectVal);

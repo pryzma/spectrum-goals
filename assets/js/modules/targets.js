@@ -24,56 +24,6 @@ const medientsObjData = {
     callback : (data) => medientsObj.data = data
   };
 
-component.targetSublevels = (args)=>{
-    const targetSublevelsClass = 'target-sublevels'
-          $targetSublevelsContainer = $('<div></div>')
-            .attr('class',targetSublevelsClass)
-    for(const sublevel in args.sublevels){
-        $targetSublevelsContainer.append(
-            $('<button></button>')
-                .attr('class','btn btn-sublevel')
-                .html(sublevel.name)
-            );
-    }
-    $(`div.${targetSublevelsClass}`).remove();
-    $(`button.btn#${args.id}`).after($targetSublevelsContainer);
-
-}
-component.targetOverview = (args)=>{
-    if(!typeof args === 'object') component.err('component.targetOverview args is not a object but '+typeof args)
-    const $rowElement = () => $('<div></div>')
-            .attr('class','row'),
-          $colElement = () => $('<div></div>')
-            .attr('class','col-md'),
-          $btnElement = (btn) => $('<button></button>')
-            .attr('class','btn btn-subject')
-            .attr('id',btn.id)
-            .html(btn.txt);
-    const $subjectRow = $rowElement()
-            .attr('id','subjects')
-    for(let subject in args.subjects){
-        const $subjectCol = $colElement().attr('id',subject.id)
-                .append($('<h4></h4>').html(subject.title));
-        for(const target in subject.targets){
-            const btn = {
-                txt : target.name,
-                id : target.id,
-                sublevels : target.sublevels
-            }
-            $subjectCol.append($btnElement(btn));
-        }
-        $subjectRow.append($subjectCol);
-    }
-    if(args.el){
-        $(args.el).html($subjectRow).promise().then(()=>{
-            $('button.btn-subject').on('click',(event)=>{
-                const targetId = event.target.id
-                component.targetSublevels({id : targetId})
-            });
-        });
-    }
-    return $subjectRow
-}
 function categoryName(category){
     if(category==='work'){
         return 'Werk'
@@ -145,7 +95,7 @@ function addSubject(){
         body : addSubjectForm,
         buttons : [{ txt : 'Opslaan', event : ['click',() => {
             const AddSubjectData = component.form.fields({el : '#addSubjectForm' });
-          
+            AddSubjectData.category = 
             component.api({
                 url : 'api/subjects',
                 method: 'post',
@@ -167,6 +117,7 @@ function addSubject(){
     })
 }
 function overviewSubjects(category){
+    $('#targets').data('category',category)
     $('#categoryBreadcrumb').remove();
     const categoryBreadcrumb = $('<li></li>')
         .addClass('breadcrumb-item active')
@@ -179,7 +130,7 @@ function overviewSubjects(category){
             const subjectsContainer = $(`#${category}Subjects div.row`)
             $('.subjectContainer').remove()
             for(const subject of subjects){
-                //if(subjects.category === category){
+               
                     const addTargetBtn = component.btn({ 
                             html : '<i class="fas fa-plus"></i> Leerdoel toevoegen', 
                             event : ['click',()=>addTarget(subject.id)],
@@ -190,37 +141,17 @@ function overviewSubjects(category){
                             .attr('class','btn btn-nobg float-right')
                             .attr('style','margin-top:-40px;')
                             .html('<i class="fas fa-times"></i>')
-                            .on('click',(event)=>{
-                                
-                                component.modal({
-                                    title : '<i class="fas fa-times"></i> Onderwerp  verwijderen',
-                                    body : 'Weet je zeker dat je <b>'+subject.name+ '</b> (en onderliggende leerdoelen) wilt verwijderen?',
-                                    buttons : [
-                                        {txt : 'Bevestigen', event:['click',()=>{
-                                            component.api({
-                                                method : 'delete',
-                                                url : `api/subjects/${subject.id}`,
-                                                callback : ()=>{
-                                                    $('#amModal').modal('hide')
-                                                    overviewSubjects(category)
-                                                    component.alert({
-                                                        message : `<i class="fas fa-times"></i> Onderwerp verwijderd`
-                                                    })
-                                                }
-                                            });
-                                        }]},
-                                        {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-                                            $('#amModal').modal('hide')
-                                        }]}
-                                    ]
-                                })
-                                
-                            }),
-                          
+                            .on('click',()=>subjectDelete(subject)),
+                          subjectUpdateBtn = $('<button></button>')
+                            .attr('class','btn btn-nobg float-right')
+                            .attr('style','margin-top:-40px; margin-right:20px;')
+                            .html('<i class="fas fa-pen"></i>')
+                            .on('click',()=>subjectUpdate(subject)),
                           subjectOptions = $('<div></div>')
                             .attr('class','subjectOptions float-right')
                             .attr('style','z-index:1;')
-                            .append(subjectDeleteBtn),
+                            .append(subjectDeleteBtn)
+                            .append(subjectUpdateBtn),
                           subjectHeader = $('<p></p>')
                             .addClass('subjectHeader h4 bold green center')
                             .attr('id',`subjectHeader_${subject.id}`)
@@ -239,8 +170,23 @@ function overviewSubjects(category){
                                 subjectTargetsBtns({
                                   targets : targets,
                                   container :  targetBtnsContainer,
-                                  subject : subject
+                                  subject : subject,
+                                  callback : ()=>{
+                                    
+                                    $(`#${subject.id} div.targetBtnsContainer`)
+                                    .sortable({
+                                        start : function( event, ui ) {
+                                            $(event.target).addClass('grabbing')
+                                            //console.log(ui)
+                                        },
+                                        stop : function( event, ui  ) {
+                                            $(event.target).removeClass('grabbing')
+                                        }
+                                    })
+                                    .disableSelection();
+                                  }
                                 })
+                                
                           }
                     })
                     subjectsContainer.prepend(subjectContainer);
@@ -258,10 +204,63 @@ function overviewSubjects(category){
                         }
                       });
                 //}
+
             }
         }
     })
 
+}
+function subjectDelete(subject){
+                                
+    component.modal({
+        title : '<i class="fas fa-times"></i> Onderwerp  verwijderen',
+        body : 'Weet je zeker dat je <b>'+subject.name+ '</b> (en onderliggende leerdoelen, (sub)levels) wilt verwijderen?',
+        buttons : [
+            {txt : 'Bevestigen', event:['click',()=>{
+                component.api({
+                    method : 'delete',
+                    url : `api/subjects/${subject.id}`,
+                    callback : ()=>{
+                        $('#amModal').modal('hide')
+                        overviewSubjects(category)
+                        component.alert({
+                            message : `<i class="fas fa-times"></i> Onderwerp verwijderd`
+                        })
+                    }
+                });
+            }]},
+            {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+                $('#amModal').modal('hide')
+            }]}
+        ]
+    })
+    
+}
+function subjectUpdate(subject){
+    const updateSubjectForm = component.form.fromModel({
+        id : 'updateSubjectForm',
+        model : 'Subject',
+        fields : {
+            name : { label : 'Naam', value : subject.name }
+        }
+    });
+    component.modal({
+        title : 'Leerdoel aanpassen',
+        body : updateSubjectForm,
+        buttons : [{txt : 'Opslaan', event : ['click', () => {
+                
+                subject.name = $('#updateSubjectForm #name').val()
+                axios.put('api/subjects',subject ).then(() => {
+                    $('#amModal').modal('hide')
+                    component.alert({message : '<i class="fas fa-pen"></i> Onderwerp aangepast'})
+                    //overviewSubjects($('#targets').data('category'))
+                    targetsOverview()
+                }).catch(error => {
+                    
+                });
+            }]
+        }]
+    })
 }
 function addTargetLevel(target){
     const addTargetLevelForm = component.form.fromModel({
@@ -290,22 +289,64 @@ function addTargetLevel(target){
                 }
             });
             
+        }]},
+        {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+            $('#amModal').modal('hide')
         }]}]
     });
 }
 
 
 function overviewTargetLevels(target){
+    
+    $('.overviewTargetSubjectName').html(target.subject.name)
     $('#overviewTargetAssignMedientInput').off().on('input',(event)=>{
-        
+      
         const searchTargetAssignMedientValue = event.target.value
         searchTargetAssignMedientValue === '' ? $('#TargetAssignMedients').hide() : $('#TargetAssignMedients').show() 
+      
         $('#TargetAssignMedients').html('')
         medientsObj.data.map((medient)=>{
-              
-            $('#TargetAssignMedients').append('<p>'+medient.name+'</p>')
-             
+            const searchTargetAssignMedientElement = $('<p>'+medient.name+'</p>')
+            .attr('style','margin-bottom:0px;')
+            .on('click',()=>{
+                component.modal({
+                    title : 'Leerdoel toewijzen aan Medient',
+                    body : 'Weet je zeker dat je leerdoel <b>'+target.name+'</b> wil toewijzen aan '+medient.name,
+                    buttons : [ { txt : 'Bevestigen', onClick : ()=>{
+                        component.api({
+                            method : 'post',
+                            url : 'api/medients/target/add',
+                            data : {
+                                medient : medient.id,
+                                target : target.id
+                            },
+                            callback : ()=>{
+                                component.alert({
+                                    message : 'Leerdoel <b>'+target.name+'</b> is toegewezen aan '+medient.name
+                                })
+                            }
+                        })
+                    }},{txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+                        $('#amModal').modal('hide')
+                    }]}]
+                })
+            })
+            $('#TargetAssignMedients')
+                .append(searchTargetAssignMedientElement)
+                
+
         })
+        let value = $(`#${event.target.id}`).val();
+        let arr = $(`#TargetAssignMedients p`);
+        let filter = new RegExp(value, 'i');
+        for (let i = 0; arr.length > i; i++) {
+          if (filter.test(arr[i].textContent)) {
+            arr[i].style.display = "block";
+          } else {
+            arr[i].style.display = "none";
+          }
+        }
         
     })
     $('.breadcrumb-item').removeClass('active');
@@ -331,58 +372,170 @@ function overviewTargetLevels(target){
             $('.overviewTargetName').html(target.name);
             $('#addTargetLevel').off().on('click',()=>addTargetLevel(target));
             for(const levelIndex in levels){
+                levels[levelIndex].target = target
                 const levelBtn = component.btn({
                     txt : `Level ${levelIndex/1+1} : ${levels[levelIndex].name}`,
                     class : 'block left btn-primary btn-green'
-                })
-                $('#overviewTargetLevelsBtns').append(levelBtn)
+                }),
+                    levelElement = $('<div></div')
+                     .attr('class','levelContainer btn btn-block left btn-primary btn-green ui-sortable-handle pointer'),
+                    levelLabel = $('<div></div>')
+                      .html(`Level ${levelIndex/1+1} : ${levels[levelIndex].name}`)
+                    levelElement.append(levelLabel);
+                    const levelDeleteBtn = $('<button></button>')
+                            .attr('class','btn btn-nobg float-right')
+                            .attr('style','margin-top:-40px;')
+                            .html('<i class="fas fa-times"></i>')
+                            .on('click',()=>levelDelete(levels[levelIndex])),
+                          levelUpdateBtn = $('<button></button>')
+                            .attr('class','btn btn-nobg float-right')
+                            .attr('style','margin-top:-40px; margin-right:20px;')
+                            .html('<i class="fas fa-pen"></i>')
+                            .on('click',()=>levelUpdate(levels[levelIndex])),
+                          levelOptions = $('<div></div>')
+                            .attr('class','levelOptions float-right')
+                            .attr('style','z-index:1; padding-top:10px;')
+                            .append(levelDeleteBtn)
+                            .append(levelUpdateBtn)
+                          levelElement.append(levelOptions);
+
+                    
+
+
+                $('#overviewTargetLevelsBtns').append(levelElement)
             }
+            $('#overviewTargetLevelsBtns').sortable({
+                start : function( event, ui ) {
+                    $(event.target).addClass('grabbing')
+                    //console.log(ui)
+                },
+                stop : function( event, ui  ) {
+                    $(event.target).removeClass('grabbing')
+                }
+            });
         }
     });
     
       
 
 }
+function levelDelete(level){
+    component.modal({
+        title : '<i class="fas fa-times"></i> Level verwijderen',
+        body : 'Weet je zeker dat je <b>'+level.name+ '</b> wilt verwijderen?',
+        buttons : [
+            {txt : 'Bevestigen', event:['click',()=>{
+                component.api({
+                    method : 'delete',
+                    url : `api/subjects/${level.id}`,
+                    callback : ()=>{
+                        $('#amModal').modal('hide')
+                        overviewTargetLevels(level.target)
+                        component.alert({
+                            message : `<i class="fas fa-times"></i> Level verwijderd`
+                        })
+                    }
+                });
+            }]},
+            {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+                $('#amModal').modal('hide')
+            }]}
+        ]
+    })
+}
+
+function levelUpdate(level){
+    const updateLevelForm = component.form.fromModel({
+        id : 'updateLevelForm',
+        model : 'Level',
+        fields : {
+            name : { label : 'Naam', value : level.name }
+        }
+    });
+    component.modal({
+        title : 'Level aanpassen',
+        body : updateLevelForm,
+        buttons : [{txt : 'Opslaan', event : ['click', () => {
+                
+                subject.name = $('#updateLevelForm #name').val()
+                axios.put('api/levels',level ).then(() => {
+                    $('#amModal').modal('hide')
+                    component.alert({message : '<i class="fas fa-pen"></i> Level aangepast'})
+                    //overviewSubjects($('#targets').data('category'))
+                    overviewTargetLevels(level.target)
+                }).catch(error => {
+                    
+                });
+            }]
+        }]
+    })
+}
 
 function subjectTargetsBtns(args){
+    // https://jqueryui.com/sortable/ ; sorteren targets
+
     for(const target of args.targets){
         if(target.subject === args.subject.id){
             const targetBtn = component.btn({
                 txt : target.name,
-                class : 'yellow btn-block left',
+                class : 'yellow btn-block left ui-state-default',
                 id : target.id,
                 event : ['click',()=>{
+                    console.log(args.subject)
+                    target.subject = args.subject
                     overviewTargetLevels(target)
                 }]
             })
+            const targetElement = $('<div></div>')
+                                        .addClass('btn btn-yellow btn-block left pointer shadow')
+                                        .on('mousedown',(e)=>{
+                                            $(e.target).addClass('grabbing')
+                                        })
+                                        .on('mouseup',(e)=>{
+                                            $(e.target).removeClass('grabbing')
+                                        })
+            const targetElementLabel = $('<div></div>')
+                                         .html(target.name)
+                                         .attr('style','width:80%')
+                                         .attr('class','targetElementLabel')
+                                         .addClass('pointer')
+                                         .on('click',()=>{
+                                            target.subject = args.subject
+                                            overviewTargetLevels(target)
+                                         })
+            targetElement.append(targetElementLabel)
             const targetDeleteBtn = $('<button></button>')
                 .attr('class','btn btn-nobg')
                 .html('<i class="fas fa-times"></i>')
-                .on('click',(event)=>{
-                     
-                    component.api({
-                        method : 'delete',
-                        url : `api/targets/${target.id}`,
-                        callback : () => {
-                            component.alert({
-                                message : '<i class="fas fa-times"></i> Leerdoel verwijderd'
-                            })
-                        }
-                    })
-                })
+                .on('click',(event)=>targetDelete(target))
+            //targetElement.append(targetDeleteBtn)
+            const targetUpdateBtn = $('<button></button>')
+            .attr('class','btn btn-nobg')
+            .html('<i class="fas fa-pen"></i>')
+            .on('click',(event)=>targetUpdate(target))
+
+            
             const targetOptions = $('<div></div>')
                 .attr('class','targetOptions float-right')
                 .attr('style','margin-top:-38px;')
+            
             const targetContainer = $('<div></div>')
                 .attr('class','targetContainer')
-                
+                .attr('id',component.uid())
+            
+            
+            targetOptions.append(targetUpdateBtn);
             targetOptions.append(targetDeleteBtn);
-            targetContainer.append(targetBtn);
-            //targetContainer.append(targetOptions);
+            targetElement.append(targetOptions);
+            targetContainer.append(targetElement);
+
             args.container.prepend(targetContainer);
 
+
         }
+        
     }
+    if(args.callback) args.callback()
 }
 function targetCreate(){
     $.get('html/templates/targetCreate.html', (data) => {
@@ -390,4 +543,72 @@ function targetCreate(){
     
       });
 }
+function targetDelete(target){
+    component.modal({
+        title : 'Leerdoel verwijderen',
+        body : 'Weet je zeker dat je <b>'+target.name+'</b> wilt verwijderen?',
+        buttons : [
+            { txt : 'Bevestigen', event : ['click',()=>{
+                component.api({
+                    method : 'delete',
+                    url : 'api/targets/'+target.id,
+                    callback : ()=>{
+                        $('#amModal').modal('hide')
+                        targetsOverview()
+                    }
+                })
+            }]},
+            {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+                $('#amModal').modal('hide')
+            }]}
+        ]
+    })
+}
+function targetUpdate(target){
+    const updateTargetForm = component.form.fromModel({
+        id : 'updateTargetForm',
+        model : 'Target',
+        fields : {
+            name : { label : 'Naam', value : target.name }
+        }
+    });
+    component.modal({
+        title : 'Leerdoel aanpassen',
+        body : updateTargetForm,
+        buttons : [{txt : 'Opslaan', event : ['click', () => {
+                
+                target.name = $('#updateTargetForm #name').val()
+                axios.put('api/targets',target ).then(() => {
+                    $('#amModal').modal('hide')
+                    component.alert({message : '<i class="fas fa-pen"></i> Leerdoel aangepast'})
+                    //overviewSubjects($('#targets').data('category'))
+                    targetsOverview()
+                }).catch(error => {
+                    
+                });
+            }]
+        },
+        {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+            $('#amModal').modal('hide')
+        }]}]
+    })
+}
+
+function overviewTargetSubLevels(level){
+
+}
+
+function addSubLevel(){
+
+}
+
+function updateSubLevel(sublevel){
+
+}
+
+function deleteSubLevel(sublevel){
+    
+}
+
+
 application.add('targets',targets);

@@ -44,7 +44,12 @@ controller.deleteSubject = (req,res) => {
         }).then(()=>{
             Level.destroy({
                 where: {target : req.params.id}
+            }).then(()=>{
+                SubLevel.destroy({
+                    where: {level : req.params.id}
+                })
             })
+            
         })
         
         controller.getAll(req,res);

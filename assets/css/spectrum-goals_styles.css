@@ -87,6 +87,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', end
 .pointer {
     cursor: pointer;
 }
+.grabbing{
+    cursor: grabbing;
+}
 .yellow{
     color : #fac031;
 }
@@ -159,6 +162,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
     color : whitesmoke;
     
     
+    
 }
 table.green tbody tr td {
      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100 */
@@ -191,9 +195,17 @@ table.table tbody tr :nth-child(1),table.table thead tr :nth-child(1) {
     text-align: left !important;
     border-radius: 10px 0px 0px 10px;
   }
-
-  table.table tbody tr :last-child {
+  table.table tbody tr {
+      background: none !important;
+  }
+  #medientOverview tbody tr :nth-child(5),table.table tbody tr :last-child{
     border-radius : 0 10px 10px 0 !important;
+  }
+  #medientOverview table.table tbody tr :last-child{
+    background: none;
+    color:#d64d4d;
+    text-shadow: none;
+    font-size: larger;
   }
   #medientOverview thead tr :nth-child(2) {
     color: #9b9898;
@@ -253,7 +265,7 @@ background: -moz-linear-gradient(top,  #9b9898 0%, #bfbfbf 100%); /* FF3.6-15 */
 background: -webkit-linear-gradient(top,  #9b9898 0%,#bfbfbf 100%); /* Chrome10-25,Safari5.1-6 */
 background: linear-gradient(to bottom,  #9b9898 0%,#bfbfbf 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', endColorstr='#bfbfbf',GradientType=0 ); /* IE6-9 */
-
+text-shadow: 1px 1px #666;
   }
   #medientAddContactForm .medientContactOptions{
       display: none;
@@ -278,6 +290,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d64d4d', end
 }
 
 /** targets */
+.targetOptions .btn {
+    color: #666;
+    font-size: smaller;
+    margin-top: 7px;
+    width: 10px;
+}
+.targetElementLabel {
+    color: whitesmoke;
+    text-shadow: 1px 1px #666;
+    font-weight: bold;
+}
 #targetsSearchContainer input{
     border: none;
 }
@@ -338,11 +361,14 @@ button.btn.addTarget:hover,button.btn#addTargetLevel:hover{
 .targetContainer{
     margin-top:5px;
 }
-.targetContainer .targetOptions{
+.targetContainer .targetOptions,.levelContainer .levelOptions{
     display:none;
 }
-.targetContainer:hover .targetOptions{
+.targetContainer:hover .targetOptions,.levelContainer:hover .levelOptions{
     display:block;
+}
+.levelOptions .btn{
+    color: #fff;
 }
 div#addSubject{
     border: 2px dashed #ccc;
@@ -379,6 +405,14 @@ div.subjectContainer:hover div.subjectOptions{
     display: block;
 }
 /** accounts */
+
+#newAccount{
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+   
+
+}
 #accountsMain .table thead :nth-child(1) {
     width : 250px;
 }
@@ -412,7 +446,8 @@ div.subjectContainer:hover div.subjectOptions{
         padding-left: 30px;
     }
     #headerNav li{
-        font-size: 1.2em;
+        font-size: 0.9em;
+
     }
     header #headerNav li{
         list-style: none;
@@ -429,7 +464,15 @@ div.subjectContainer:hover div.subjectOptions{
     }
     .medient-contact{
         border-top:1px solid #ccc;
+        
         margin-top: 15px;
+    }
+    .nav-tabs .nav-item{
+        width: auto !important;
+    }
+    .nav-tabs .nav-item a{
+        font-size: 14px !important;
+       
     }
 }
 #headerNavShow .btn{
@@ -468,5 +511,13 @@ div.subjectContainer:hover div.subjectOptions{
     
     #headerNavShow{
         display:none;
+    }
+
+    .datepicker{
+        top: 382px !important;
+
+    }
+    .modal-open .datepicker{
+        top: 345px !important;
     }
 }

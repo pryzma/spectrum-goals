@@ -43,7 +43,24 @@ const medientData = {
     /**@param {object} medient medient data */
     modify : medientDataModify,
     /**@param {array} data medients data */
-    callback : (data) => medients.data = data
+    callback : (data) => {
+        medients.data = data
+        $('#medientOverview table thead tr').append($('<th></th>').attr('style','width:1%'));
+        for(const medient of data){
+
+            let date = new Date();
+            let three = new Date(date.setMonth(date.getMonth() + 3));
+            const medientIndicationDateExpired = new Date( medient.indication)
+            $(`tr#${medient.id}`).append('<td></td>')
+            const medientTableRowLastCol = $(`tr#${medient.id} td:last-child`)
+            const medientIndicationExpiredIcon = $('<i class="fas fa-exclamation-circle"></i>').attr('style','')
+            if (three > medientIndicationDateExpired)  {
+                medientTableRowLastCol.append(medientIndicationExpiredIcon)
+        
+        
+            } 
+        }
+    }
 }
 // ........................................
 /**
@@ -101,8 +118,8 @@ function medientPersonalInfo(medient){
     const  medientPersonalInfoElement = $('#medientPersonalInfo');
     $('#medientPersonalInfo').html($('#medientPersonalInfoEdit').html())
     Object.keys(medient[0]).map((key, index) => $(`input#${key}`).val(medient[0][key]));
-    const indication = medient[0].indication.split('T')[0]
-    const indicationElement = $('input#indication').val(indication)
+    const indication = medient[0].indication.split('T')[0].split('-')
+    const indicationElement = $('input#indication').val(`${indication[2]}-${indication[1]}-${indication[0]}`)
     //$('input#indication').remove()
     //$('#indicationContainer').append(indicationElement)
     let date = new Date();
@@ -112,14 +129,34 @@ function medientPersonalInfo(medient){
         
         $('input#indication').addClass('medientIndicationExpired')
         
+    } else {
+        $('input#indication').removeClass('medientIndicationExpired')
     }
     $('button#medientEditBtn').on('click',()=>{
-       // $('input#indication').removeClass('medientIndicationExpired')
+        $('input#indication').removeClass('medientIndicationExpired')
         location.hash = '#'+medient[0].id+'/edit'
         $('#medientPersonalInfo input').removeAttr('disabled');
         $('#medientEdit').hide();
         $('#medientSave').show();
-        $('#medientSaveBtn').on('click',medientPersonalInfoSave);
+        $('input#indication').datepicker({
+            startDate :  new Date(),
+            format: 'dd-mm-yyyy',
+            language : 'nl'
+        }).on('show',(e)=>{
+            $('.datepicker').addClass('shadow')
+            $('input#indication').removeClass('medientIndicationExpired')
+        }).on('changeDate',(e)=>{
+            let date = new Date();
+            let three = new Date(date.setMonth(date.getMonth() + 3));
+            const medientIndicationDateExpired = new Date( medient[0].indication)
+            if (three > medientIndicationDateExpired)  {
+        
+                $('input#indication').addClass('medientIndicationExpired')
+        
+            }
+        });
+
+        $('#medientSaveBtn').off().on('click',medientPersonalInfoSave);
         $('#medientEditCancelBtn').on('click',()=>{
             location.hash = '#'+medient[0].id
             $('#medientPersonalInfo input').attr('disabled','disabled');
@@ -143,7 +180,8 @@ function medientPersonalInfoSave(){
             callback : (data)=> {
                 let date = new Date();
                 let three = new Date(date.setMonth(date.getMonth() + 3));
-                const medientIndicationDateExpired = new Date( medient[0].indication)
+                const medientIndicationDateExpired = new Date( medientPersonalInfoData.indication.split('-')[2]+'-'+medientPersonalInfoData.indication.split('-')[1]+'-'+medientPersonalInfoData.indication.split('-')[0])
+                
                 if (three > medientIndicationDateExpired)  {
         
                     $('input#indication').addClass('medientIndicationExpired')
@@ -151,6 +189,7 @@ function medientPersonalInfoSave(){
                 }else{
                     $('input#indication').removeClass('medientIndicationExpired')
                 }
+                
                 $('#medientPersonalInfo input').attr('disabled','disabled');
                 $('#medientEdit').show();
                 $('#medientSave').hide();
