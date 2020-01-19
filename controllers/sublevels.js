@@ -12,15 +12,15 @@ controller.createSubLevel = (req,res) => {
     const sublevel = req.body,
     uuid = uuidv4();
     sublevel.id = uuid;
-    SUbLevel.create(sublevel).then((sublevel)=>{
+    SubLevel.create(sublevel).then((sublevel)=>{
         res.json(sublevel);
     }).catch((err)=>{
         console.log(err);
     });
 }
 
-controller.updateTarget = (req,res,next) => {
-    Target.update(req.body,{where: { id: req.body.id } })
+controller.updateSubLevel = (req,res,next) => {
+    SubLevel.update(req.body,{where: { id: req.body.id } })
     .then(function(rowsUpdated) {
         res.json(rowsUpdated)
     })
@@ -28,13 +28,18 @@ controller.updateTarget = (req,res,next) => {
 }
 
 controller.getAll = (req,res) => {
-    Target.findAll({order:[['name','DESC']]}).then((items) => {
+    SubLevel.findAll({order:[['name','DESC']]}).then((items) => {
+        res.json(items);
+    });
+}
+controller.getLevelSubLevels = (req,res) => {
+    SubLevel.findAll({where: {level: req.params.level },order:[['name','DESC']]}).then((items) => {
         res.json(items);
     });
 }
 
-controller.deleteTarget = (req,res) => {
-    Target.destroy({
+controller.deleteSubLevel = (req,res) => {
+    SubLevel.destroy({
         where: {id : req.params.id}
     }).then(()=>{
         controller.getAll(req,res);

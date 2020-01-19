@@ -27,8 +27,12 @@ header .navbar-brand{
     padding-left: 25px;
 }
 
-
-
+nav#headerNav li a{
+    text-shadow: 1px 1px #666;
+}
+nav#headerNav li a:hover{
+    font-weight: bold;
+}
 
 header #accountTopInfo a{
     color: #666;
@@ -63,6 +67,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', end
     background: linear-gradient(to bottom,  #429caa 0%,#7ea6ad 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', endColorstr='#7ea6ad',GradientType=0 ); /* IE6-9 */
     border-color: #5F9FAB;
+}
+.btn.btn-white {
+    background: #fff; /* Old browsers */
+    background: -moz-linear-gradient(top,  whitesmoke 0%, #fff 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  whitesmoke 0%,#fff 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  whitesmoke 0%,#fff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', endColorstr='#7ea6ad',GradientType=0 ); /* IE6-9 */
+    border-color: #ccc;
 }
 .btn-outline-primary.green {
     border-color: #5F9FAB;
@@ -290,15 +302,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d64d4d', end
 }
 
 /** targets */
+.subjectOptions .btn {
+    color: #5F9FAB;
+}
 .targetOptions .btn {
-    color: #666;
-    font-size: smaller;
+    color: whitesmoke;
+    text-shadow: 1px 1px #666;
     margin-top: 7px;
     width: 10px;
 }
 .targetElementLabel {
     color: whitesmoke;
     text-shadow: 1px 1px #666;
+   
+}
+.targetElementLabel:hover{
     font-weight: bold;
 }
 #targetsSearchContainer input{
@@ -333,10 +351,12 @@ div#TargetAssignMedients p {
     cursor: pointer;
 }
 div#TargetAssignMedients p:hover {
-    background-color: #429caa;
+    background-color: #7db9e8;
+    border-radius: 5px;
     color: whitesmoke;
     text-shadow: 1px 1px #666;
 }
+
 div.tab-content {
     background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);
     
@@ -361,16 +381,23 @@ button.btn.addTarget:hover,button.btn#addTargetLevel:hover{
 .targetContainer{
     margin-top:5px;
 }
-.targetContainer .targetOptions,.levelContainer .levelOptions{
+.targetContainer .targetOptions,.levelContainer .levelOptions,.subLevelElement .subLevelOptions{
     display:none;
 }
-.targetContainer:hover .targetOptions,.levelContainer:hover .levelOptions{
+.targetContainer:hover .targetOptions,.levelContainer:hover .levelOptions,.subLevelElement:hover .subLevelOptions{
     display:block;
+}
+#overviewTargetLevels .levelContainer.btn{
+    text-shadow: 1px 1px #666;
+}
+#overviewTargetLevels .levelContainer.btn:hover{
+    font-weight: bold;
 }
 .levelOptions .btn{
     color: #fff;
+    text-shadow: 1px 1px #666;
 }
-div#addSubject{
+div.addSubject{
     border: 2px dashed #ccc;
     margin:10px;
     padding:10px;
@@ -378,13 +405,13 @@ div#addSubject{
     height: 250px;
     border-radius: 5px;
 }
-div#addSubject:hover{
+div.addSubject:hover{
     background-color: #fff;
     color: darkgrey;
     border-color: darkgrey;
     cursor: pointer;
 }
-div#addSubject p{
+div.addSubject p{
     margin: 0;
     position: absolute;
     top: 50%;
@@ -445,15 +472,14 @@ div.subjectContainer:hover div.subjectOptions{
         margin-bottom: 25px;
         padding-left: 30px;
     }
-    #headerNav li{
-        font-size: 0.9em;
 
-    }
-    header #headerNav li{
+    nav#headerNav li{
+        font-size: 0.9em;
         list-style: none;
         display: inline;
         padding-right: 15px;
     }
+    
     body{
         font-size: smaller;
     }

@@ -37,7 +37,7 @@
             { "name" : "Axios", "url" : "https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js", "type" : "script", "sri" : "sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs="},
             { "name" : "Bootstrap (JS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js", "type" : "script", "sri" : "sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" },    
             { "name" : "Bootstrap (CSS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css", "type" : "stylesheet", "sri" : "sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY" },    
-            { "name" : "Moment", "url" : "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js", "type" : "script", "sri" : "sha384-fYxN7HsDOBRo1wT/NSZ0LkoNlcXvpDpFy6WzB42LxuKAX7sBwgo7vuins+E1HCaw" },
+            { "name" : "Moment", "url" : "https://momentjs.com/downloads/moment-with-locales.js", "type" : "script", "sri" : "sha384-NvFJ23tQe7oaewyOGQ4lTKFGd/PCWk6VrfASkwnZN8D5OyUNiE/aCqeM4t0vfZeW" },
             { "name" : "Datatables jQuery", "url" : "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js", "type" : "script", "sri" : "sha384-rgWRqC0OFPisxlUvl332tiM/qmaNxnlY46eksSZD84t+s2vZlqGeHrncwIRX7CGp" },
             { "name" : "Bootstrap Date Picker", "url" : "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js", "type" : "script", "sri" : "sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" },
             { "name" : "Bootstrap Date Picker NL", "url" : "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.nl.min.js", "type" : "script", "sri" : "sha256-XerzQ5saqHDPwOSj67vG2eHzBqqMvFlm/nnCH8I2ZGE=" },
@@ -73,7 +73,8 @@
             "/api/contacts" : "contacts",
             "/api/account" : "account",
             "/api/categories" : "categories",
-            "/api/levels" : "levels"
+            "/api/levels" : "levels",
+            "/api/sublevels" : "sublevels"
 
         },
         "require" : [

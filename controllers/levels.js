@@ -2,7 +2,8 @@
 * controllers/levels.js
 */
 const controller = module.exports = {}
-const models = require('../models').sequelize.models
+const models = require('../models').sequelize.models;
+const connection = require('../app/dbconn');
 const Level = models.Level;
 const auth = require('./auth');
 const uuidv4 = require('uuid/v4');
@@ -19,11 +20,14 @@ controller.createLevel = (req,res) => {
 }
 
 controller.updateLevel = (req,res,next) => {
-    Level.update(req.body,{where: { id: req.body.id } })
+    /*Level.update(req.body,{where: { id: req.body.id } })
     .then(function(rowsUpdated) {
         res.json(rowsUpdated)
     })
-    .catch(next);
+    .catch(next);*/
+    connection.query(`UPDATE Levels SET name = '${req.body.name}' WHERE id = '${req.body.id}'`,(err,result)=>{
+        res.json(result)
+    })
 }
 
 controller.getAll = (req,res) => {

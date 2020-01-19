@@ -55,6 +55,18 @@ const medientData = {
             const medientTableRowLastCol = $(`tr#${medient.id} td:last-child`)
             const medientIndicationExpiredIcon = $('<i class="fas fa-exclamation-circle"></i>').attr('style','')
             if (three > medientIndicationDateExpired)  {
+                medientIndicationExpiredIcon.on('click',()=>{
+                    moment.locale('nl');
+                    component.modal({
+                        title : 'Indicatie gaat verlopen',
+                        body : 'Indicatie '+ medient.name +' verloopt '+ moment(medient.indication).fromNow() +' ('+moment(medient.indication).format('LL')+')',
+                        buttons : [
+                            { txt : 'Sluiten', event : ['click',()=>{
+                                $('#amModal').modal('hide')
+                            }]}
+                        ]
+                    })
+                })
                 medientTableRowLastCol.append(medientIndicationExpiredIcon)
         
         

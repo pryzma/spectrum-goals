@@ -31,6 +31,8 @@ const spectrumGoals = (()=>{
     }else if(application.config.user.profile === 'medient'){
         $('#profile').html('Medient')
     }
+    
+    
     return spectrumGoalsObj;
 })()
 /**

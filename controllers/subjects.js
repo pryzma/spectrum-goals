@@ -6,15 +6,17 @@ const models = require('../models').sequelize.models
 const Subject = models.Subject;
 const Target = models.Target;
 const Level = models.Level;
+const SubLevel = models.SubLevel;
 const auth = require('./auth');
 const uuidv4 = require('uuid/v4');
 
 controller.createSubject = (req,res) => {
-    const subject = req.body,
-    uuid = uuidv4();
-    subject.id = uuid;
+    const subject = req.body
+  
+    if(!subject.id) subject.id = uuidv4();
     Subject.create(subject).then((subject)=>{
-        res.json(subject);
+        console.log(subject.dataValues)
+        res.json(subject.dataValues);
     }).catch((err)=>{
         console.log(err);
     });

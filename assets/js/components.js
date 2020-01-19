@@ -844,6 +844,7 @@ const component = (() => {
       const button_container = document.createElement('div');
       button_container.setAttribute('id','button_container')
       const footer = document.getElementById('amModalFooter');
+      $('#amModalFooter #button_container .btn').remove()
       for(let button of args.buttons){
         const button_ = component.btn(button);
         button_container.appendChild(button_)

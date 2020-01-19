@@ -5,6 +5,8 @@ const controller = module.exports = {}
 const models = require('../models').sequelize.models;
 const Medient = models.Medient;
 const MedientTarget = models.MedientTarget;
+const targetController = require('./targets')
+const uuidv4 = require('uuid/v4')
 
 controller.getOne = (req,res) => {
     //console.log(`controller.getOne(${req})`)
@@ -23,5 +25,15 @@ controller.addTarget = (req,res) => {
         res.json(medientTarget);
     }).catch((err)=>{
         console.log(err);
+    });
+}
+
+controller.getTargets = (req,res) => {
+    MedientTarget.findAll({where: {medient : req.params.medient},order:[['id','DESC']]}).then((items) => {
+        const medientTargets = []
+        for(const medientTarget of items){
+            //medientTargets.push(targetController.getOneById(medientTarget.target,res))
+        }
+        res.json(items);
     });
 }

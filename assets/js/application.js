@@ -275,7 +275,7 @@ const getRoute = (_route) => {
 
       });
     }else{
-      throw `application.moduleRouter : endpoint undefined`;
+      //throw `application.moduleRouter : endpoint undefined`;
     }
     if(callback) callback();
   },
