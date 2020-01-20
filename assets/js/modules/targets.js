@@ -266,7 +266,7 @@ function targetsSearch(){
 
     $('#targetsSearch').attr('placeholder','Zoek in alle leerdoelen').on('input', (event) => {
         let value = $(`#${event.target.id}`).val();
-        let arr = $(`#${category}Subjects button`);
+        let arr = $(`#overviewSubjects div.btn`);
         let filter = new RegExp(value, 'i');
         for (let i = 0; arr.length > i; i++) {
           if (filter.test(arr[i].textContent)) {
@@ -277,10 +277,11 @@ function targetsSearch(){
         }
       });
 }
-function levelsSearch(target){
+function levelsSearch(){
     $('#targetsSearch').attr('placeholder','Zoek in leerdoel').on('input', (event) => {
         let value = $(`#${event.target.id}`).val();
         let arr = $(`#overviewTargetLevelsBtns .btn`);
+        console.log(arr)
         let filter = new RegExp(value, 'i');
         for (let i = 0; arr.length > i; i++) {
           if (filter.test(arr[i].textContent)) {
@@ -382,7 +383,7 @@ function addTargetLevel(target){
 
 function overviewTargetLevels(target){
     //console.log(target)
-    levelsSearch(target)
+    levelsSearch()
     $('#targetsBreadcrumb').html('<a href="#targets">Leerdoelen</a>');
     if(typeof target[0] === 'string'){
         component.api({
