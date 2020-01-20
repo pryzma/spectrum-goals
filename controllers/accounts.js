@@ -17,7 +17,6 @@ const auth = require('./auth')
 controller.createAccount = (req,res) => {
     
     const account = req.body
-    //console.log(account)
     const contact = {} // create contact
     contact.id = uuidv4();
     account.contact = contact.id;
@@ -30,16 +29,15 @@ controller.createAccount = (req,res) => {
     account.isActivated = 0;
     account.createdBy = req.session.user.id;
     const indication = account.indication;
+
     Account.create(account).then((account)=>{
         // create medient if account.profile === 'medient'
         if(account.profile === 'medient'){
-            
             const medient = {
                 id : uuidv4(),
                 account : account.id,
                 indication : indication + ' 03:00:00'
             }
-            
             Medient.create(medient);
         }
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
