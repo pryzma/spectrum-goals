@@ -6,7 +6,9 @@ const dashboard = {
     medient_dashboard:{
         default : medientDashboard
     },
-    medientContacts : []
+    medientContacts : [],
+    targetsSubjects : [],
+    medientTargets : []
 }
 // ........................................
 /** medients data */
@@ -74,6 +76,16 @@ const medientData = {
         }
     }
 }
+const targetsSubjectsData = {
+    url : 'api/subjects',
+    callback : (subjects) => {
+        dashboard.targetsSubjects = subjects
+    }
+}
+
+function getTargetsSubjects(callback){
+    api.component(targetsSubjectsData,()=>callback)
+}
 // ........................................
 /**
  * displays medients overview
@@ -106,12 +118,13 @@ function medientDashboard(id){
           $('.breadcrumb-item').removeClass('active');
           $('#medientBreadCrumb').remove();
           //console.log(medient[0].name)
+          $('#homeBreadCrumb').html('<a href="#">Home</a>')
           const medientBreadCrumb = $('<li></li>')
             .attr('class','breadcrumb-item active')
             .attr('id','medientBreadCrumb')
             .html(medient[0].name);
          $('.breadcrumb').append(medientBreadCrumb);
-    dashboardElement.data( 'medient' , medient );
+    dashboardElement.data( 'medient' ,medient );
     $.get('html/templates/medientDashboard.html', (medientDashboard) => {
         location.hash = '#'+medient[0].id;
         dashboardMainElement.html(medientDashboard);
@@ -121,6 +134,35 @@ function medientDashboard(id){
     });
     
 }
+// ........................................
+function medientTargets(medient){
+   console.log(medient)
+    getTargetsSubjects(()=>{
+        api.component({
+            url : 'api/targets/medient/'+medient.id,
+            callback : (medientTargets)=>{
+                for(const medientTarget of medientTargets){
+                    api.component({
+                        url : 'api/targets/'+medientTarget.target,
+                        modify : (target) => {
+                            dashboard.medientTargets.push(target);
+                        },
+                        callback : () => medientTargetsOverview
+                    })
+                }
+            }
+        })
+    })
+}
+
+function medientTargetsOverview(){
+    component.table({
+        el : '#medientTargets',
+        model : 'Target',
+        data : dashboard.medientTargets
+    })
+}
+
 // ........................................
 /**
  * gets personal info for selected medient
@@ -152,6 +194,7 @@ function medientPersonalInfo(medient){
         $('#medientSave').show();
         $('input#indication').datepicker({
             startDate :  new Date(),
+            autoclose : true,
             format: 'dd-mm-yyyy',
             language : 'nl'
         }).on('show',(e)=>{

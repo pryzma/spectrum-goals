@@ -102,7 +102,7 @@ function currentCategory(){
             currentCategoryValue = $(this).attr('data-category')
         }
     })
-    console.log($('#targetCategoriesContent .tab-pane.active').attr('data-category'))
+    //console.log($('#targetCategoriesContent .tab-pane.active').attr('data-category'))
     return currentCategoryValue
 }
 
@@ -154,6 +154,7 @@ function saveSubject(target){
     
 }
 function overviewSubjects(category){
+    $('#targetsBreadcrumb').html('Leerdoelen')
     //console.log(category)
     $('.nav .nav-link').off().on('click',(event)=>{
         overviewSubjects($(event.target).attr('data-category'))
@@ -200,7 +201,7 @@ function overviewSubjects(category){
                           subjectHeader = $('<p></p>')
                             .addClass('subjectHeader h4 bold green center')
                             .attr('id',`subjectHeader_${subject.id}`)
-                            .html(subject.name),
+                            .html(subject.name.replace(/<3/g,'♥')),
                           subjectContainer = $('<div></div>')
                             .attr('id',subject.id)
                             .attr('class','col-md-3 subjectContainer card shadow')
@@ -253,24 +254,42 @@ function overviewSubjects(category){
                         }
                     })
                     $(`#subjectHeader_${subject.id}`).after(subjectOptions)
-                    $('#targetsSearch').on('input', (event) => {
-                        let value = $(`#${event.target.id}`).val();
-                        let arr = $(`#${category}Subjects button`);
-                        let filter = new RegExp(value, 'i');
-                        for (let i = 0; arr.length > i; i++) {
-                          if (filter.test(arr[i].textContent)) {
-                            arr[i].style.display = "block";
-                          } else {
-                            arr[i].style.display = "none";
-                          }
-                        }
-                      });
+                    targetsSearch()
                 }
 
             }
         }
     })
 
+}
+function targetsSearch(){
+
+    $('#targetsSearch').attr('placeholder','Zoek in alle leerdoelen').on('input', (event) => {
+        let value = $(`#${event.target.id}`).val();
+        let arr = $(`#${category}Subjects button`);
+        let filter = new RegExp(value, 'i');
+        for (let i = 0; arr.length > i; i++) {
+          if (filter.test(arr[i].textContent)) {
+            arr[i].style.display = "block";
+          } else {
+            arr[i].style.display = "none";
+          }
+        }
+      });
+}
+function levelsSearch(target){
+    $('#targetsSearch').attr('placeholder','Zoek in leerdoel').on('input', (event) => {
+        let value = $(`#${event.target.id}`).val();
+        let arr = $(`#overviewTargetLevelsBtns .btn`);
+        let filter = new RegExp(value, 'i');
+        for (let i = 0; arr.length > i; i++) {
+          if (filter.test(arr[i].textContent)) {
+            arr[i].style.display = "block";
+          } else {
+            arr[i].style.display = "none";
+          }
+        }
+      });
 }
 function subjectDelete(subject){
                                 
@@ -363,19 +382,21 @@ function addTargetLevel(target){
 
 function overviewTargetLevels(target){
     //console.log(target)
-    
+    levelsSearch(target)
+    $('#targetsBreadcrumb').html('<a href="#targets">Leerdoelen</a>');
     if(typeof target[0] === 'string'){
         component.api({
             url:'api/targets/'+target,
             callback : (target)=>{
-                console.log(target)
+                //console.log(target)
                 return overviewTargetLevels(target)
             }
         })
     }
+    levelsSearch(target)
     $('.overviewTargetSubjectName').html(target.subject.name)
     component.api(medientsObjData,(data)=>{
-        console.log(data)
+        //console.log(data)
         medientsObj.data = data
         assignMedientTarget(target)
     })
@@ -384,15 +405,22 @@ function overviewTargetLevels(target){
     const targetSubjectBreadCrumb = $('<li></li>')
         .attr('id','targetSubjectBreadcrumb')
         .addClass('breadcrumb-item')
-        .html(target.name);
+        .html(target.subject.name.replace(/<3/g,'♥'));
     $('#targetsBreadcrumbs').append(targetSubjectBreadCrumb);
+    
+    $('#targetBreadcrumb').remove();
+    const targetBreadCrumb = $('<li></li>')
+        .attr('id','targetBreadcrumb')
+        .addClass('breadcrumb-item')
+        .html(target.name.replace(/<3/g,'♥'));
+    $('#targetsBreadcrumbs').append(targetBreadCrumb);
     
    
     $('#overviewTargetLevelsBtns').html('');
     component.api({
         url : `api/levels/${target.id}`,
         callback : (levels) => {
-            console.log(levels)
+            //console.log(levels)
             $('#targetCategoriesContent').hide();
             $('#overviewTargetLevels').show();
             location.hash = '#'+target.id;
@@ -405,8 +433,9 @@ function overviewTargetLevels(target){
             for(const levelIndex in levels){
                 levels[levelIndex].target = target
                 overviewTargetSubLevels(levels[levelIndex])
+                const levelLabelTxt = levels[levelIndex].name.replace(/<3/g,'♥')
                 const levelLabel = $('<div></div>')
-                        .html(`Level ${levelIndex/1+1} : ${levels[levelIndex].name}`),
+                        .html(`Level ${levelIndex/1+1} : ${levelLabelTxt}`),
                       subLevelContainer = $('<div></div')
                         .attr('class','subLevelContainer')
                         .attr('style','display:none;padding-left:25px;')
@@ -463,7 +492,7 @@ function overviewTargetLevels(target){
 }
 
 function assignMedientTarget(target){
-    console.log(medientsObj.data)
+    //console.log(medientsObj.data)
     $('#overviewTargetAssignMedientInput').off().on('input',(event)=>{
       
         const searchTargetAssignMedientValue = event.target.value
@@ -582,7 +611,7 @@ function subjectTargetsBtns(args){
                 class : 'yellow btn-block left ui-state-default',
                 id : target.id,
                 event : ['click',()=>{
-                    console.log(args.subject)
+                    //console.log(args.subject)
                     target.subject = args.subject
                     overviewTargetLevels(target)
                 }]
@@ -713,8 +742,9 @@ function overviewTargetSubLevels(level){
                 const subLevelElement = $('<div></div>')
                         .attr('class','subLevelElement subLevelContainer btn btn-block btn-white green ui-sortable-handle pointer shadow')
                         .attr('style','margin-top:5px;'),
+                      subLevelLabelTxt = sublevel.name.replace(/<3/g,'♥'),
                       subLevelLabel = $('<div></div>')
-                        .html(sublevel.name)
+                        .html(subLevelLabelTxt)
                         .attr('style','width:80%')
                         .attr('class','subLevelElementLabel left')
                         .on('click',()=>subLevelUpdate(sublevel)),

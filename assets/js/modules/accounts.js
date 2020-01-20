@@ -192,6 +192,7 @@ function accountPersonalInfo(account) {
   $('#indicationContainer').append(indicationElement)
   $('input#indication').datepicker({
     startDate :  new Date(),
+    autoclose : true,
     format: 'dd-mm-yyyy',
     language : 'nl'
   }).on('show',(e)=>{
@@ -229,6 +230,7 @@ function newAccount() {
         $('input#indication').datepicker({
           startDate :  new Date(),
           format: 'dd-mm-yyyy',
+          autoclose : true,
           language : 'nl'
         }).on('show',(e)=>{
           $('.datepicker').addClass('shadow-lg')
@@ -246,6 +248,7 @@ function newAccount() {
             $('input#indication').datepicker({
               startDate :  new Date(),
               format: 'dd-mm-yyyy',
+              autoclose : true,
               language : 'nl'
             })
           }
