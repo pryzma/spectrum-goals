@@ -555,7 +555,7 @@ function levelDelete(level){
             {txt : 'Bevestigen', event:['click',()=>{
                 component.api({
                     method : 'delete',
-                    url : `api/subjects/${level.id}`,
+                    url : `api/levels/${level.id}`,
                     callback : ()=>{
                         $('#amModal').modal('hide')
                         overviewTargetLevels(level.target)
@@ -790,6 +790,8 @@ function addSubLevel(level){
         buttons : [{ txt : 'Opslaan', event : ['click',() => {
             const AddSubLevelData = component.form.fields({el : '#addSubLevelForm' });
             AddSubLevelData.level = level.id;
+            // AddSubLevelData.target = target.id;
+            // AddSubLevelData.subject = subject.id;
             component.api({
                 url : 'api/sublevels',
                 method: 'post',

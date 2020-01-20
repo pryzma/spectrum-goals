@@ -45,10 +45,10 @@ controller.deleteSubject = (req,res) => {
             where: {subject : req.params.id}
         }).then(()=>{
             Level.destroy({
-                where: {target : req.params.id}
+                where: {subject : req.params.id}
             }).then(()=>{
                 SubLevel.destroy({
-                    where: {level : req.params.id}
+                    where: {subject : req.params.id}
                 })
             })
             

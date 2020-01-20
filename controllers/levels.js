@@ -5,6 +5,7 @@ const controller = module.exports = {}
 const models = require('../models').sequelize.models;
 const connection = require('../app/dbconn');
 const Level = models.Level;
+const SubLevel = models.SubLevel;
 const auth = require('./auth');
 const uuidv4 = require('uuid/v4');
 
@@ -45,6 +46,9 @@ controller.deleteLevel = (req,res) => {
     Level.destroy({
         where: {id : req.params.id}
     }).then(()=>{
+        SubLevel.destroy({
+          where: {level : req.params.id}
+        });
         controller.getAll(req,res);
     });
 }

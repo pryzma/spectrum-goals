@@ -4,9 +4,10 @@
 const controller = module.exports = {};
 const models = require('../models').sequelize.models;
 const Target = models.Target;
+const Level = models.Level;
+const SubLevel = models.SubLevel;
 const auth = require('./auth');
 const uuidv4 = require('uuid/v4');
-const connection = require('../app/dbconn');
 
 
 controller.createTarget = (req,res) => {
@@ -53,11 +54,18 @@ controller.getOneById = (req,res) => {
  }
 
 controller.deleteTarget = (req,res) => {
-    Target.destroy({
-        where: {id : req.params.id}
+  Target.destroy({
+    where: {id : req.params.id}
+  }).then(()=>{
+    Level.destroy({
+      where: {target : req.params.id}
     }).then(()=>{
-        controller.getAll(req,res);
+      SubLevel.destroy({
+        where: {target : req.params.id}
+      });
     });
+    controller.getAll(req,res);
+  });
 }
 
 controller.isAuthenticated = auth.isAuthenticated;
