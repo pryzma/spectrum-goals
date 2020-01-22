@@ -367,7 +367,7 @@ div#targetCategoriesContent h2{
     text-align: center;
 }
 button.btn.addTarget,button.btn#addTargetLevel {
-    margin-top:5px;
+    margin-top:10px;
     border: 2px dashed #ccc;
     color: #666 !important;
     text-align: center;
