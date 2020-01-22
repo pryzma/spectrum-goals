@@ -132,6 +132,7 @@ controller.deleteAccount = (req,res) => {
     Account.destroy({
         where: {id :req.params.id}
     }).then(()=>{
+        connection.query(`DELETE FROM Medients WHERE id='${req.params.id}'`);
         controller.getAll(req,res);
     });
 }
