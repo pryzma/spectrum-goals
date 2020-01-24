@@ -1,4 +1,5 @@
  /** dashboard module object */
+const showmedientOverviewAlt =true;
 const dashboard = {
     name : 'Dashboard',
     default : medientOverview,
@@ -16,24 +17,32 @@ const medients = { data : [] }
 /** medients data modifier */
 const medientDataModify = (medient) => {
     
-    const medientAdd = {
+    const medientAdd = showmedientOverviewAlt ? {
         name : medient.firstName + ' ' +  medient.lastName,
         subjects : 5,
         prog1 : 1,
         prog2 : 2,
         prog3 : 2
         
+    } : {
+        name : medient.firstName + ' ' +  medient.lastName,
+        subjects : 5,
+        prog : '<div class="progress" style="font-size:1.2em; background:none; height:30px;"><div class="progress-bar redbg" role="progressbar" style="width: 20%; text-align:center !important;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">1</div><div class="progress-bar bg-success yellowbg" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">2</div><div class="progress-bar bg-info greenbg" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">2</div></div>'
     }
     return { ...medient, ...medientAdd }
 }
 /** medients overview table column labels */
-const medientOverviewTableLabels = {
+const medientOverviewTableLabels = showmedientOverviewAlt ? {
 
     name : { label : 'Naam' },
     subjects : { label : 'Onderwerpen' },
     prog1 : { label : '< 25%'},
     prog2 : { label : '< 60%'},
     prog3 : { label : '> 60%'}
+  } : {
+    name : { label : 'Naam' },
+    subjects : { label : 'Onderwerpen' },
+    prog : { label : 'Voortgang'}
   }
  /** API data component object
   * @param {string} url 
@@ -90,20 +99,37 @@ function getTargetsSubjects(callback){
 /**
  * displays medients overview
  */
-function medientOverview(){
 
-    component.table({
-        el : '#medientOverview',
-        model : 'Account',
-        class : 'table-striped table-hover',
-        data : medientData,
-        cols : medientOverviewTableLabels,
-          methods: {
-            onRowClick : (event) => {
-                medientDashboard(event.target.parentElement.id);         
-            }
-          }
-    });
+function medientOverview(view){
+    if(showmedientOverviewAlt){
+
+        component.table({
+            el : '#medientOverview',
+            model : 'Account',
+            class : 'table-striped table-hover',
+            data : medientData,
+            cols : medientOverviewTableLabels,
+              methods: {
+                onRowClick : (event) => {
+                    medientDashboard(event.target.parentElement.id);         
+                }
+              }
+        });
+    }else{
+        component.table({
+            el : '#medientOverviewAlt',
+            model : 'Account',
+            class : 'table-striped table-hover',
+            data : medientData,
+            cols : medientOverviewTableLabels,
+              methods: {
+                onRowClick : (event) => {
+                    medientDashboard(event.target.parentElement.id);         
+                }
+              }
+        });
+    }
+    
 }
 // ........................................
 /**
@@ -156,6 +182,7 @@ function medientTargets(medient){
 }
 
 function medientTargetsOverview(){
+  
     component.table({
         el : '#medientTargets',
         model : 'Target',

@@ -158,13 +158,15 @@ function overviewSubjects(category){
 
     });
     $('#targets').data('category',category)
-
     $('#categoryBreadcrumb').remove();
+    $('#targetSubjectBreadcrumb').remove();
+    $('#targetBreadcrumb').remove();
     const categoryBreadcrumb = $('<li></li>')
         .addClass('breadcrumb-item active')
         .attr('id','categoryBreadcrumb')
         .html(categoryName(category))
     $('#targetsBreadcrumbs').append(categoryBreadcrumb);
+
     component.api({
         url : 'api/subjects',
         callback : (subjects) =>{
@@ -399,7 +401,7 @@ function overviewTargetLevels(target){
     $('#targetBreadcrumb').remove();
     const targetBreadCrumb = $('<li></li>')
         .attr('id','targetBreadcrumb')
-        .addClass('breadcrumb-item')
+        .addClass('breadcrumb-item active')
         .html(target.name.replace(/<3/g,'♥'));
     $('#targetsBreadcrumbs').append(targetBreadCrumb);
     

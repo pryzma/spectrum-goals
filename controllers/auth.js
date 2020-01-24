@@ -3,7 +3,11 @@ const render = require('../app/render');
 controller.signin = (req, res) => {
     render(res,'signin',{'message' :req.flash('message')});
 }
+controller.profile = (req,res)=>{
+    if (req.session.user.profile === 'medient'){
 
+    }
+}
 controller.logout = (req, res) => {
     req.session.destroy((err) => {
         res.redirect('/');
