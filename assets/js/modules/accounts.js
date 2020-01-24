@@ -180,16 +180,24 @@ function accountPersonalInfo(account) {
     accountsOverview();
  
   });
+  let indication = account[0].indication
   
-  let indication = account[0].indication.split('T')[0]
-  indication = indication.split('-')[2]+'-'+indication.split('-')[1]+'-'+indication.split('-')[0]
+  if(indication){
+    $('#indicationContainer').append(
+      $('input#indication')
+      .val(indication
+        .split('T')[0]
+        .split('-')[2]+'-'+indication.split('-')[1]+'-'+indication.split('-')[0]
+        )
+      )
+  }
  
  
   Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
   
-  const indicationElement = $('input#indication').val(indication)
+  
   $('input#indication').remove()
-  $('#indicationContainer').append(indicationElement)
+  
   $('input#indication').datepicker({
     startDate :  new Date(),
     autoclose : true,

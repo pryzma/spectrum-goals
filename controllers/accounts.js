@@ -27,7 +27,7 @@ controller.createAccount = (req,res) => {
     account.password = '';
     account.isActivated = 0;
     account.createdBy = req.session.user.id;
-    const indication = account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]+' 03:00:00';
+ 
 
     Account.create(account).then((account)=>{
         // create medient if account.profile === 'medient'
@@ -35,7 +35,7 @@ controller.createAccount = (req,res) => {
             const medient = {
                 id : uuidv4(),
                 account : account.id,
-                indication : indication
+                indication : account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]+' 03:00:00'
             }
             Medient.create(medient);
         }
