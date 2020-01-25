@@ -48,7 +48,7 @@ controller.createAccount = (req,res) => {
           html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
         }
         sgMail.send(msg).then(() => {
-            console.log('E-mail sent to '+account.email);
+            console.log('\x1b[36m',`[controller.accounts]\x1b[0m E-mail sent to `+account.email);
         }).catch(error => {
 
             //Log friendly error

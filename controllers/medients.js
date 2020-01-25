@@ -32,10 +32,15 @@ controller.addTarget = (req,res) => {
 
 controller.getTargets = (req,res) => {
     
-    connection.query('SELECT * FROM MedientTargets LEFT JOIN Targets ON Targets.id=MedientTargets.target WHERE MedientTargets.medient = "'+req.params.medient+'";',(items)=>{
-        res.json(items);
+    connection.query('SELECT MedientTargets.target, Targets.name FROM MedientTargets LEFT JOIN Targets ON Targets.id=MedientTargets.target WHERE MedientTargets.medient="'+req.params.medient+'";',(err, items)=>{
+        if (!err) {
+            console.log(items)
+            res.json(items);
+        } else {
+            console.log(err);
+        }
     });
-    
+    /*
     MedientTarget.belongsTo(Targets, {targetKey:'target',foreignKey: 'target'});
     Target.findAll({
         include: [{
@@ -47,7 +52,7 @@ controller.getTargets = (req,res) => {
     }).then((targets)=>{
         res.json(targets);
     });
-    /*
+    
     MedientTarget.findAll({where: {medient : req.params.medient},order:[['id','DESC']]}).then((items) => {
         const medientTargets = []
         for(const medientTarget of items){
