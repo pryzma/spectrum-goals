@@ -580,16 +580,12 @@ function levelUpdate(level){
         title : 'Level aanpassen',
         body : updateLevelForm,
         buttons : [{txt : 'Opslaan', event : ['click', () => {
-                
                 level.name = $('#updateLevelForm #name').val()
-                level.target = level.target.id;
-               
                 axios.put('api/levels',level ).then((response) => {
                     $('#amModal').modal('hide')
                     component.alert({message : '<i class="fas fa-pen"></i> Level aangepast'})
                     overviewTargetLevels(level.target)
                 }).catch(error => {
-                    
                 });
             }]
         }]
