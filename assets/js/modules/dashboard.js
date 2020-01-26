@@ -156,30 +156,14 @@ function medientDashboard(id){
         dashboardMainElement.html(medientDashboard);
         medientPersonalInfo(medient)
         medientContacts(id)
-        medientTargets(id)
+        //medientTargets(id)
+        medientGetTargets(id)
+      
     });
     
 }
 // ........................................
-function medientTargets(medient){
-   console.log(medient)
-    getTargetsSubjects(()=>{
-        api.component({
-            url : 'api/targets/medient/'+medient.id,
-            callback : (medientTargets)=>{
-                for(const medientTarget of medientTargets){
-                    api.component({
-                        url : 'api/targets/'+medientTarget.target,
-                        modify : (target) => {
-                            dashboard.medientTargets.push(target);
-                        },
-                        callback : () => medientTargetsOverview
-                    })
-                }
-            }
-        })
-    })
-}
+
 
 function medientTargetsOverview(){
   
@@ -281,12 +265,19 @@ function medientPersonalInfoSave(){
     
 }
 // ........................................
+
+function medientTargets(id){
+    console.log(id)
+    medientGetTargets(id)
+}
+
+// ........................................
 /**
  * gets contacts for selected medient
  * @param {*} id 
  */
 function medientContacts(id){
-    
+
     /** fetch medient contacts data */
     medientGetContacts(id);
     
@@ -296,6 +287,10 @@ function medientContacts(id){
     });
 
 }
+
+
+
+
 // ........................................
 /** creates & inserts medient add contact form  */
 function medientAddContact(id){
@@ -354,6 +349,31 @@ function medientGetContacts(id){
     }
     component.api(medientContactsData);
 }
+const medientTargetDataModify = (medientTarget) => {
+    
+    const medientTargetAdd =  {
+        name : medientTarget.name,
+        progress : 2
+        
+    } 
+    return { ...medientTarget, ...medientTargetAdd }
+}
+function medientGetTargets(id){
+    console.log(id)
+    const medientTargetsData = {
+        url : 'api/targets/medient/'+id,
+        modify : medientTargetDataModify
+    }
+    
+   component.table({
+       el : '#medientTargets',
+       model : 'Target',
+       data : medientTargetsData,
+       cols : { name : { label : 'Leerdoel' }, progress : { label : 'Voortgang' }}
+   });
+   
+}
+
 function medientContactDelete(event){
     event.preventDefault();
     const medientContactElementId = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
@@ -441,5 +461,6 @@ function medientPostAddContactForm(){
  */
 function medientTargets(id){
     const medientTargetsElement = $('#medientTargets')
+
 }
 application.add('dashboard',dashboard);

@@ -26,6 +26,9 @@
                 <li class="nav-item">
                     <a class="nav-link h4" style="margin-bottom:0 !important;" href="#personalSubjects" data-toggle="tab" data-category="personal"  role="tab" aria-controls="personalSubjects" aria-selected="false">Persoonlijk</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link h4" style="margin-bottom:0 !important;" href="#personalSubjects" data-toggle="tab" data-category="personal"  role="tab" aria-controls="personalSubjects" aria-selected="false">+</a>
+                </li>
             </ul>
             <div class="tab-content" id="targetCategoriesContent">
                 <div class="tab-pane fade show active" id="workSubjects" data-category="work" role="tabpanel" aria-labelledby="work-tab">
@@ -49,13 +52,13 @@
             
                 <div class="row">
                     <div id="overviewTargetLevels" class="col-md-6">
-                        <p class="h4 green bold"><span class="overviewTargetSubjectName"></span> - <span class="h5 overviewTargetName"></span></p>
+                        <p class="h4 green bold"><span class="overviewTargetSubjectName"></span> - <span class="h4 overviewTargetName"></span></p>
                         <!-- <button class="btn btn-yellow overviewTargetName left" style="width:50%;"></button> -->
                         <div id="overviewTargetLevelsBtns" style="margin-top:10px;"></div>
                         <button id="addTargetLevel" class="btn btn-nobg btn-block"><i class="fas fa-plus"></i> Nieuw Level toevoegen</button>
                     </div>
                     <div id="overviewTargetAssignMedient" class="col-md-6">
-                        <p class="h4 green bold">Leerdoel "<span class="overviewTargetName"></span>" toewijzen aan:</p>
+                        <p class="h4 green">Leerdoel <span class="overviewTargetName bold"></span> toewijzen aan:</p>
                         <input class="form-control" id="overviewTargetAssignMedientInput" placeholder="Typ naam om Medient te selecteren... ">
                         <div id="TargetAssignMedients" class="shadow" style="padding:10px;border:1px solid #ccc;border-radius: 5px; display:none;"></div>
                     </div>
