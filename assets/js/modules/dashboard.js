@@ -9,7 +9,8 @@ const dashboard = {
     },
     medientContacts : [],
     targetsSubjects : [],
-    medientTargets : []
+    medientTargets : [],
+    medientEvaluations : []
 }
 // ........................................
 /** medients data */
@@ -162,6 +163,35 @@ function medientDashboard(id){
     });
     
 }
+// ........................................
+
+
+function medientEvaluationOverview(id){
+    component.api({
+        url : 'api/evaluations/medient/'+id,
+        callback : (evaluations) => {
+            const overviewMedientEvaluationElement = $('#overviewMedientEvaluation')
+            dashboard.medientEvaluations = evaluations;
+            evaluations.map((evaluation)=>{
+                const overviewMedientEvaluationItemContentElement = $('<div></div>')
+                    .attr('class','medientEvaluationContent')
+                    .html(evaluation.evaluation)
+                const overviewMedientEvaluationItemHeaderElement = $('<h3></h3>')
+                    .attr('class','medientEvaluationHeader')
+                    .html(evaluation.date)
+                const overviewMedientEvaluationItemElement = $('<div></div>')
+                    .attr('id',evaluation.id)
+                    .attr('class','medientEvaluation')
+                    .append(overviewMedientEvaluationItemHeaderElement)
+                    .append(overviewMedientEvaluationItemContentElement)
+                
+                overviewMedientEvaluationElement.append(overviewMedientEvaluationItemElement)
+            });
+            
+        }
+    });
+}
+
 // ........................................
 
 
