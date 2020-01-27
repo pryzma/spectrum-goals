@@ -74,7 +74,8 @@
             "/api/account" : "account",
             "/api/categories" : "categories",
             "/api/levels" : "levels",
-            "/api/sublevels" : "sublevels"
+            "/api/sublevels" : "sublevels",
+            "/api/evaluations" : "evaluations"
 
         },
         "require" : [
