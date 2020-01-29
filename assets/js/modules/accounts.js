@@ -124,9 +124,9 @@ function account(id, type) {
   accountsElement.data( 'account' , account[0] );
   $.get('html/templates/accountDashboard.html', (accountDashboard) => {
 
-    location.hash = '#'+account[0].id
+    //location.hash = '#'+account[0].id
     component.modal({
-      title : '<i class="fas fa-profile"></i> Account '+account[0].name,
+      title : '<i class="fas fa-profile"></i> Account <b>'+account[0].name+'</b>',
       body : accountDashboard,
       open : ()=>{
         if(account[0].profile === 'teammember'){
@@ -135,12 +135,14 @@ function account(id, type) {
           
           
         }
-        
+        $('#accountCancelBtn').on('click',()=>{
+          $('#amModal').modal('hide')
+        })
         $('#accountDeleteBtn').on('click',()=>accountDelete(id));
         accountPersonalInfo(account);
       },
       close : ()=>{
-        location.hash = '#accounts'
+        //location.hash = '#accounts'
       }
     })
    
@@ -181,31 +183,34 @@ function accountPersonalInfo(account) {
  
   });
   let indication = account[0].indication
-  
+  const indicationInput =  $('input#indication')
+  Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
   if(indication){
-    $('#indicationContainer').append(
-      $('input#indication')
-      .val(indication
-        .split('T')[0]
-        .split('-')[2]+'-'+indication.split('-')[1]+'-'+indication.split('-')[0]
-        )
-      )
+      const indicationDateFormat = indication
+      .split('T')[0]
+      .split('-')[2]+'-'+indication.split('-')[1]+'-'+indication.split('-')[0]
+      console.log(indicationDateFormat)
+      indicationInput.val(indicationDateFormat)
+      $('input#indication').val(indicationDateFormat)
+      indicationInput.datepicker({
+        startDate :  new Date(),
+        autoclose : true,
+        format: 'dd-mm-yyyy',
+        language : 'nl'
+      }).on('show',(e)=>{
+        $('.datepicker').addClass('shadow-lg').attr('style',$('.datepicker').attr('style').replace('top: 91px;','top: 171px !important;'))
+      });
+  }else{
+
   }
  
  
-  Object.keys(account[0]).map((key, index) => $(`input#${key}`).val(account[0][key]));
   
   
-  $('input#indication').remove()
   
-  $('input#indication').datepicker({
-    startDate :  new Date(),
-    autoclose : true,
-    format: 'dd-mm-yyyy',
-    language : 'nl'
-  }).on('show',(e)=>{
-    $('.datepicker').addClass('shadow-lg').attr('style',$('.datepicker').attr('style').replace('top: 91px;','top: 171px !important;'))
-  });
+  //$('input#indication').remove()
+  
+  
   $('#accountSaveBtn').on('click', () => {
    // const accountFormData = component.form.data({ el : 'form#accountInfoEdit', model : 'Account'});
     const accountFormData = component.form.fields({ el : 'form#accountInfoEdit', model : 'Account'});
@@ -235,7 +240,7 @@ function newAccount() {
         
         $('#accountEditCancelBtn').on('click', ()=>$('#amModal').modal('hide'));
         const formGroupMedientIndication = $('#formGroupMedientIndication');
-        $('input#indication').datepicker({
+        $('input#indication').attr('autocomplete','off').datepicker({
           startDate :  new Date(),
           format: 'dd-mm-yyyy',
           autoclose : true,
@@ -252,8 +257,9 @@ function newAccount() {
             formGroupMedientIndication.remove()
           }else{
             
-            $('form#accountInfo').append(formGroupMedientIndication);
-            $('input#indication').datepicker({
+            //$('form#accountInfo').append(formGroupMedientIndication);
+            $('#formGroupEmail').after(formGroupMedientIndication)
+            $('input#indication').attr('autocomplete','off').datepicker({
               startDate :  new Date(),
               format: 'dd-mm-yyyy',
               autoclose : true,

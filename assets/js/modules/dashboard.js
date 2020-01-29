@@ -215,6 +215,19 @@ function medientEvaluationAdd(id){
     component.modal({
         title : 'Evaluatie toevoegen',
         body : medientEvaluationAddForm,
+        open : ()=>{
+            $('input#date').val().attr('autocomplete','off').datepicker({
+                startDate :  new Date(),
+                format: 'dd-mm-yyyy',
+                autoclose : true,
+                language : 'nl'
+              }).on('show',(e)=>{
+                $('.datepicker')
+                    .addClass('shadow-lg')
+                    .attr('style','top: 271px !important;left: 517.656px;z-index: 1060;display: block;')
+                
+              })
+        },
         buttons : [{ txt : 'Opslaan', event : ['click',() => {
             const medientEvaluationAddData = component.form.fields({el : '#medientEvaluationAddForm' });
             medientEvaluationAddData.medient = id;
