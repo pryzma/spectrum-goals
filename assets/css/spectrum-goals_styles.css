@@ -24,7 +24,7 @@ header a:hover{
     text-decoration: none ;
 }
 header .navbar-brand{
-    padding-left: 25px;
+    padding-left: 35px;
 }
 
 nav#headerNav li a{
@@ -366,6 +366,17 @@ div#targetCategoriesContent h2{
     color: #5f9fab;
     text-align: center;
 }
+button {
+    cursor: pointer;
+}
+button.border-dashed {
+    border: 2px dashed #ccc;
+    color: #666 !important;
+}
+button.border-dashed:hover {
+    border-color: darkgrey !important;
+    color: darkgrey !important;
+}
 button.btn.addTarget,button.btn#addTargetLevel {
     margin-top:10px;
     border: 2px dashed #ccc;
@@ -376,7 +387,7 @@ button.btn.addTarget:hover,button.btn#addTargetLevel:hover{
     background-color: #fff;
     color: darkgrey !important;
     border-color: darkgrey !important;
-    cursor: pointer;
+    
 }
 .targetContainer{
     margin-top:5px;

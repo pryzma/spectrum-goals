@@ -1354,10 +1354,11 @@ const component = (() => {
     if( argsUse ){
       $(formInputCol).append(argsUse()); 
     }else{
-      // input
-      const formRowInput = document.createElement('input');
+      // input type
+      const formRowInputType = args.fields[prop].type
+      const formRowInput = formRowInputType === 'textarea' ? document.createElement('textarea') : document.createElement('input');
       try{
-        if(args.fields[prop].type) formRowInput.setAttribute('type',args.fields[prop].type);
+        if(formRowInputType) formRowInput.setAttribute('type',formRowInputType);
       }catch(e){
         if(args.type)formRowInput.setAttribute('type',args.type);
       }

@@ -159,7 +159,7 @@ function medientDashboard(id){
         medientContacts(id)
         //medientTargets(id)
         medientGetTargets(id)
-      
+        medientEvaluationOverview(id)
     });
     
 }
@@ -170,28 +170,72 @@ function medientEvaluationOverview(id){
     component.api({
         url : 'api/evaluations/medient/'+id,
         callback : (evaluations) => {
-            const overviewMedientEvaluationElement = $('#overviewMedientEvaluation')
+            const overviewMedientEvaluationElement = $('#overviewMedientEvaluation').html('')
+            $('#addMedientEvaluation').off().on('click',()=>{
+                medientEvaluationAdd(id)
+            })
             dashboard.medientEvaluations = evaluations;
-            evaluations.map((evaluation)=>{
-                const overviewMedientEvaluationItemContentElement = $('<div></div>')
-                    .attr('class','medientEvaluationContent')
-                    .html(evaluation.evaluation)
-                const overviewMedientEvaluationItemHeaderElement = $('<h3></h3>')
-                    .attr('class','medientEvaluationHeader')
-                    .html(evaluation.date)
-                const overviewMedientEvaluationItemElement = $('<div></div>')
-                    .attr('id',evaluation.id)
-                    .attr('class','medientEvaluation')
-                    .append(overviewMedientEvaluationItemHeaderElement)
-                    .append(overviewMedientEvaluationItemContentElement)
-                
-                overviewMedientEvaluationElement.append(overviewMedientEvaluationItemElement)
-            });
+            
+            if(evaluations.length > 0 ){
+                evaluations.map((evaluation)=>{
+                    const overviewMedientEvaluationItemContentElement = $('<div></div>')
+                        .attr('class','medientEvaluationContent')
+                        .html(evaluation.evaluation)
+                    const overviewMedientEvaluationItemHeaderElement = $('<h3></h3>')
+                        .attr('class','medientEvaluationHeader')
+                        .html(evaluation.date)
+                    const overviewMedientEvaluationItemElement = $('<div></div>')
+                        .attr('id',evaluation.id)
+                        .attr('class','medientEvaluation')
+                        .append(overviewMedientEvaluationItemHeaderElement)
+                        .append(overviewMedientEvaluationItemContentElement)
+                    
+                    overviewMedientEvaluationElement.append(overviewMedientEvaluationItemElement)
+                });
+            }else{
+                overviewMedientEvaluationElement.html('Er zijn geen evaluaties voor huidige medient toegevoegd.')
+            }
+            
             
         }
     });
 }
 
+
+function medientEvaluationAdd(id){
+    const medientEvaluationAddForm = component.form.fromModel({
+        id : 'medientEvaluationAddForm',
+        model : 'Evaluation',
+        fields : {
+            date : { label : 'Datum' },
+            evaluation : { label : 'Evaluatie', type : 'textarea' }
+        }
+    });
+    
+    component.modal({
+        title : 'Evaluatie toevoegen',
+        body : medientEvaluationAddForm,
+        buttons : [{ txt : 'Opslaan', event : ['click',() => {
+            const medientEvaluationAddData = component.form.fields({el : '#medientEvaluationAddForm' });
+            medientEvaluationAddData.medient = id;
+            
+            component.api({
+                url : 'api/evaluations',
+                method: 'post',
+                data : medientEvaluationAddData,
+                callback : ()=>{
+                    $('#amModal').modal('hide');
+                    medientEvaluationOverview(id);
+                   
+                }
+            });
+            
+        }]},
+        {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+            $('#amModal').modal('hide')
+        }]}]
+    });
+}
 // ........................................
 
 
