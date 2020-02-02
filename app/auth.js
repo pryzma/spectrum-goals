@@ -1,7 +1,8 @@
 const  passport = require('passport'),  
        LocalStrategy  = require('passport-local').Strategy,
        connection = require('./dbconn'),
-       bcrypt = require('bcrypt'),
+       //bcrypt = require('bcrypt'),
+       bcrypt = require('bcryptjs'),
 auth = (app)=>{
     // passport setup
   app.use(passport.initialize());

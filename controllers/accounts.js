@@ -5,7 +5,8 @@ const controller = module.exports = {};
 const connection = require('../app/dbconn'),
       uuidv4 = require('uuid/v4'),
       sgMail = require('@sendgrid/mail'),
-      bcrypt = require('bcrypt');
+      bcrypt = require('bcryptjs');
+      //bcrypt = require('bcrypt');
 
 const models = require('../models').sequelize.models;
 const Account = models.Account;
