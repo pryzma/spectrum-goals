@@ -8,10 +8,12 @@ const uuidv4 = require('uuid/v4');
 const auth = require('./auth');
 
 const Evaluation = models.Evaluation;
-controller.creatEvaluation = (req,res) => {
+controller.createEvaluation = (req,res) => {
   const evaluation = req.body,
   uuid = uuidv4();
+  
   evaluation.id = uuid;
+  //evaluation.date = evaluation.date.split('-')[2]+'-'+evaluation.date.split('-')[1]+'-'+evaluation.date.split('-')[0]+' 03:00:00'
   Evaluation.create(evaluation).then((evaluation)=>{
       res.json(evaluation);
   }).catch((err)=>{

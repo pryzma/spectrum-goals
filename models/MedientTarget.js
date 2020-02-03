@@ -5,6 +5,8 @@ module.exports = (sequelize, Sequelize) => {
             notEmpty: true,
             primaryKey: true
         },
+        category: {type: Sequelize.STRING},
+        subject: {type: Sequelize.STRING},
         medient: {type: Sequelize.STRING},
         target : {type: Sequelize.STRING}
     });

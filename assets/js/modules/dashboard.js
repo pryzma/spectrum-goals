@@ -178,6 +178,7 @@ function medientEvaluationOverview(id){
             
             if(evaluations.length > 0 ){
                 evaluations.map((evaluation)=>{
+                    console.log(evaluation)
                     const overviewMedientEvaluationItemContentElement = $('<div></div>')
                         .attr('class','medientEvaluationContent')
                         .html(evaluation.evaluation)
@@ -216,7 +217,7 @@ function medientEvaluationAdd(id){
         title : 'Evaluatie toevoegen',
         body : medientEvaluationAddForm,
         open : ()=>{
-            $('input#date').val().attr('autocomplete','off').datepicker({
+            $('input#date').attr('autocomplete','off').datepicker({
                 startDate :  new Date(),
                 format: 'dd-mm-yyyy',
                 autoclose : true,
@@ -224,14 +225,14 @@ function medientEvaluationAdd(id){
               }).on('show',(e)=>{
                 $('.datepicker')
                     .addClass('shadow-lg')
-                    .attr('style','top: 271px !important;left: 517.656px;z-index: 1060;display: block;')
+                    .attr('style','top: 360px !important;left: 517.656px;z-index: 1060;display: block;')
                 
               })
         },
         buttons : [{ txt : 'Opslaan', event : ['click',() => {
             const medientEvaluationAddData = component.form.fields({el : '#medientEvaluationAddForm' });
             medientEvaluationAddData.medient = id;
-            
+            medientEvaluationAddData.evaluation = $('#evaluation').val()
             component.api({
                 url : 'api/evaluations',
                 method: 'post',
