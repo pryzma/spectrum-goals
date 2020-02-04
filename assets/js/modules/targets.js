@@ -374,6 +374,7 @@ function addTargetLevel(target){
 
 
 function overviewTargetLevels(target){
+    console.log('overviewTargetLevels:'+target)
     levelsSearch()
     $('#targetsBreadcrumb').html('<a href="#targets">Leerdoelen</a>');
     if(typeof target[0] === 'string'){
@@ -389,7 +390,8 @@ function overviewTargetLevels(target){
     component.api(medientsObjData,(data)=>{
         medientsObj.data = data
         assignMedientTarget(target)
-    })
+    });
+    // breadcrumbs
     $('.breadcrumb-item').removeClass('active');
     $('#targetSubjectBreadcrumb').remove();
     const targetSubjectBreadCrumb = $('<li></li>')
@@ -405,7 +407,7 @@ function overviewTargetLevels(target){
         .html(target.name.replace(/<3/g,'♥'));
     $('#targetsBreadcrumbs').append(targetBreadCrumb);
     
-   
+   // target levels
     $('#overviewTargetLevelsBtns').html('');
     component.api({
         url : `api/levels/${target.id}`,
@@ -469,11 +471,13 @@ function overviewTargetLevels(target){
 
                     
 
-
+                // overviewTargetSubLevels
                 $('#overviewTargetLevelsBtns').append(levelElement)
                 levelElement.after(subLevelContainer);
                 overviewTargetSubLevels(levels[levelIndex]);
             }
+            // sortable
+
             $('#overviewTargetLevelsBtns').sortable({
                 start : function( event, ui ) {
                     $(event.target).addClass('grabbing')

@@ -222,10 +222,10 @@ function medientEvaluationAdd(id){
                 format: 'dd-mm-yyyy',
                 autoclose : true,
                 language : 'nl'
-              }).on('show',(e)=>{
+              }).on('show',(e)=>{             
                 $('.datepicker')
                     .addClass('shadow-lg')
-                    .attr('style','top: 360px !important;left: 517.656px;z-index: 1060;display: block;')
+                    .attr('style',$('.datepicker').attr('style').replace('top: 91px;','top: 171px !important;') )
                 
               })
         },
@@ -275,6 +275,7 @@ function medientPersonalInfo(medient){
     const indicationElement = $('input#indication').val(`${indication[2]}-${indication[1]}-${indication[0]}`)
     //$('input#indication').remove()
     //$('#indicationContainer').append(indicationElement)
+
     let date = new Date();
     let three = new Date(date.setMonth(date.getMonth() + 3));
     const medientIndicationDateExpired = new Date( medient[0].indication)
@@ -285,6 +286,9 @@ function medientPersonalInfo(medient){
     } else {
         $('input#indication').removeClass('medientIndicationExpired')
     }
+
+    $('#medientAdditionalInfo').on('click',()=>medientAdditionalInfo(medient));
+
     $('button#medientEditBtn').on('click',()=>{
         $('input#indication').removeClass('medientIndicationExpired')
         location.hash = '#'+medient[0].id+'/edit'
@@ -318,6 +322,20 @@ function medientPersonalInfo(medient){
             $('#medientSave').hide();
         })
     })
+}
+function medientAdditionalInfo(medient){
+    component.modal({
+        title :  'Gegevens '+ medient.name +'',
+        body : 'Gegevens '+ medient.name +'',
+        buttons : [
+            { txt : 'Sluiten', event : ['click',()=>{
+                $('#amModal').modal('hide')
+            }]}
+        ],
+        open : ()=>{
+
+        }
+    });
 }
 /** saves medient personal info edit  */
 function medientPersonalInfoSave(){
