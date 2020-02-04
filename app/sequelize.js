@@ -8,7 +8,7 @@ module.exports = ()=>{
   //console.log(models)
   // sequelize models sync
 
-  models.sequelize.sync().then(function() {
+  models.sequelize.sync({ alter: true }).then(function() {
 
     console.log('\x1b[1m\x1b[32m',`db ${models.sequelize.config.database} models.sequelize.sync() ${Object.getOwnPropertyNames(models.sequelize.models)} models OK\x1b[0m`)
     
