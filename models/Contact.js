@@ -58,6 +58,9 @@ module.exports =  (sequelize, Sequelize) => {
         },
         country_secondary : {
             type: Sequelize.STRING
+        },
+        mobile: {
+            type: Sequelize.STRING
         }
     })
 }
