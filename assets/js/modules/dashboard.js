@@ -464,9 +464,9 @@ function medientContacts(id){
 // ........................................
 /** creates & inserts medient add contact form  */
 function medientAddContact(id){
-    const $medientContactForm = medientContact({id:'medientAddContactForm'}),
-          $medientPersonalInfoElement = $('#medientPersonalInfo');
-    $medientPersonalInfoElement.after($medientContactForm);
+    const $medientContactForm = medientContact({id:'medientAddContactForm'});
+          
+    $('#medientPersonalInfoContainer').append($medientContactForm)
     $('#medientAddContactForm input').removeAttr('disabled');
     $('#medientAddContactForm input#medient').val(id);
     $('#medientAddContact').hide();
@@ -486,7 +486,6 @@ function medientAddContact(id){
     const $medientContactElement = $('#medientContact'),
           $medientContact = $('<form></form>')
             .attr('id',contact.id)
-            .attr('class','col-md-3')
             .html($medientContactElement.html());
     if(contact.id === 'medientAddContactForm') $('#medientAddContactForm .medientContactOptions').remove()
     return $medientContact
@@ -495,7 +494,7 @@ function medientAddContact(id){
 /** gets medient contacts data */
 function medientGetContacts(id){
     //console.log(id)
-    const $medientPersonalInfoElement = $('#medientPersonalInfo'),
+    const $medientPersonalInfoElement =  $('#medientPersonalInfoContainer'),
         medientContactsData = {
         url : 'api/contacts/medient/'+id,
         callback : (contacts)=>{
@@ -508,7 +507,7 @@ function medientGetContacts(id){
                     .attr('id',medientContactElementId)
                     .attr('data-id',contact.id)
                     .addClass('medient_contact')
-                $medientPersonalInfoElement.after($medientContact);
+                $medientPersonalInfoElement.append($medientContact);
                 /** map contact object keys to input fields */
                 Object.keys(contact).map((key, index) => $(`#${medientContactElementId} input#${key}`).val(contact[key]));
                 /** update medient contact */
