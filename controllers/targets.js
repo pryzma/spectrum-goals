@@ -71,7 +71,7 @@ controller.deleteTarget = (req,res) => {
 controller.getMedients = (req,res) => {
   connection.query('SELECT MedientTargets.medient, Accounts.firstName,Accounts.lastName FROM MedientTargets LEFT JOIN Accounts ON Accounts.id=MedientTargets.medient WHERE MedientTargets.target="'+req.params.target+'";',(err, items)=>{
     if (!err) {
-        console.log(items)
+        //console.log(items)
         res.json(items);
     } else {
         console.log(err);

@@ -10,8 +10,11 @@ const express = require('express'),
 const router = express.Router();
 const controller = require('../controllers/medients');
 router.post('/target/add', bodyParserJSON, (req, res) => {
-    controller.addTarget(req, res);
-  });
+  controller.addTarget(req, res);
+});
+router.put('/', bodyParserJSON, (req, res, next) => {
+  controller.updateMedient(req,res, next);
+});
 
 
-  module.exports = router;
+module.exports = router;

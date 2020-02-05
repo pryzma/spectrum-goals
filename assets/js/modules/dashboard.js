@@ -151,10 +151,13 @@ function medientDashboard(id){
             .attr('id','medientBreadCrumb')
             .html(medient[0].name);
          $('.breadcrumb').append(medientBreadCrumb);
+         
     dashboardElement.data( 'medient' ,medient );
     $.get('html/templates/medientDashboard.html', (medientDashboard) => {
+        
         location.hash = '#'+medient[0].id;
         dashboardMainElement.html(medientDashboard);
+        $('.medientName').html(medient[0].name)
         medientPersonalInfo(medient)
         medientContacts(id)
         //medientTargets(id)
@@ -178,7 +181,7 @@ function medientEvaluationOverview(id){
             
             if(evaluations.length > 0 ){
                 evaluations.map((evaluation)=>{
-                    console.log(evaluation)
+                   
                     const overviewMedientEvaluationItemContentElement = $('<div></div>')
                         .attr('class','medientEvaluationContent')
                         .html(evaluation.evaluation)
@@ -208,7 +211,7 @@ function medientEvaluationAdd(id){
         id : 'medientEvaluationAddForm',
         model : 'Evaluation',
         fields : {
-            date : { label : 'Datum' },
+            //date : { label : 'Datum' },
             evaluation : { label : 'Evaluatie', type : 'textarea' }
         }
     });
@@ -287,7 +290,7 @@ function medientPersonalInfo(medient){
         $('input#indication').removeClass('medientIndicationExpired')
     }
 
-    $('#medientAdditionalInfo').on('click',()=>medientAdditionalInfo(medient));
+    $('#medientAdditionalInfo').off().on('click',()=>medientAdditionalInfo(medient));
 
     $('button#medientEditBtn').on('click',()=>{
         $('input#indication').removeClass('medientIndicationExpired')
@@ -324,16 +327,77 @@ function medientPersonalInfo(medient){
     })
 }
 function medientAdditionalInfo(medient){
+    const medientAdditionalInfoForm = component.form.fromModel({
+        model : 'Medient',
+        id : 'medientAdditionalInfoForm',
+        fields :{
+            BSN : {label :'BSN'},
+            date_of_birth: {label :'Geboortedatum'},
+            gender: {label :'Geslacht'},
+            order_number: {label :'Beschikkingsnummer'},
+            product_category: {label :'Productcategorie'},
+            start_date: {label :'Startdatum'},
+            product_code: {label :'Productcode'},
+            volume: {label :'Volume'},
+            time_unit: {label :'Tijdseenheid'},
+            btw_exemption: {label :'BTW Ontheffing'},
+            btw_percentage: {label :'BTW Percentage'},
+            btw_amount: {label :'BTW'},
+            declaration_amount: {label :'Declaratie'},
+            reference_number_credit: {label :'Rekeningnummer'},
+            allocation_number: {label :'Toewijzingsnummer'}
+        }
+    });
+    
     component.modal({
-        title :  'Gegevens '+ medient.name +'',
-        body : 'Gegevens '+ medient.name +'',
+        title :  'Gegevens <b>'+ medient[0].name +'</b>',
+        body : medientAdditionalInfoForm,
         buttons : [
-            { txt : 'Sluiten', event : ['click',()=>{
+            { txt : 'Opslaan', event : ['click',()=>{
+                const medientAdditionalInfoData = component.form.fields({el : '#medientAdditionalInfoForm'});
+                const medientAdditionalInfoData_ = {
+                    BSN : medientAdditionalInfoData.BSN
+                }
+                medientAdditionalInfoData.id = medient[0].id;
+               
+                axios.put('api/medients',medientAdditionalInfoData ).then((response) => {
+                    $('#amModal').modal('hide')
+                    for(let item in medientAdditionalInfoData){
+                        medient[0][item] = medientAdditionalInfoData[item]
+                    }
+                    medientPersonalInfo(medient)
+                    component.alert({message : '<i class="fas fa-pen"></i> Gegevens aangepast'})
+                    
+                }).catch(error => {
+                });
+                /*
+                component.api({ 
+                    method : 'put',
+                    data : medientAdditionalInfoData,
+                    callback : ()=>{
+                        component.alert({message : 'Gegevens aangepast'})
+                        $('#amModal').modal('hide');
+                    }
+                }); */
+                
+            }]},
+            { txt : 'Sluiten', class : 'secondary',event : ['click',()=>{
                 $('#amModal').modal('hide')
             }]}
         ],
         open : ()=>{
-
+            //$('.modal-dialog').addClass('modal-lg'); // resize modal
+            $('#medientAdditionalInfoForm label').removeClass('col-sm-2').addClass('col-sm-4');
+            $('#medientAdditionalInfoForm .form-group div').removeClass('col-sm-10').addClass('col-sm-8');
+            console.log(medient[0])
+            for(let item in medient[0]){
+                if(document.querySelector('#medientAdditionalInfoForm #'+item)){
+                    document.querySelector('#medientAdditionalInfoForm #'+item).value = medient[0][item];
+                }
+            }
+        },
+        close : ()=>{
+            //$('.modal-dialog').removeClass('modal-lg');
         }
     });
 }

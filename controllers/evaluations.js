@@ -13,6 +13,7 @@ controller.createEvaluation = (req,res) => {
   uuid = uuidv4();
   
   evaluation.id = uuid;
+  evaluation.date = new Date()
   //evaluation.date = evaluation.date.split('-')[2]+'-'+evaluation.date.split('-')[1]+'-'+evaluation.date.split('-')[0]+' 03:00:00'
   Evaluation.create(evaluation).then((evaluation)=>{
       res.json(evaluation);

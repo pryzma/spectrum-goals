@@ -1,4 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
+    
     return sequelize.define('Medient', {
         id: {
             type: Sequelize.STRING,
@@ -12,23 +13,19 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE
         },
         BSN: {
-            type: Sequelize.INTEGER
+            type: Sequelize.STRING
         },
         date_of_birth: {
             type: Sequelize.DATEONLY
         },
         gender: {
-            type: Sequelize.INTEGER
-        },
-        client_passed_away: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
+            type: Sequelize.STRING
         },
         order_number: { //beschikkingsnummer
             type: Sequelize.INTEGER
         },
         product_category: {
-            type: Sequelize.INTEGER
+            type: Sequelize.STRING
         },
         start_date: {
             type: Sequelize.DATEONLY
@@ -40,7 +37,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         },
         time_unit: {
-            type: Sequelize.INTEGER
+            type: Sequelize.STRING
         },
         btw_exemption: {
             type: Sequelize.BOOLEAN
@@ -55,7 +52,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DECIMAL
         },
         reference_number_credit: {
-            type: Sequelize.INTEGER
+            type: Sequelize.STRING
         },
         allocation_number: {
             type: Sequelize.INTEGER

@@ -29,15 +29,16 @@ controller.createAccount = (req,res) => {
     account.isActivated = 0;
     account.createdBy = req.session.user.id;
  
-
+    const medient = {
+        id : uuidv4(),
+        account : account.id,
+        indication : account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]+' 03:00:00'
+    }
     Account.create(account).then((account)=>{
+        console.log(account)
         // create medient if account.profile === 'medient'
         if(account.profile === 'medient'){
-            const medient = {
-                id : uuidv4(),
-                account : account.id,
-                indication : account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]+' 03:00:00'
-            }
+            
             Medient.create(medient);
         }
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);

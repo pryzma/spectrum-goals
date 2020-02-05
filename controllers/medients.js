@@ -29,7 +29,17 @@ controller.addTarget = (req,res) => {
         console.log(err);
     });
 }
-
+controller.updateMedient = (req,res,next) => {
+    console.log(req.body)
+    Medient.update(req.body,{where: { account: req.body.id } })
+    .then(function(rowsUpdated) {
+        console.log('controller.updateMedient : '+rowsUpdated+' rows updated')
+        res.json(rowsUpdated)
+    })
+    .catch((err =>{
+        console.log('controller.updateMedient : '+err)
+    }));
+}
 controller.getTargets = (req,res) => {
     
     connection.query('SELECT MedientTargets.target, Targets.name FROM MedientTargets LEFT JOIN Targets ON Targets.id=MedientTargets.target WHERE MedientTargets.medient="'+req.params.medient+'";',(err, items)=>{

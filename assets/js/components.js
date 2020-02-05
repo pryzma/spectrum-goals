@@ -816,7 +816,9 @@ const component = (() => {
   });
   */
   function modal(args){
+   
     const $amModal = $('#amModal').modal();
+
     $('#amModalTitle').html(args.title)
     $amModal.on('shown.bs.modal', () => { // modal is shown
       
@@ -834,6 +836,7 @@ const component = (() => {
         });
       });
       if(typeof args.open === 'function') args.open();
+
     });
     if(typeof args.save === 'function'){
       $('#amModalSave').on('click',()=>{
@@ -1293,8 +1296,8 @@ const component = (() => {
       index++;
     }
     if(!args.insert) args.insert = 'append'
-    if(!args.el) args.el = application.config.main
-    $(args.el)[args.insert](form);
+    //if(!args.el) args.el = application.config.main
+    if(args.el) $(args.el)[args.insert](form);
     // submit event
     if(args.btnSaveTxt) { formFooter.appendChild(formBtnSave); }
     form.appendChild(formBody);

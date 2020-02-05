@@ -1,7 +1,12 @@
 <section id="medientDashboard" class="container-fluid">
-    <div class="row">
-      <div class="col-md-3"><h3>Persoonlijk</h3> 
-        <span class="float-right" id="medientPersonalInfoOptions">
+    
+  <div class="row" style="padding:10px;"> 
+    <div class="btn btn-green  pointer white left" id="medientAdditionalInfo" ><i class="fas fa-pen"></i> Gegevens <b class="medientName"></b></div>
+</div>
+  <div class="row">
+      <div class="col-md-3">
+        <h3>Persoonlijk</h3> 
+        <div class="float-right" id="medientPersonalInfoOptions">
           <span id="medientEdit">
             <button class="btn btn-nobg yellow" id="medientEditBtn">
               <i class="fas fa-user-edit"></i>
@@ -11,8 +16,13 @@
               <button class="btn btn-nobg green" id="medientSaveBtn"><i class="fas fa-check"></i></button>
               <button class="btn btn-nobg red" id="medientEditCancelBtn"><i class="fas fa-times"></i></button>
           </span>
+        </div>
+          <form id="medientPersonalInfo">
+
+          </form>
       </div>
-      <div class="col-md-3"><h3>Contacten (<span id="medientContactsNum">0</span>)</h3>
+      <div class="col-md-3" id="medientPersonalInfoContainer">
+        <h3>Contacten (<span id="medientContactsNum">0</span>)</h3>
         <span class="float-right" id="medientAddContactOptions">
             <span id="medientAddContact">
               <button class="btn btn-nobg yellow" id="medientAddContactBtn">
@@ -25,13 +35,8 @@
             </span>
       </div>
     </div>
-        <div class="row" id="medientPersonalInfoContainer">
-          <form class="col-md-3" id="medientPersonalInfo">
-
-          </form>
-          
-        </div>
-        <div class="row">
+     
+        <div class="row" style="padding-top: 10px;">
          <div class="col-md-6">
           <h3>Voortgang</h3>
           <div id="medientTargets">
@@ -114,7 +119,7 @@
           </div>
           
       </div>
-      <a href="" id="medientAdditionalInfo"> Meer gegevens</a>
-
+     
   </form>
+ 
 </div>
