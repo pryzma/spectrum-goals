@@ -465,7 +465,6 @@ function medientContacts(id){
 /** creates & inserts medient add contact form  */
 function medientAddContact(id){
     const $medientContactForm = medientContact({id:'medientAddContactForm'});
-          
     $('#medientPersonalInfoContainer').append($medientContactForm)
     $('#medientAddContactForm input').removeAttr('disabled');
     $('#medientAddContactForm input#medient').val(id);

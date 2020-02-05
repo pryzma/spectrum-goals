@@ -32,7 +32,7 @@ controller.createAccount = (req,res) => {
     const medient = {
         id : uuidv4(),
         account : account.id,
-        indication : account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]+' 03:00:00'
+        indication : account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]
     }
     Account.create(account).then((account)=>{
         console.log(account)
