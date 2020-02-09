@@ -240,15 +240,17 @@ function overviewSubjects(category){
                                 id : ui.helper[0].id,
                                 subject : subject.id
                             }
-                            if(updateMoveTarget.subject != subject.id){
+                            const updateMoveTargetSubject = $(ui.helper[0]).attr('data-subject')
+                            if(subject.id != updateMoveTargetSubject){
                                 axios.put('api/targets', updateMoveTarget ).then(() => {
                                     $('#amModal').modal('hide')
                                     component.alert({message : '<i class="fas fa-pen"></i> Leerdoel verplaatst naar '+subject.name})
                                     targetsOverview()
                                 })
-                            }else {
-                                // sort target
                             }
+                            
+                                
+                            
                             
                         }
                     })
@@ -677,6 +679,7 @@ function subjectTargetsBtns(args){
             
             const targetContainer = $('<div></div>')
                 .attr('class','targetContainer')
+                .attr('data-subject',target.subject)
                 .attr('id',target.id)
             
             
