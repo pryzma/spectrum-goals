@@ -383,11 +383,13 @@ const component = (() => {
         }
       }
       if(callback || args.callback) {
-          if(callback)
-            return callback(data);
-          if(args.callback) 
+        if(args.callback) 
             
-            return args.callback(data);
+            //return args.callback(data);
+            args.callback(data);
+          if(callback)
+            //return callback(data);
+            callback(data);
       
           return data;
       }

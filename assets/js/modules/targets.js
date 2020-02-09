@@ -2,13 +2,44 @@
 const targets = {
     name : 'Leerdoelen',
     default : targetsOverview,
-    template : 'targets'
+    template : 'targetsCategories'
+    //template : 'targets'
+}
+const categoriesData = {
+    url : 'api/categories',
+    callback : (categories)=>{
+        if($('.tabAdded').length===0){
+            targets.categories = categories;
+        const categoryTab = $('#targetCategoriesTabs').html(),
+              categoryTabPane = $('#targetCategoriesContent').html();
+
+        for(const category of categories){
+            const categoryCurrentTab = categoryTab,
+                  categoryCurrentTabLink = $('<a></a>')
+                     .attr('class','nav-link h4 tabAdded')
+                     .attr('style','margin-bottom:0 !important;')
+                     .attr('href',`#${category.id}Subjects`)
+                     .attr('data-category',category.id)
+                     .attr('data-toggle','tab')
+                     .attr('role','tab')
+                     .attr('aria-controls',`#${category.id}Subjects`)
+                     .attr('aria-selected','false')
+                     .text(category.name),
+                  categoryCurrentTabPane = $(categoryTabPane)
+                     .attr('id',`${category.id}Subjects`)
+                     .attr('data-category',category.id)
+                     .attr('aria-labelledby',`${category.id}-tab`);
+            $('#targetCategoriesContent').prepend(categoryCurrentTabPane)
+            $('#targetCategoriesTabs').prepend($(categoryCurrentTab).html(categoryCurrentTabLink).removeAttr('style'));
+        }
+        $('#targetCategoriesTabs li a').first().tab('show');
+        // $('#targetCategoriesContent div').first().addClass('active')
+        }
+        
+    }
 }
 const targetsData = {
-    url : 'api/targets',
-    modify : (item) => {
-
-    }
+    url : 'api/targets'
 }
 const medientsObj = { data : [] };
 const medientObjDataModify = (account) => {
@@ -28,26 +59,28 @@ const medientsObjData = {
   };
 
 function categoryName(category){
-    if(category==='work'){
+    if(category==='technical'){
+        return 'Technisch'
+    }else if(category==='work'){
         return 'Werk'
     }else{
         return 'Persoonlijk'
     }
-    
 }
+
 function targetsOverview(){
-    overviewSubjects(currentCategory())
-    
- 
-    $('.addSubject').on('click',()=>addSubject()).droppable({
-        drop: function( event, ui ) {
-            //console.log(ui.helper[0].id)
-            addSubject(ui.helper[0].id)
-           
-        }
-    });
-    $('#targetCreateBtn').on('click',targetCreate)
-    
+    component.api(categoriesData,()=>{
+        overviewSubjects(currentCategory())
+        $('.addSubject').on('click',()=>{
+            addSubject()
+        }).droppable({
+            drop: function( event, ui ) {
+                //console.log(ui.helper[0].id)
+                addSubject(ui.helper[0].id)
+            }
+        });
+        $('#targetCreateBtn').on('click',targetCreate)
+    })
 }
 
 function addTarget(subject){
@@ -79,6 +112,7 @@ function addTarget(subject){
 
     })
 }
+
 function addSubject(target){
     
     const addSubjectForm = component.form.fromModel({
@@ -357,7 +391,7 @@ function addTargetLevel(target){
             const AddTargetLevelData = component.form.fields({el : '#addTargetLevelForm' });
             AddTargetLevelData.subject = target.subject.id
             AddTargetLevelData.target = target.id
-            AddTargetLevelData.order = targetLevelsLength+1
+            AddTargetLevelData.sortOrder = targetLevelsLength+1
             component.api({
                 url : 'api/levels',
                 method: 'post',
@@ -432,7 +466,7 @@ function overviewTargetLevels(target){
                 const levelLabelTxt = levels[levelIndex].name.replace(/<3/g,'♥')
                 const levelLabel = $('<div></div>')
                         //.html(`Level ${levelIndex/1+1} : ${levelLabelTxt}`),
-                        .html(`Level <span class="levelOrder">${levels[levelIndex].order}</span> : <span class="levelName">${levelLabelTxt}</span>`),
+                        .html(`Level <span class="levelOrder">${levels[levelIndex].sortOrder}</span> : <span class="levelName">${levelLabelTxt}</span>`),
                       subLevelContainer = $('<div></div')
                         .attr('class','subLevelContainer')
                         .attr('style','display:none;padding-left:25px;')
@@ -508,26 +542,19 @@ function overviewTargetLevels(target){
 function updateTargetLevelOrder(target){
     const levels = []
     $('.overviewTargetLevel').each(function(index,item){
-        console.log(item)
         const overviewTargetLevelId = item.id,
               overviewTargetLevelName = $(`#${overviewTargetLevelId} .levelName`).text(),
               level = {
                 id : overviewTargetLevelId.replace('level_',''),
-                order : index+1,
+                sortOrder : index+1,
                 name : overviewTargetLevelName
               }
-        levels.push(level)
-             
-        
+        levels.push(level);
     });
     
-    levels.map((level)=>{
-        axios.put('api/levels',level ).then((response) => {
-            console.log(level)
-        })
-    })
-    
-    overviewTargetLevels(target)
+    axios.put('api/levels',levels ).then((response) => {
+        overviewTargetLevels(target);
+    });
 }
 function assignMedientTarget(target){
     $('#overviewTargetAssignMedientInput').off().on('input',(event)=>{
@@ -626,6 +653,7 @@ function levelUpdate(level){
                     component.alert({message : '<i class="fas fa-pen"></i> Level aangepast'})
                     overviewTargetLevels(level.target)
                 }).catch(error => {
+                    console.log(error);
                 });
             }]
         }]
@@ -858,7 +886,7 @@ function subLevelUpdate(sublevel,level){
                     
                     overviewTargetSubLevels(level);
                 }).catch(error => {
-                    
+                    console.log(error);
                 });
             }]
         },

@@ -26,10 +26,28 @@ controller.updateLevel = (req,res,next) => {
         res.json(rowsUpdated)
     })
     .catch(next);*/
-    console.log(req.body)
-    connection.query(`UPDATE Levels SET name = '${req.body.name}',order=${req.body.order} WHERE id = '${req.body.id}'`,(err,result)=>{
-        res.json(result)
-    })
+    if(!Array.isArray(req.body)) {
+        console.log(req.body)
+        connection.query(`UPDATE Levels SET name = '${req.body.name}', sortOrder = ${req.body.sortOrder} WHERE id = '${req.body.id}';`,(err,result)=>{
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(result)
+            }
+        })
+    }else{
+        const response = []
+        for(const item of req.body){
+            connection.query(`UPDATE Levels SET name = '${item.name}', sortOrder = ${item.sortOrder} WHERE id = '${item.id}';`,(err,result)=>{
+                if (err) {
+                    console.log(err)
+                }else{
+                    response.push(result)
+                }
+            })
+        }
+        res.json(response);
+    }
 }
 
 controller.getAll = (req,res) => {
@@ -38,7 +56,7 @@ controller.getAll = (req,res) => {
     });
 }
 controller.getTargetLevels = (req,res) => {
-    Level.findAll({where: { target: req.params.target },order:[['order','ASC']]}).then((items) => {
+    Level.findAll({where: { target: req.params.target },order:[['sortOrder','ASC']]}).then((items) => {
         res.json(items);
     });
 }
