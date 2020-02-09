@@ -9,6 +9,7 @@ module.exports = (sequelize, Sequelize) => {
         target : {type: Sequelize.STRING},
         subject : {type: Sequelize.STRING},
         name: {type: Sequelize.STRING},
+        order : {type: Sequelize.INTEGER},
         description : {type: Sequelize.STRING}
         
     });

@@ -240,12 +240,16 @@ function overviewSubjects(category){
                                 id : ui.helper[0].id,
                                 subject : subject.id
                             }
-
-                            axios.put('api/targets', updateMoveTarget ).then(() => {
-                                $('#amModal').modal('hide')
-                                component.alert({message : '<i class="fas fa-pen"></i> Leerdoel verplaatst naar '+subject.name})
-                                targetsOverview()
-                            })
+                            if(updateMoveTarget.subject != subject.id){
+                                axios.put('api/targets', updateMoveTarget ).then(() => {
+                                    $('#amModal').modal('hide')
+                                    component.alert({message : '<i class="fas fa-pen"></i> Leerdoel verplaatst naar '+subject.name})
+                                    targetsOverview()
+                                })
+                            }else {
+                                // sort target
+                            }
+                            
                         }
                     })
                     $(`#subjectHeader_${subject.id}`).after(subjectOptions)
@@ -299,9 +303,7 @@ function subjectDelete(subject){
                     callback : ()=>{
                         $('#amModal').modal('hide')
                         targetsOverview()
-                        component.alert({
-                            message : `<i class="fas fa-times"></i> Onderwerp verwijderd`
-                        })
+                        component.alert({message : `<i class="fas fa-times"></i> Onderwerp <b>${subject.name}</b> verwijderd`})
                     }
                 });
             }]},
@@ -345,7 +347,7 @@ function addTargetLevel(target){
             name : { label : 'Naam' }
         }
     });
-    
+    const targetLevelsLength = $('.levelContainer').length;
     component.modal({
         title : 'Level toevoegen',
         body : addTargetLevelForm,
@@ -353,7 +355,7 @@ function addTargetLevel(target){
             const AddTargetLevelData = component.form.fields({el : '#addTargetLevelForm' });
             AddTargetLevelData.subject = target.subject.id
             AddTargetLevelData.target = target.id
-            
+            AddTargetLevelData.order = targetLevelsLength+1
             component.api({
                 url : 'api/levels',
                 method: 'post',
@@ -374,7 +376,7 @@ function addTargetLevel(target){
 
 
 function overviewTargetLevels(target){
-    console.log('overviewTargetLevels:'+target)
+
     levelsSearch()
     $('#targetsBreadcrumb').html('<a href="#targets">Leerdoelen</a>');
     if(typeof target[0] === 'string'){
@@ -412,6 +414,7 @@ function overviewTargetLevels(target){
     component.api({
         url : `api/levels/${target.id}`,
         callback : (levels) => {
+            console.log(levels)
             $('#targetCategoriesContent').hide();
             $('#overviewTargetLevels').show();
             location.hash = '#'+target.id;
@@ -426,7 +429,8 @@ function overviewTargetLevels(target){
                 overviewTargetSubLevels(levels[levelIndex])
                 const levelLabelTxt = levels[levelIndex].name.replace(/<3/g,'♥')
                 const levelLabel = $('<div></div>')
-                        .html(`Level ${levelIndex/1+1} : ${levelLabelTxt}`),
+                        //.html(`Level ${levelIndex/1+1} : ${levelLabelTxt}`),
+                        .html(`Level <span class="levelOrder">${levels[levelIndex].order}</span> : <span class="levelName">${levelLabelTxt}</span>`),
                       subLevelContainer = $('<div></div')
                         .attr('class','subLevelContainer')
                         .attr('style','display:none;padding-left:25px;')
@@ -472,18 +476,25 @@ function overviewTargetLevels(target){
                     
 
                 // overviewTargetSubLevels
-                $('#overviewTargetLevelsBtns').append(levelElement)
-                levelElement.after(subLevelContainer);
+                const overviewTargetLevel = $('<div></div>')
+                        .attr('class','overviewTargetLevel')
+                        .attr('id',`level_${levels[levelIndex].id}`)
+                        .append(levelElement)
+                        .append(subLevelContainer)
+                $('#overviewTargetLevelsBtns').append(overviewTargetLevel)
+                //levelElement.after();
                 overviewTargetSubLevels(levels[levelIndex]);
             }
             // sortable
 
             $('#overviewTargetLevelsBtns').sortable({
                 start : function( event, ui ) {
+
                     $(event.target).addClass('grabbing')
                 },
                 stop : function( event, ui  ) {
                     $(event.target).removeClass('grabbing')
+                    updateTargetLevelOrder(target)
                 }
             });
         }
@@ -492,7 +503,30 @@ function overviewTargetLevels(target){
       
 
 }
-
+function updateTargetLevelOrder(target){
+    const levels = []
+    $('.overviewTargetLevel').each(function(index,item){
+        console.log(item)
+        const overviewTargetLevelId = item.id,
+              overviewTargetLevelName = $(`#${overviewTargetLevelId} .levelName`).text(),
+              level = {
+                id : overviewTargetLevelId.replace('level_',''),
+                order : index+1,
+                name : overviewTargetLevelName
+              }
+        levels.push(level)
+             
+        
+    });
+    
+    levels.map((level)=>{
+        axios.put('api/levels',level ).then((response) => {
+            console.log(level)
+        })
+    })
+    
+    overviewTargetLevels(target)
+}
 function assignMedientTarget(target){
     $('#overviewTargetAssignMedientInput').off().on('input',(event)=>{
       

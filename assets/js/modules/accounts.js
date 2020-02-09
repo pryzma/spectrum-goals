@@ -71,8 +71,8 @@ function accountsOverview() {
       }
     });
   });
-  /** Table component object */
-  const medientListTable = {
+  /** Table components */
+  component.table({
     el : '#accountsMedients',
     model : 'Account',
     class : 'table-striped green table-hover',
@@ -83,9 +83,9 @@ function accountsOverview() {
         account(event.target.parentElement.id, "medient");
       }
     }
-  };
+  });
 
-  const teamListTable = {
+  component.table({
     el : '#accountsTeammembers',
     model : 'Account',
     class : 'table-striped green table-hover',
@@ -96,10 +96,9 @@ function accountsOverview() {
         account(event.target.parentElement.id, "team");
       }
     }
-  };
+  });
 
-  component.table(medientListTable);
-  component.table(teamListTable);
+
 }
 
 // ........................................
@@ -249,6 +248,12 @@ function newAccount() {
           $('.datepicker').addClass('shadow-lg')
           
         })
+        if($('#accountsTeammembersTab').hasClass('active')){
+          $('#profileSelect').val('teammember')
+          formGroupMedientIndication.remove()
+        }else{
+
+        }
         $('#profileSelect').on('change',(e)=>{
           const selectVal = e.target.value;
           
@@ -285,7 +290,7 @@ function newAccount() {
 
 function saveAccount(){
   const accountFormData = component.form.fields({ el : 'form#accountInfo', model : 'Account'});
-  console.log(accountFormData)
+  
   let validated = true
   $('#accountInfo input').removeClass('invalid')
   for(const property in accountFormData){

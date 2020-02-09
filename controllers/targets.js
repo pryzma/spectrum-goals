@@ -14,6 +14,7 @@ controller.createTarget = (req,res) => {
     const target = req.body,
     uuid = uuidv4();
     target.id = uuid;
+    target.createdBy = req.session.user.id;
     Target.create(target).then((target)=>{
         res.json(target);
     }).catch((err)=>{

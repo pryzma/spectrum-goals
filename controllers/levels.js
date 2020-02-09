@@ -26,7 +26,8 @@ controller.updateLevel = (req,res,next) => {
         res.json(rowsUpdated)
     })
     .catch(next);*/
-    connection.query(`UPDATE Levels SET name = '${req.body.name}' WHERE id = '${req.body.id}'`,(err,result)=>{
+    console.log(req.body)
+    connection.query(`UPDATE Levels SET name = '${req.body.name}',order=${req.body.order} WHERE id = '${req.body.id}'`,(err,result)=>{
         res.json(result)
     })
 }
@@ -37,7 +38,7 @@ controller.getAll = (req,res) => {
     });
 }
 controller.getTargetLevels = (req,res) => {
-    Level.findAll({where: { target: req.params.target },order:[['name','DESC']]}).then((items) => {
+    Level.findAll({where: { target: req.params.target },order:[['order','ASC']]}).then((items) => {
         res.json(items);
     });
 }

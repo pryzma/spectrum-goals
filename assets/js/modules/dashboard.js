@@ -326,6 +326,8 @@ function medientPersonalInfo(medient){
         })
     })
 }
+
+/** Additional Medient Data */
 function medientAdditionalInfo(medient){
     const medientAdditionalInfoForm = component.form.fromModel({
         model : 'Medient',
@@ -370,15 +372,7 @@ function medientAdditionalInfo(medient){
                     
                 }).catch(error => {
                 });
-                /*
-                component.api({ 
-                    method : 'put',
-                    data : medientAdditionalInfoData,
-                    callback : ()=>{
-                        component.alert({message : 'Gegevens aangepast'})
-                        $('#amModal').modal('hide');
-                    }
-                }); */
+                
                 
             }]},
             { txt : 'Sluiten', class : 'secondary',event : ['click',()=>{
@@ -389,7 +383,7 @@ function medientAdditionalInfo(medient){
             //$('.modal-dialog').addClass('modal-lg'); // resize modal
             $('#medientAdditionalInfoForm label').removeClass('col-sm-2').addClass('col-sm-4');
             $('#medientAdditionalInfoForm .form-group div').removeClass('col-sm-10').addClass('col-sm-8');
-            console.log(medient[0])
+            
             for(let item in medient[0]){
                 if(document.querySelector('#medientAdditionalInfoForm #'+item)){
                     document.querySelector('#medientAdditionalInfoForm #'+item).value = medient[0][item];
@@ -507,6 +501,17 @@ function medientGetContacts(id){
                     .attr('data-id',contact.id)
                     .addClass('medient_contact')
                 $medientPersonalInfoElement.append($medientContact);
+                $medientContact.hide();
+                const $medientContactItem = $('.medientContactItem').on('click',(e)=>{
+                    $medientContact.show()
+                    $('.medientContactItem').hide()
+                });
+                $medientContactItem.attr('id',medientContactElementId+'_item')
+                $('#'+medientContactElementId+'_item .medientRelation').html(contact.relation)
+                console.log(contact.first_name+' '+contact.last_name)
+               
+                $medientContact.before($medientContactItem)
+                $('#'+medientContactElementId+'_item .medientContactName').val(contact.first_name+' '+contact.last_name);
                 /** map contact object keys to input fields */
                 Object.keys(contact).map((key, index) => $(`#${medientContactElementId} input#${key}`).val(contact[key]));
                 /** update medient contact */
