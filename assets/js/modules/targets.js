@@ -33,6 +33,7 @@ const categoriesData = {
             $('#targetCategoriesTabs').prepend($(categoryCurrentTab).html(categoryCurrentTabLink).removeAttr('style'));
         }
         $('#targetCategoriesTabs li a').first().tab('show');
+        $('#targetCategoriesTabs li').last().remove()
         // $('#targetCategoriesContent div').first().addClass('active')
         }
         
