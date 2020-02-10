@@ -34,10 +34,10 @@
                   <div class="py-5 text-center">
                      
                       <h2>Activeer je account,  <%=firstName %> <%= lastName %></h2>
-                      <p class="lead text-muted">Geef hieronder je wachtwoord op om je account te activeren.</p>
+                      <p class="lead text-muted" id="activateMessage">Geef hieronder je wachtwoord op om je account te activeren.</p>
                     </div>
               
-              <form class="needs-validation" novalidate="" id="activateProfileForm">
+              <form class="needs-validation" novalidate="" id="activateProfileForm"  autocomplete="off">
                 
                   <p></p>
                 <input type="hidden" id="id" name="id" value="">
@@ -95,9 +95,10 @@ $(document).ready(function() {
       if(activateProfileFormObj.password === activateProfileFormObj.repeat_password){
         axios.post('verify',activateProfileFormObj)
         .then(function (account) {
-          $('#activateProfileForm').html(`Your account has been activated. <a href="/signin">You can now sign in</a> with the password you provided.`)
+          $('#activateProfileForm').remove()
+          $('#activateMessage').html(`Je account is geactiveerd. <a href="/signin">Je kunt nu inloggen</a> met het wachtwoord dat je hebt opgegeven.`)
         }).catch(function(error){
-          $('#activateProfileForm').html(`A error has occured : ${error}`);
+          $('#activateMessage').html(`Oeps! Er is iets fout gegaan. Neem contact met de systeembeheerder en geef onderstaande foutmelding door;<br> ${error}`);
         });
       }else{
 

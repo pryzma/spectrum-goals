@@ -10,11 +10,17 @@ const spectrumGoals = (()=>{
         });
     }
     window.addEventListener('scroll', function(e) {
-        (window.scrollY > 100) ?  $('#accountTopInfo').fadeOut() : $('#accountTopInfo').fadeIn();
+        (window.scrollY > 1) ?  $('#accountTopInfo').fadeOut() : $('#accountTopInfo').fadeIn();
     });
-    $('#headerNavShow .btn').on('click',(event)=>{
-        $( "#headerNav" ).toggle();
-    });
+    if($(window).width()>768){
+        
+    }else{
+        $('#headerNavShow .btn').on('click',(event)=>{
+            $('#accountTopInfo').toggle();
+            $( "#headerNav" ).toggle();
+        });
+    }
+   
     const spectrumGoalsObj = new Object;
     spectrumGoalsObj.render = application.ejs 
     spectrumGoalsObj.breadCrumbs = breadCrumbs();
@@ -22,13 +28,20 @@ const spectrumGoals = (()=>{
     
     if(application.config.user.profile === 'teammember'){
         $('#profile').html('Team Member')
+    }else if(application.config.user.profile === 'medient'){
+        $('#profile').html('Medient')
     }
+    
+    
     return spectrumGoalsObj;
 })()
 /**
  * sets breadcrumbs for current page/module
  * @example spectrumGoals.breadCrumbs.set() // set breadcrumbs to current module
  */
+
+
+
 function breadCrumbs (){
     const init = ()=>{
         const defaultModuleName = application.object[application.object.default].name,
@@ -68,6 +81,8 @@ function serverStatus(){
         location.reload();
     }}).fail(function(){
         $('#serverConnectionLost').modal()
-    });
+    }).statusCode({ 200 : function(){ 
+        $('#serverConnectionLost').modal('hide');
+    }});
 }
 

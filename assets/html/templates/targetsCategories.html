@@ -1,0 +1,58 @@
+<section class="pageContent" id="targets">
+    <section class="pageHeader">
+            <h4 class="pageName name"></h4>
+            <nav aria-label="breadcrumb">
+                    <ol id="targetsBreadcrumbs" class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" id="targetsBreadcrumb">Leerdoelen</li>
+                      
+                    </ol>
+                  </nav>
+        </section>
+    <div class="row">
+        <div class="col-md-8">
+            
+           <input type="search" id="targetsSearch" class="form-control" style="background: none; width: 400px;  padding-left: 15px;" placeholder="Zoek in alle leerdoelen" />
+             
+        </div>
+
+      
+    </div>
+    <div>
+            <ul class="nav nav-tabs" id="targetCategoriesTabs" role="tablist">
+                <li class="nav-item" style="width: 50px !important;">
+                    <a class="nav-link h4" style="margin-bottom:0 !important;" href="#add" data-toggle="tab" role="tab" aria-controls="add" aria-selected="false"><i class="fas fa-plus"></i></a>
+                </li>
+            </ul>
+            <div class="tab-content" id="targetCategoriesContent">
+                <div class="tab-pane fade" id="add" data-category="add" role="tabpanel" aria-labelledby="add-tab">
+                    <div class="row" style="padding:15px">
+                        <div class="col-md-3 addSubject">
+                            <p class="h4"><i class="fas fa-plus"></i> Onderwerp</p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <div id="overviewTargetLevels" style="display: none;background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);padding:35px;z-index: 99;">
+            
+                <div class="row">
+                    <div id="overviewTargetLevels" class="col-md-6">
+                        <p class="h4 green"><span class="overviewTargetSubjectName"></span> / <span class="h4 bold overviewTargetName"></span></p>
+                        <!-- <button class="btn btn-yellow overviewTargetName left" style="width:50%;"></button> -->
+                        <div id="overviewTargetLevelsBtns" style="margin-top:10px;"></div>
+                        <button id="addTargetLevel" class="btn btn-nobg btn-block border-dashed"><i class="fas fa-plus"></i> Nieuw Level toevoegen</button>
+                    </div>
+                    <div id="overviewTargetAssignMedient" class="col-md-6">
+                        <p class="h4 green">Leerdoel <span class="overviewTargetSubjectName"></span> / <span class="overviewTargetName bold"></span> toewijzen aan:</p>
+                        <input class="form-control" id="overviewTargetAssignMedientInput" placeholder="Typ naam om Medient te selecteren... ">
+                        <div id="TargetAssignMedients" class="shadow" style="padding:10px;border:1px solid #ccc;border-radius: 5px; display:none;margin-bottom: 15px;"></div>
+                        <h3 class="text-muted">Medienten</h3>
+                        <div id="TargetAssignedMedients"></div>
+                    </div>
+                </div>
+               
+            </div>
+    </div>
+            
+    
+</section>

@@ -1,6 +1,8 @@
+'use strict';
+
 module.exports = (app) => {
 
-    const webSocket = require('websocket');
+    const webSocket = require('websocket'),
           webSocketServer = webSocket.server,
           http = require('http'),
           https = require('https');
@@ -22,18 +24,18 @@ module.exports = (app) => {
     const wsServerPort = env.REF_WS_PORT;
     server.listen(wsServerPort);
     server.on('upgrade', (req, socket) => {
-        // Make sure that we only handle WebSocket upgrade requests
-        if (req.headers['upgrade'] !== 'websocket') {
+        
+        if (req.headers.upgrade !== 'websocket') {
           socket.end('HTTP/1.1 400 Bad Request');
           return;
         }
-        // More to come…
-        });
+        
+    });
     const wsServer = new webSocketServer({
         httpServer: server
     });
 
-    console.log('\x1b[36m',`[websocket]\x1b[0m  Server started on ws://${env.REF_ADR}:${env.REF_WS_PORT}/ on ${(Date()).split('GMT')[0]}\x1b[0m`)
+    console.log('\x1b[36m',`[websocket]\x1b[0m  Server started on ${env.REF_WS_PROTOCOL}://${env.REF_ADR}:${env.REF_WS_PORT}/ on ${(Date()).split('GMT')[0]}\x1b[0m`)
 
     const getUniqueID = () => { // generate unique id
         const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);

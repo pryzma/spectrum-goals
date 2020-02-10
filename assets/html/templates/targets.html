@@ -2,71 +2,67 @@
     <section class="pageHeader">
             <h4 class="pageName name"></h4>
             <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item" aria-current="page"><a href="#">Home</a></li>
-                      <li class="breadcrumb-item name active" aria-current="page"></li>
+                    <ol id="targetsBreadcrumbs" class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" id="targetsBreadcrumb">Leerdoelen</li>
+                      
                     </ol>
                   </nav>
         </section>
     <div class="row">
-        <div class="col-md-4">
-            <span class="h2">Navigeren:</span>
+        <div class="col-md-8">
+            
+           <input type="search" id="targetsSearch" class="form-control" style="background: none; width: 400px;  padding-left: 15px;" placeholder="Zoek in alle leerdoelen" />
+             
         </div>
-        <div class="col-md-4">
-            <div class="input-group has-search shadow" id="targetsSearchContainer">
-                <input type="text" id="targetsSearch" class="form-control float-right" placeholder="Zoek een leerdoel..." /> 
-                <div class="input-group-append"><button class="btn btn-nobg"><i class="fas fa-search"></i></button></div>
-                    
-            </div>
-                
-        </div>
-        <div class="col-md-4">
-                <button class="btn btn-outline-warning" id="targetCreateBtn">Nieuw Leerdoel aanmaken</button>
-        </div>
+
+      
     </div>
     <div>
-            <ul class="nav nav-tabs" id="targetCategoriesTabs">
+            <ul class="nav nav-tabs" id="targetCategoriesTabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active h4" style="margin-bottom:0 !important;" href="#work-targets">Werk</a>
+                    <a class="nav-link active h4" style="margin-bottom:0 !important;" href="#workSubjects" data-toggle="tab" data-category="technical" role="tab" aria-controls="workSubjects" aria-selected="true">Technisch</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link h4" style="margin-bottom:0 !important;" href="#personal">Persoonlijk</a>
+                    <a class="nav-link h4" style="margin-bottom:0 !important;" href="#personalSubjects" data-toggle="tab" data-category="personal"  role="tab" aria-controls="personalSubjects" aria-selected="false">Persoonlijk</a>
+                </li>
+                <li class="nav-item" style="width: 50px !important;">
+                    <a class="nav-link h4" style="margin-bottom:0 !important;" href="#personalSubjects" data-toggle="tab" data-category="personal"  role="tab" aria-controls="personalSubjects" aria-selected="false"><i class="fas fa-plus"></i></i></a>
                 </li>
             </ul>
             <div class="tab-content" id="targetCategoriesContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <p class="h2 bold green center">Grafisch</p>
-                            <button class="btn btn-block btn-yellow">Adobe Illustrator</button>
-                            <button class="btn btn-block btn-yellow">Adobe After Effects</button>
-                            <button class="btn btn-block btn-yellow">Pr&eacute;miere Pro</button>
-                            <button class="btn btn-block btn-yellow">Adobe Photoshop</button>
+                <div class="tab-pane fade show active" id="workSubjects" data-category="work" role="tabpanel" aria-labelledby="work-tab">
+                    <div class="row" id="overviewSubjects" style="padding:15px">
+                        <div class="col-md-3 addSubject">
+                           <p class="h4"><i class="fas fa-plus"></i> Onderwerp</p>
                         </div>
-                        <div class="col-md-3">
-                            <p class="h2 bold green center">IT</p>
-                            <button class="btn btn-block btn-yellow">HTML/CSS</button>
-                            <button class="btn btn-block btn-yellow">JavaScript</button>
-                            <button class="btn btn-block btn-yellow">Wordpress</button>
-                            <button class="btn btn-block btn-yellow">Elementor</button>
-                        </div>
-                        <div class="col-md-3">
-                            <p class="h2 bold green center">Abstract</p>
-                            <button class="btn btn-block btn-yellow">Werken aan projecten</button>
-                            <button class="btn btn-block btn-yellow">Grafisch Proces</button>
-                            <button class="btn btn-block btn-yellow">IT Proces</button>
-                            <button class="btn btn-block btn-yellow">Workflow</button>
-                            <button class="btn btn-block btn-yellow">Agile/Scrum</button>
-                        </div>
-                        <div class="col-md-3">
-                            <p class="h2 bold green center">Arduino</p>
-                            <button class="btn btn-block btn-yellow">C++</button>
-                        </div>
+                        
                     </div>
                 </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="row">
-                        
+                <div class="tab-pane fade" id="personalSubjects" data-category="personal" role="tabpanel" aria-labelledby="personalSubjects-tab">
+                    <div class="row" style="padding:15px">
+                        <div class="col-md-3 addSubject">
+                            <p class="h4"><i class="fas fa-plus"></i> Onderwerp</p>
+                         </div>
+                    </div>
+                </div>
+               
+            </div>
+            <div id="overviewTargetLevels" style="display: none;background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);padding:35px;z-index: 99;">
+            
+                <div class="row">
+                    <div id="overviewTargetLevels" class="col-md-6">
+                        <p class="h4 green"><span class="overviewTargetSubjectName"></span> / <span class="h4 bold overviewTargetName"></span></p>
+                        <!-- <button class="btn btn-yellow overviewTargetName left" style="width:50%;"></button> -->
+                        <div id="overviewTargetLevelsBtns" style="margin-top:10px;"></div>
+                        <button id="addTargetLevel" class="btn btn-nobg btn-block border-dashed"><i class="fas fa-plus"></i> Nieuw Level toevoegen</button>
+                    </div>
+                    <div id="overviewTargetAssignMedient" class="col-md-6">
+                        <p class="h4 green">Leerdoel <span class="overviewTargetSubjectName"></span> / <span class="overviewTargetName bold"></span> toewijzen aan:</p>
+                        <input class="form-control" id="overviewTargetAssignMedientInput" placeholder="Typ naam om Medient te selecteren... ">
+                        <div id="TargetAssignMedients" class="shadow" style="padding:10px;border:1px solid #ccc;border-radius: 5px; display:none;margin-bottom: 15px;"></div>
+                        <h3 class="text-muted">Medienten</h3>
+                        <div id="TargetAssignedMedients"></div>
                     </div>
                 </div>
                

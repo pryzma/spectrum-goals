@@ -23,6 +23,9 @@ module.exports =  (sequelize, Sequelize) => {
         medient: {
             type: Sequelize.STRING
         },
+        account: {
+            type: Sequelize.STRING
+        },
         organisation: {
             type: Sequelize.STRING
         },
@@ -54,6 +57,9 @@ module.exports =  (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         country_secondary : {
+            type: Sequelize.STRING
+        },
+        mobile: {
             type: Sequelize.STRING
         }
     })

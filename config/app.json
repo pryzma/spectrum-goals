@@ -3,11 +3,10 @@
     "app" : "spectrum-goals",
     "client" :{
         "require" : [ 
-                     
-            "application-ejs",
             "websocket",
             "components",
-            "spectrum-goals" 
+            "spectrum-goals",
+            "application-dev-env"
         ],
         "modules" : [
             {"module" : "dashboard" },
@@ -34,12 +33,15 @@
         },
         "cdns" : [
             { "name" : "jQuery", "url" : "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", "type" : "script", "sri" : "sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="},
+            { "name" : "jQuery UI", "url" : "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js", "type" : "script", "sri" : "sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM=" }, 
             { "name" : "Axios", "url" : "https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js", "type" : "script", "sri" : "sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs="},
             { "name" : "Bootstrap (JS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js", "type" : "script", "sri" : "sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" },    
             { "name" : "Bootstrap (CSS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css", "type" : "stylesheet", "sri" : "sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY" },    
-            { "name" : "Moment", "url" : "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js", "type" : "script", "sri" : "sha384-fYxN7HsDOBRo1wT/NSZ0LkoNlcXvpDpFy6WzB42LxuKAX7sBwgo7vuins+E1HCaw" },
+            { "name" : "Moment", "url" : "https://momentjs.com/downloads/moment-with-locales.js", "type" : "script", "sri" : "sha384-NvFJ23tQe7oaewyOGQ4lTKFGd/PCWk6VrfASkwnZN8D5OyUNiE/aCqeM4t0vfZeW" },
             { "name" : "Datatables jQuery", "url" : "https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js", "type" : "script", "sri" : "sha384-rgWRqC0OFPisxlUvl332tiM/qmaNxnlY46eksSZD84t+s2vZlqGeHrncwIRX7CGp" },
-            { "name" : "Bootstrap Date Picker", "url" : "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js", "type" : "script", "sri" : "sha384-vtZXrrXR60MGoprJb7ApH4t3Y59IhePhwtXXmbqg//ha9LHwSo3QCNR6XvF5oXVM" },
+            { "name" : "Bootstrap Date Picker", "url" : "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js", "type" : "script", "sri" : "sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" },
+            { "name" : "Bootstrap Date Picker NL", "url" : "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.nl.min.js", "type" : "script", "sri" : "sha256-XerzQ5saqHDPwOSj67vG2eHzBqqMvFlm/nnCH8I2ZGE=" },
+            { "name" : "Bootstrap Date Picker (CSS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css", "type" : "stylesheet", "sri" : "sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" },
             { "name" : "Bootstrap Time Picker", "url" : "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js", "type" : "script", "sri" : "sha384-j0kMAC9Ymu1pP+W9AURKMmsgAhiaJJCdBKGCqmpXMdeaOz+T1y6vHtcUlrobCB6G" },
             { "name" : "Datatables Bootstrap", "url" : "https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js", "type" : "script", "sri" : "sha384-uiSTMvD1kcI19sAHJDVf68medP9HA2E2PzGis9Efmfsdb8p9+mvbQNgFhzii1MEX" },
             { "name" : "Fontawesome", "url" : "https://use.fontawesome.com/releases/v5.6.1/css/all.css", "type" : "stylesheet", "sri" : "sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" }
@@ -53,23 +55,32 @@
             "maxerr" :250
           }, 
         "debug" : false,
+        "logs" : true,
         "manifest" : true
     },
     "server" : {
         "routes" : {
             "/" : "index",
             "/verify" : "verify",
+            "/notif" : "notifications",
             "/status" : "status",
             "/config" : "config",
             "/api/accounts" : "accounts",
+            "/api/medients" : "medients",
             "/api/targets" : "targets",
             "/api/subjects" : "subjects",
             "/api/checklist" : "checklist",
             "/api/contacts" : "contacts",
-            "/api/account" : "account"
+            "/api/account" : "account",
+            "/api/categories" : "categories",
+            "/api/levels" : "levels",
+            "/api/sublevels" : "sublevels",
+            "/api/evaluations" : "evaluations"
+
         },
         "require" : [
             "dev",
+            "notifs",
             "session",
             "sequelize",
             "manifest",

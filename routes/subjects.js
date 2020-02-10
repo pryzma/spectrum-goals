@@ -9,7 +9,22 @@ const express = require('express'),
       
 const router = express.Router();
 const controller = require('../controllers/subjects');
+
 router.get('/', controller.isAuthenticated, (req, res) => {
     controller.getAll(req,res);
-  });
-  module.exports = router;
+});
+
+
+router.post('/', bodyParserJSON, (req, res) => {
+  controller.createSubject(req, res);
+});
+
+router.put('/', bodyParserJSON, (req, res, next)  => {
+  controller.updateSubject(req, res, next);
+});
+
+router.delete('/:id', bodyParserJSON, (req, res) => {
+  controller.deleteSubject(req, res);
+});
+
+module.exports = router;

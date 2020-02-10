@@ -74,7 +74,7 @@ const application = (function(){
  * @param {string} name
  */
 const add = function(name,module,callback) {
-    //if(application.config.debug) console.log(`application.add : ${name}`);
+   
     if(!typeof name==='string') throw 'application.add: module name was expected as string but is '+typeof name
     if(name.includes('.')){
       name = name.split('.');
@@ -206,7 +206,7 @@ const init = (( _application ) => { // initialize application
           debug = application.debug.log;
           debug(`application.init : ${config.name}`);
           if(config.modules) {
-            loadModules = new Set(config.modules).values();
+            loadModules = new Set(config.modules).values(); // SetIterator      
             if(config.require){
               initRequire(config.require,()=>{
                 initModules(loadModules);
@@ -275,7 +275,7 @@ const getRoute = (_route) => {
 
       });
     }else{
-      throw `application.moduleRouter : endpoint undefined`;
+      //throw `application.moduleRouter : endpoint undefined`;
     }
     if(callback) callback();
   },
@@ -531,7 +531,12 @@ const  modules = function(){
   //module = (route) => route ?  object[route] : object[getRoute().endpoint],
   moduleObj = (moduleRoute) => {
     let obj,route = getRoute(moduleRoute).endpoint;
-    obj = route[1] ? object[route[0]][route[1]] : object[route];
+    try{
+      obj = route[1] ? object[route[0]][route[1]] : object[route];
+    }catch(e){
+      obj = {}
+    }
+    
     return obj;
   },
   module = moduleObj

@@ -3,6 +3,10 @@ body{
     font-family: 'Raleway', sans-serif;
     background-color: whitesmoke;
 }
+::selection {
+    background-color: #5f9fab;
+    color: white;
+}
 header {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100 */
 background: #5f9fab; /* Old browsers */
@@ -20,41 +24,83 @@ header a:hover{
     text-decoration: none ;
 }
 header .navbar-brand{
-    padding-left: 25px;
+    padding-left: 35px;
 }
 
-header #headerNav li{
-    list-style: none;
-    display: inline;
-    padding-right: 55px;
+nav#headerNav li a{
+    text-shadow: 1px 1px #666;
+}
+nav#headerNav li a:hover{
+    font-weight: bold;
 }
 
-header #accountTopInfo {
-    position: absolute;
-    right: 55px;
-    top : 85px;
-    color: #666;
-}
 header #accountTopInfo a{
     color: #666;
 }
 
-main {
-    margin-top: 85px;
+form.submit input:invalid{
+    border-color: #d64d4d;
 }
-main.container-fluid{
-    padding-left: 55px;
-    padding-right: 55px;
+input.invalid{
+    border-color: #d64d4d;
 }
 .custom-control-input:checked,.btn.btn-primary{
     background-color: #5F9FAB;
+    border: #5F9FAB;
 }
 .btn.btn-yellow{
-    background-color: #fac031;
+    color: #666;
+    
+   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e59f3d+0,f2be3f+100 */
+background: #f2be3f; /* Old browsers */
+background: -moz-linear-gradient(top,  #e59f3d 0%, #f2be3f 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #e59f3d 0%,#f2be3f 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #e59f3d 0%,#f2be3f 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', endColorstr='#f2be3f',GradientType=0 ); /* IE6-9 */
+
     border-color: #fac031;
+}
+.btn.btn-green {
+    background: #7ea6ad; /* Old browsers */
+    background: -moz-linear-gradient(top,  #429caa 0%, #7ea6ad 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #429caa 0%,#7ea6ad 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #429caa 0%,#7ea6ad 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', endColorstr='#7ea6ad',GradientType=0 ); /* IE6-9 */
+    border-color: #5F9FAB;
+}
+.btn.btn-white {
+    background: #fff; /* Old browsers */
+    background: -moz-linear-gradient(top,  whitesmoke 0%, #fff 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  whitesmoke 0%,#fff 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  whitesmoke 0%,#fff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', endColorstr='#7ea6ad',GradientType=0 ); /* IE6-9 */
+    border-color: #ccc;
+}
+.btn-outline-primary.green {
+    border-color: #5F9FAB;
+    color: #5F9FAB;
+}
+.btn-outline-primary.green:hover {
+    background-color: #5F9FAB;
+    color: whitesmoke;
 }
 .bold{
     font-weight: bold;
+}
+.center {
+    text-align: center;
+}
+.left{
+    text-align: left;
+}
+.right{
+    text-align:right;
+}
+.pointer {
+    cursor: pointer;
+}
+.grabbing{
+    cursor: grabbing;
 }
 .yellow{
     color : #fac031;
@@ -64,6 +110,9 @@ main.container-fluid{
 }
 .green {
     color: #7ea6ad;
+}
+.blue{
+    color: #7BB6E2;
 }
 .white {
     color: #fff;
@@ -76,27 +125,24 @@ main.container-fluid{
     background: none;
 }
 nav .breadcrumb{
-    background: none;
-}
-#accountTopInfo {
-    background-color: #eaecef;
-    padding: 10px;
-    border-radius: 5px;
+    background: linear-gradient(90deg, rgba(234,236,239,1) 0%, rgba(234,236,239,0) 100%);
 }
 
-/** dashboard */
 
-#medientPersonalInfoOptions,#medientAddContactOptions{
-    
-    margin-top: -36px;
+/** modal */
+
+#amModal .modal-footer .btn {
+    margin-left: 3px;;
 }
-#medientPersonalInfoOptions i,#medientAddContactOptions i{
-    font-size: 1.3em;
-}
+
+/** table */
 
 table.table {
     border-collapse: separate;
     border-spacing: 0 3px;
+}
+table.table th:first-child{
+    width: 35%;
 }
 
 table.table  td, table.table th {
@@ -106,16 +152,15 @@ table.table  td, table.table th {
     border-bottom: none !important;
     
 }
-
+table.table  td{
+    text-shadow: 1px 1px #666;
+}
 table.table tbody tr:hover{
     opacity: 0.99;
     border: 1px solid whitesmoke;
     font-weight: bold;
     border-radius: 10px;
-    -webkit-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
-text-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);;
+    box-shadow: 1p 1px #666;
 }
 table.table tbody tr td{
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9b9898+0,bfbfbf+100 */
@@ -129,16 +174,50 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
     color : whitesmoke;
     
     
-}#medientOverview tbody tr td,#medientOverview thead tr th{
+    
+}
+table.green tbody tr td {
+     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100 */
+background: #5f9fab; /* Old browsers */
+background: -moz-linear-gradient(top,  #5f9fab 0%, #7db9e8 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #5f9fab 0%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #5f9fab 0%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+cursor: pointer;
+    margin-top: 2px;
+    color : whitesmoke;
+}
+
+
+
+/** dashboard */
+
+#medientPersonalInfoOptions,#medientAddContactOptions{
+    
+    margin-top: -36px;
+}
+#medientPersonalInfoOptions i,#medientAddContactOptions i{
+    font-size: 1.3em;
+}
+
+#medientOverview tbody tr td,#medientOverview thead tr th{
     text-align: center;
 }
 table.table tbody tr :nth-child(1),table.table thead tr :nth-child(1) {
     text-align: left !important;
     border-radius: 10px 0px 0px 10px;
   }
-
-  table.table tbody tr :last-child {
+  table.table tbody tr {
+      background: none !important;
+  }
+  #medientOverview tbody tr :nth-child(5),table.table tbody tr :last-child{
     border-radius : 0 10px 10px 0 !important;
+  }
+  #medientOverview table.table tbody tr :last-child{
+    background: none;
+    color:#d64d4d;
+    text-shadow: none;
+    font-size: larger;
   }
   #medientOverview thead tr :nth-child(2) {
     color: #9b9898;
@@ -146,7 +225,7 @@ table.table tbody tr :nth-child(1),table.table thead tr :nth-child(1) {
   #medientOverview thead tr :nth-child(3) {
       color: #d87c7c;
   }
-  #medientOverview tbody tr :nth-child(3) {
+  #medientOverview tbody tr :nth-child(3),.redbg {
     text-align: center;
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#d64d4d+0,d87c7c+100 */
 background: #d87c7c ; /* Old browsers */
@@ -159,7 +238,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d64d4d', end
   #medientOverview thead tr :nth-child(4) {
     color: #f2be3f;
 }
-  #medientOverview tbody tr :nth-child(4) {
+  #medientOverview tbody tr :nth-child(4),.yellowbg {
     
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e59f3d+0,f2be3f+100 */
 background: #f2be3f; /* Old browsers */
@@ -172,7 +251,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e59f3d', end
   #medientOverview thead tr :nth-child(5) {
     color: #7ea6ad;
 }
-  #medientOverview tbody tr :nth-child(5) {
+  #medientOverview tbody tr :nth-child(5),.greenbg {
    
     
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#429caa+0,7ea6ad+100 */
@@ -190,7 +269,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', end
   }
 
 
-  #medientPersonalInfo input[type="text"]:disabled, .medient_contact input[type="text"]:disabled{
+  #medientPersonalInfo input:disabled, .medient_contact input:disabled{
       color : whitesmoke;
       /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9b9898+0,bfbfbf+100 */
 background: #9b9898; /* Old browsers */
@@ -198,10 +277,19 @@ background: -moz-linear-gradient(top,  #9b9898 0%, #bfbfbf 100%); /* FF3.6-15 */
 background: -webkit-linear-gradient(top,  #9b9898 0%,#bfbfbf 100%); /* Chrome10-25,Safari5.1-6 */
 background: linear-gradient(to bottom,  #9b9898 0%,#bfbfbf 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', endColorstr='#bfbfbf',GradientType=0 ); /* IE6-9 */
-
+text-shadow: 1px 1px #666;
   }
   #medientAddContactForm .medientContactOptions{
       display: none;
+  }
+  .medientIndicationExpired{
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#d64d4d+0,d87c7c+100 */
+background: #d87c7c ; /* Old browsers */
+background: -moz-linear-gradient(top,  #d64d4d 0%, #d87c7c 100%) !important; /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #d64d4d 0%,#d87c7c 100%) !important; /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #d64d4d 0%,#d87c7c 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d64d4d', endColorstr='#d87c7c',GradientType=0 ) !important; /* IE6-9 */
+
   }
   .medient_contact .medientEditDeleteContact{
       display: none;
@@ -214,6 +302,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9b9898', end
 }
 
 /** targets */
+.subjectOptions .btn {
+    color: #5F9FAB;
+}
+.targetOptions .btn {
+    color: whitesmoke;
+    text-shadow: 1px 1px #666;
+    margin-top: 7px;
+    width: 10px;
+}
+.targetElementLabel {
+    color: whitesmoke;
+    text-shadow: 1px 1px #666;
+   
+}
+.targetElementLabel:hover{
+    font-weight: bold;
+}
 #targetsSearchContainer input{
     border: none;
 }
@@ -229,7 +334,7 @@ ul#targetCategoriesTabs{
 }
 
 ul#targetCategoriesTabs li.nav-item{
-    box-shadow: 0px -6px 19px rgb(226,226,226);
+    /*box-shadow: 0px -5px 6px rgb(226,226,226);*/
     width: 300px;
     text-align: center;
    
@@ -241,18 +346,111 @@ ul#targetCategoriesTabs li.nav-item a{
 ul#targetCategoriesTabs li.nav-item.active{
     background-color: whitesmoke;
 }
+div#TargetAssignMedients p {
+    padding: 10px;
+    cursor: pointer;
+}
+div#TargetAssignMedients p:hover {
+    background-color: #7db9e8;
+    border-radius: 5px;
+    color: whitesmoke;
+    text-shadow: 1px 1px #666;
+}
 
-div#targetCategoriesContent {
-    background-color: #fff;
-    padding:35px;
-    z-index: 99;
+div.tab-content {
+    background: linear-gradient(0deg, rgba(245,245,245,1) 0%,rgba(255,255,255,1)  85%);
+    
 }
 
 div#targetCategoriesContent h2{
     color: #5f9fab;
     text-align: center;
 }
+button {
+    cursor: pointer;
+}
+button.border-dashed {
+    border: 2px dashed #ccc;
+    color: #666 !important;
+}
+button.border-dashed:hover {
+    border-color: darkgrey !important;
+    color: darkgrey !important;
+}
+button.btn.addTarget,button.btn#addTargetLevel {
+    margin-top:10px;
+    border: 2px dashed #ccc;
+    color: #666 !important;
+    text-align: center;
+}
+button.btn.addTarget:hover,button.btn#addTargetLevel:hover{
+    background-color: #fff;
+    color: darkgrey !important;
+    border-color: darkgrey !important;
+    
+}
+.targetContainer{
+    margin-top:5px;
+}
+.targetContainer .targetOptions,.levelContainer .levelOptions,.subLevelElement .subLevelOptions{
+    display:none;
+}
+.targetContainer:hover .targetOptions,.levelContainer:hover .levelOptions,.subLevelElement:hover .subLevelOptions{
+    display:block;
+}
+#overviewTargetLevels .levelContainer.btn{
+    text-shadow: 1px 1px #666;
+}
+#overviewTargetLevels .levelContainer.btn:hover{
+    font-weight: bold;
+}
+.levelOptions .btn{
+    color: #fff;
+    text-shadow: 1px 1px #666;
+}
+div.addSubject{
+    border: 2px dashed #ccc;
+    margin:10px;
+    padding:10px;
+    color: #666;
+    height: 250px;
+    border-radius: 5px;
+}
+div.addSubject:hover{
+    background-color: #fff;
+    color: darkgrey;
+    border-color: darkgrey;
+    cursor: pointer;
+}
+div.addSubject p{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+div.subjectContainer {
+    margin: 10px;
+    padding: 10px;
+}
+
+div.subjectContainer div.subjectOptions{
+    display: none;
+}
+div.subjectContainer:hover div.subjectOptions{
+    display: block;
+}
 /** accounts */
+
+#newAccount{
+    
+    padding: 15px;
+    border-radius: 10px;
+   
+
+}
 #accountsMain .table thead :nth-child(1) {
     width : 250px;
 }
@@ -266,15 +464,33 @@ div#targetCategoriesContent h2{
 }
 
 @media (max-width: 768px) {
+    main {
+        margin-top: 155px;
+    }
+    header #accountTopInfo {
+        background-color: #eaecef;
+        margin : 10px;
+        padding:10px;
+        border-radius: 5px;
+        position: absolute;
+        top:50px;
+        right: 10px;
+    }
     #headerNav{
         display: none;
         position: relative;
         margin-top :50px;
         margin-bottom: 25px;
+        padding-left: 30px;
     }
-    #headerNav li{
-        font-size: 1.2em;
+
+    nav#headerNav li{
+        font-size: 0.9em;
+        list-style: none;
+        display: inline;
+        padding-right: 15px;
     }
+    
     body{
         font-size: smaller;
     }
@@ -285,13 +501,42 @@ div#targetCategoriesContent h2{
     }
     .medient-contact{
         border-top:1px solid #ccc;
+        
         margin-top: 15px;
+    }
+    .nav-tabs .nav-item{
+        width: auto !important;
+    }
+    .nav-tabs .nav-item a{
+        font-size: 14px !important;
+       
     }
 }
 #headerNavShow .btn{
     color: whitesmoke;
 }
 @media (min-width: 768px) {
+    main {
+        margin-top: 85px;
+    }
+    main.container-fluid{
+        padding-left: 55px;
+        padding-right: 55px;
+    }
+    header #accountTopInfo {
+        background-color: #eaecef;
+        padding: 10px;
+        border-radius: 5px;
+        position: absolute;
+        right: 55px;
+        top : 85px;
+        color: #666;
+    }
+    header #headerNav li{
+        list-style: none;
+        display: inline;
+        padding-right: 55px;
+    }
     #headerNav{
         display: block;
         position: absolute;
@@ -303,5 +548,13 @@ div#targetCategoriesContent h2{
     
     #headerNavShow{
         display:none;
+    }
+
+    .datepicker{
+        top: 382px !important;
+
+    }
+    .modal-open .datepicker{
+        top: 345px !important;
     }
 }

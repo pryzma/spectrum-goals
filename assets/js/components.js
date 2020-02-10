@@ -141,7 +141,8 @@ const component = (() => {
         datepicker : formInputDatepicker,
         timepicker : formInputTimepicker,
         row : formRow
-      } 
+      },
+      validate : formValidate
     },
     /** Bootstrap Modal Component
      * @example component.modal({
@@ -382,11 +383,13 @@ const component = (() => {
         }
       }
       if(callback || args.callback) {
-          if(callback)
-            return callback(data);
-          if(args.callback) 
+        if(args.callback) 
             
-            return args.callback(data);
+            //return args.callback(data);
+            args.callback(data);
+          if(callback)
+            //return callback(data);
+            callback(data);
       
           return data;
       }
@@ -643,18 +646,17 @@ const component = (() => {
   function btn(args){
     const btn = document.createElement('button');
     if(!args.class) args.class = 'primary'
-    /** */
+
     btn.setAttribute('class',`btn btn-${args.class}`);
-    /**  */
+    if(args.style) btn.setAttribute('style',args.style)
     if(!args.id) args.id = uid();
     btn.setAttribute('id',args.id);
-    /**  */
-    /**  */
+
     btn.innerHTML = args.html ? args.html : args.txt;
     if(args.event){
       btn.addEventListener(args.event[0],(event)=>args.event[1](event));
     }
-    /**   */
+    
     if(args.tooltip){
       btn.setAttribute('data-toggle','tooltip')
       btn.setAttribute('data-placement','top')
@@ -816,7 +818,9 @@ const component = (() => {
   });
   */
   function modal(args){
+   
     const $amModal = $('#amModal').modal();
+
     $('#amModalTitle').html(args.title)
     $amModal.on('shown.bs.modal', () => { // modal is shown
       
@@ -834,6 +838,7 @@ const component = (() => {
         });
       });
       if(typeof args.open === 'function') args.open();
+
     });
     if(typeof args.save === 'function'){
       $('#amModalSave').on('click',()=>{
@@ -844,6 +849,7 @@ const component = (() => {
       const button_container = document.createElement('div');
       button_container.setAttribute('id','button_container')
       const footer = document.getElementById('amModalFooter');
+      $('#amModalFooter #button_container .btn').remove()
       for(let button of args.buttons){
         const button_ = component.btn(button);
         button_container.appendChild(button_)
@@ -855,7 +861,15 @@ const component = (() => {
       $('#amModalTitle').html('');
       $('#amModalBody').html('');
       $('#button_container').remove();
+
       if(typeof args.close === 'function') args.close();
+      const $amModalElement = $amModal,
+            amModalContainer = $('#amModalContainer');
+      
+
+      $amModal.remove();
+      amModalContainer.html($amModalElement)
+     
     });
     return $amModal
   }
@@ -1247,10 +1261,11 @@ const component = (() => {
           formBtnSave = document.createElement('button');
           formBtnSave.setAttribute('class','btn btn-primary btn-lg');
           formBtnSave.innerHTML = args.btnSaveTxt;
-          form.setAttribute('encType','multipart/form-data')
-          form.setAttribute('class','card shadow')
-          formBody.setAttribute('class','card-body')
-          formFooter.setAttribute('class','card-footer')
+          form.setAttribute('encType','multipart/form-data');
+          if(args.card) form.setAttribute('class','card shadow');
+          form.setAttribute('id',args.id);
+          if(args.card) formBody.setAttribute('class','card-body');
+          if(args.card) formFooter.setAttribute('class','card-footer');
           let model,props;
           if(typeof args.model==='string'){
             props = Object.getOwnPropertyNames(models[args.model])
@@ -1283,12 +1298,12 @@ const component = (() => {
       index++;
     }
     if(!args.insert) args.insert = 'append'
-    if(!args.el) args.el = application.config.main
-    $(args.el)[args.insert](form);
+    //if(!args.el) args.el = application.config.main
+    if(args.el) $(args.el)[args.insert](form);
     // submit event
-    formFooter.appendChild(formBtnSave);
+    if(args.btnSaveTxt) { formFooter.appendChild(formBtnSave); }
     form.appendChild(formBody);
-    form.appendChild(formFooter)
+    if(args.card) form.appendChild(formFooter)
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const data = formData(form);
@@ -1344,10 +1359,11 @@ const component = (() => {
     if( argsUse ){
       $(formInputCol).append(argsUse()); 
     }else{
-      // input
-      const formRowInput = document.createElement('input');
+      // input type
+      const formRowInputType = args.fields[prop].type
+      const formRowInput = formRowInputType === 'textarea' ? document.createElement('textarea') : document.createElement('input');
       try{
-        if(args.fields[prop].type) formRowInput.setAttribute('type',args.fields[prop].type);
+        if(formRowInputType) formRowInput.setAttribute('type',formRowInputType);
       }catch(e){
         if(args.type)formRowInput.setAttribute('type',args.type);
       }
@@ -1384,6 +1400,44 @@ const component = (() => {
   
   function formInputTimepicker(args){
     
+  }
+  // .................................................
+  /** validates form; https://pageclip.co/blog/2018-02-20-you-should-use-html5-form-validation.html */
+  function formValidate(args){
+    const customMessages = {
+      valueMissing:    args.valueMissing,   // `required` attr
+      emailMismatch:   args.emailMismatch,  // Invalid email
+      patternMismatch: args.patternMismatch,// `pattern` attr
+    }
+    
+    function getCustomMessage (type, validity) {
+      if (validity.typeMismatch) {
+        return customMessages[`${type}Mismatch`]
+      } else {
+        for (const invalidKey in customMessages) {
+          if (validity[invalidKey]) {
+            return customMessages[invalidKey]
+          }
+        }
+      }
+    }
+    
+    const formElementInputs = document.querySelectorAll('input, select, textarea')
+    formElementInputs.forEach(function(input){
+      function checkValidity () {
+        const message = input.validity.valid
+          ? null
+          : getCustomMessage(input.type, input.validity, customMessages)
+        input.setCustomValidity(message || '')
+      }
+      input.addEventListener('invalid', function () {
+        input.classList.add('invalid')
+      });
+      input.addEventListener('input', checkValidity);
+      input.addEventListener('invalid', checkValidity);
+    })
+    
+   
   }
   // .................................................
   // alert 

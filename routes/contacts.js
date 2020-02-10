@@ -24,7 +24,6 @@ router.post('/', bodyParserJSON, (req, res) => {
   controller.createContact(req,res);
 });
 router.put('/', bodyParserJSON, (req, res, next) => {
-  console.log(req.body)
   controller.updateContact(req,res, next);
 });
 router.delete('/:id',bodyParserJSON, (req,res) => {

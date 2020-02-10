@@ -84,7 +84,7 @@ body {
     <link rel="stylesheet" href="css/spectrum-goals_styles.css" />
   </head>
   <body class="text-center">
-    <form id="login" class="form-signin" action="/signin" method="post" name="Login_Form" >
+    <form id="login" class="form-signin" action="/signin" method="post" name="Login_Form"  autocomplete="off" >
   <img class="mb-4" src="/img/logo_light_lg.png" width="300">
 
 	<% if (message) { %>
@@ -92,7 +92,7 @@ body {
 	<% } %>
   <label for="inputEmail" class="sr-only">Gebruikersnaam</label>
 
-  <input id="email" type="email" name="username" class="form-control shadow" placeholder="Gebruikersnaam"  autocomplete="new-email" required autofocus>
+  <input id="username" type="text" name="username" class="form-control shadow" placeholder="Gebruikersnaam"  autocomplete="new-email" required autofocus>
   <label for="inputPassword" class="sr-only">Wachtwoord</label>
   <input id="password" type="password" name="password" class="form-control shadow" placeholder="Wachtwoord" autocomplete="new-password" required>
   
@@ -116,12 +116,12 @@ $(document).ready(function() {
     window.location.hash = '';
     const remember = $.cookie('spectrum-goals-remember');
     if (remember && remember !='null'){
-      let email = $.cookie('spectrum-goals-email'),
+      let username = $.cookie('spectrum-goals-username'),
       password = $.cookie('spectrum-goals-password');
       // autofill the fields
-      email==='null'? email = undefined : email = email;
+      username==='null'? username = undefined : username = username;
       password==='null'? password = undefined : password = password;
-      if(email)$('#email').val(email);
+      if(username)$('#username').val(username);
       if(password)$('#password').val(password);
       $('#remember').prop('checked', true);
       //$("#login").submit();
@@ -129,16 +129,16 @@ $(document).ready(function() {
 
     $("#login").submit(function() {
         if ($('#remember').is(':checked')) {
-            var email = $('#email').val();
+            var username = $('#username').val();
             var password = $('#password').val();
 
             // set cookies to expire in 14 days
-            $.cookie('spectrum-goals-email', email, { expires: 14 });
+            $.cookie('spectrum-goals-username', username, { expires: 14 });
             $.cookie('spectrum-goals-password', password, { expires: 14 });
             $.cookie('spectrum-goals-remember', true, { expires: 14 });
         }else{
             // reset cookies
-            $.cookie('spectrum-goals-email', null);
+            $.cookie('spectrum-goals-username', null);
             $.cookie('spectrum-goals-password', null);
             $.cookie('spectrum-goals-remember', null);
         }
