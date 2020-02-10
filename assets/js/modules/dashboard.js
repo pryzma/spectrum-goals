@@ -501,16 +501,16 @@ function medientGetContacts(id){
                     .attr('data-id',contact.id)
                     .addClass('medient_contact')
                 $medientPersonalInfoElement.append($medientContact);
-                $medientContact.hide();
-                const $medientContactItem = $('.medientContactItem').on('click',(e)=>{
-                    $medientContact.show()
-                    $('.medientContactItem').hide()
-                });
-                $medientContactItem.attr('id',medientContactElementId+'_item')
+                //$medientContact.hide();
+                //const $medientContactItem = $('.medientContactItem').on('click',(e)=>{
+                //    $medientContact.show()
+                //    $('.medientContactItem').hide()
+                //});
+                //$medientContactItem.attr('id',medientContactElementId+'_item')
                 $('#'+medientContactElementId+'_item .medientRelation').html(contact.relation)
                 console.log(contact.first_name+' '+contact.last_name)
                
-                $medientContact.before($medientContactItem)
+                //$medientContact.before($medientContactItem)
                 $('#'+medientContactElementId+'_item .medientContactName').val(contact.first_name+' '+contact.last_name);
                 /** map contact object keys to input fields */
                 Object.keys(contact).map((key, index) => $(`#${medientContactElementId} input#${key}`).val(contact[key]));
