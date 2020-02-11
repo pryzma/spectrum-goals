@@ -6,31 +6,41 @@ const accounts = {
   template : 'accounts',
   view : {
     default : account
+  },
+  medientList : { data : [] },
+  teamList : { data : [] },
+  modify : (account) => {
+
+    const accountAdd = {
+      name : account.firstName + ' ' +  account.lastName,
+      test : account.indication.split('T')[0]
+    };
+    
+    if(account.profile === 'medient') {
+      account.indication = account.indication.split('T')[0]
+    }
+    return { ...account, ...accountAdd };
+  },
+  medientsData : {
+    url : 'api/accounts/medients',
+    modify : medientDataModify,
+    callback : (data) => accounts.medientList.data = data
+  },
+  teamData : {
+    url : 'api/accounts/teammembers',
+    modify : medientDataModify,
+    callback : (data) => accounts.teamList.data = data
   }
+
 };
 
-const medientList = { data : [] };
-const teamList = { data : [] };
 
-const accountDataModify = (account) => {
 
-  const accountAdd = {
-    name : account.firstName + ' ' +  account.lastName,
-    test : account.indication.split('T')[0]
-  };
-  
-  if(account.profile === 'medient') {
-    account.indication = account.indication.split('T')[0]
-  }
-  return { ...account, ...accountAdd };
-};
+
+const accountDataModify = accounts.modify;
 
  /** API data component object */
-const medientsData = {
-  url : 'api/accounts/medients',
-  modify : medientDataModify,
-  callback : (data) => medientList.data = data
-};
+const medientsData = accounts.medientsData;
 
 const medientListTableLabels = {
   name : { label : 'Naam' },
@@ -38,11 +48,7 @@ const medientListTableLabels = {
   email : { label : 'E-Mail'}
 };
 
-const teamData = {
-  url : 'api/accounts/teammembers',
-  modify : medientDataModify,
-  callback : (data) => teamList.data = data
-};
+const teamData = accounts.teamData;
 
 const teamListTableLabels = {
   name : { label : 'Naam' },
@@ -112,9 +118,9 @@ function account(id, type) {
         accountsMainHtml = accountsMainElement.html();
   let account;
   if (type === "medient") {
-    account = medientList.data.filter((account) => account.id === id);
+    account = accounts.medientList.data.filter((account) => account.id === id);
   } else {
-    account = teamList.data.filter((account) => account.id === id);
+    account = accounts.teamList.data.filter((account) => account.id === id);
   }
 
   

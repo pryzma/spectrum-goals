@@ -1362,6 +1362,7 @@ const component = (() => {
       // input type
       const formRowInputType = args.fields[prop].type
       const formRowInput = formRowInputType === 'textarea' ? document.createElement('textarea') : document.createElement('input');
+
       try{
         if(formRowInputType) formRowInput.setAttribute('type',formRowInputType);
       }catch(e){
@@ -1375,7 +1376,9 @@ const component = (() => {
       if(usePropArgs){
         if(args.value) formRowInput.setAttribute('type',args.value);
       }else{
-        if(args.fields[prop].value) formRowInput.setAttribute('value',args.fields[prop].value);
+        if(args.fields[prop].value) {
+          formRowInputType === 'textarea' ? formRowInput.innerHTML = args.fields[prop].value : formRowInput.setAttribute('value',args.fields[prop].value);
+        }
       }
      
       formInputCol.appendChild(formRowInput)
