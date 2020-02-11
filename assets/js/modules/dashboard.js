@@ -69,9 +69,16 @@ const medientData = {
             if (three > medientIndicationDateExpired)  {
                 medientIndicationExpiredIcon.on('click',()=>{
                     moment.locale('nl');
+                    const IndicationMessage = $('<div></div>')
+                        .html('Indicatie '+ medient.name +' verloopt '+ moment(medient.indication).fromNow() +' ('+moment(medient.indication).format('LL')+')'),
+                        IndicationUpdateForm = component.form.fromModel({
+                            model : 'Medient',
+                            fields : { indication : { label : 'Indicatiedatum',value : moment(medient.indication).format('L') }}
+                        })
+                        IndicationMessage.append(IndicationUpdateForm)
                     component.modal({
                         title : 'Indicatie gaat verlopen',
-                        body : 'Indicatie '+ medient.name +' verloopt '+ moment(medient.indication).fromNow() +' ('+moment(medient.indication).format('LL')+')',
+                        body : IndicationMessage,
                         buttons : [
                             { txt : 'Sluiten', event : ['click',()=>{
                                 $('#amModal').modal('hide')
@@ -237,13 +244,13 @@ function medientEvaluationOverview(id){
                             .html(evaluation.evaluation),
                             overviewMedientEvaluationItemDateElement = $('<div></div>')
                             .attr('class','medientEvaluationDate')
-                            .html(moment(evaluation.date).fromNow().replace('een paar seconden geleden', 'Zojuist') +' ('+moment(evaluation.date).format('LL')+') geplaatst door '+teamMemberName),
+                            .html(moment(evaluation.date).fromNow().replace('een paar seconden geleden', 'Zojuist') +' ('+moment(evaluation.date).format('LL')+') geplaatst door <b>'+teamMemberName+'</b>'),
                             overviewMedientEvaluationDelete = $('<button></button>')
-                             .attr('class','btn btn-outline-danger')
+                             .attr('class','btn btn-sm btn-outline-danger')
                              .attr('style','margin-left:5px;')
                              .html('<i class="fas fa-times" /> Verwijderen'),
                              overviewMedientEvaluationUpdate = $('<button></button>')
-                             .attr('class','btn btn-outline-primary')
+                             .attr('class','btn btn-sm btn-outline-primary')
                              .html('<i class="fas fa-pen" /> Bewerken'),
                             overviewMedientEvaluationOptions = $('<div></div>')
                             .attr('class','medientEvaluationOptions right')
