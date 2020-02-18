@@ -255,14 +255,16 @@ function newAccount() {
           
         })
         if($('#accountsTeammembersTab').hasClass('active')){
-          $('#profileSelect').val('teammember')
+          $('#profileSelect').val('teammember');
+          $('#profile').val('teammember');
           formGroupMedientIndication.remove()
         }else{
 
         }
         $('#profileSelect').on('change',(e)=>{
+
           const selectVal = e.target.value;
-          
+          $('#profile').val(selectVal);
 
           if(selectVal === 'teammember'){
             formGroupMedientIndication.remove()
@@ -308,6 +310,7 @@ function saveAccount(){
     }
   }
   if(validated){
+    
     component.api({
       method : 'post',
       url : 'api/accounts',

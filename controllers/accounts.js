@@ -83,8 +83,8 @@ controller.verifyAccount = (req,res) => {
                             to: `${result[0].email}`,
                             from: `noreply@spectrumgoals.nl`,
                             subject: `SpectrumGoals Account ${account[0].firstName} ${account[0].lastName} is geactiveerd `,
-                            text: `Het account wat is aangemaakt voor ${account[0].firstName} ${account[0].lastName}(${account[0].email}) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik.`,
-                            html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Het account wat is aangemaakt voor <b>${account[0].firstName} ${account[0].lastName}</b>(${account[0].email}) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik. `,
+                            text: `Het account wat is aangemaakt voor ${account[0].firstName} ${account[0].lastName}(${account[0].email}, gebruikersnaam <b>${account[0].username}</b>) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik.`,
+                            html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Het account wat is aangemaakt voor <b>${account[0].firstName} ${account[0].lastName}</b>(${account[0].email}, gebruikersnaam <b>${account[0].username}</b>) op ${account[0].createdAt} is geactiveerd en is klaar voor gebruik. `,
                         }
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                         sgMail.send(msg);

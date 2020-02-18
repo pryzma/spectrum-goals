@@ -20,7 +20,8 @@ router.get('/',(req,res)=>{
                 uuid : uuid,
                 firstName : account[0].firstName,
                 lastName : account[0].lastName,
-                createdBy : account[0].createdBy
+                createdBy : account[0].createdBy,
+                username : account[0].username
             });
         }else { // uuid is not found in database
             
