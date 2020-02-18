@@ -6,7 +6,6 @@ const connection = require('../app/dbconn'),
       uuidv4 = require('uuid/v4'),
       sgMail = require('@sendgrid/mail'),
       bcrypt = require('bcryptjs');
-      //bcrypt = require('bcrypt');
 
 const models = require('../models').sequelize.models;
 const Account = models.Account;
@@ -29,16 +28,13 @@ controller.createAccount = (req,res) => {
     account.isActivated = 0;
     account.createdBy = req.session.user.id;
  
-    const medient = {
-        id : uuidv4(),
-        account : account.id,
-        indication : account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]
-    }
     Account.create(account).then((account)=>{
-        console.log(account)
-        // create medient if account.profile === 'medient'
         if(account.profile === 'medient'){
-            
+            const medient = {
+                id : uuidv4(),
+                account : account.id,
+                indication : account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]
+            }
             Medient.create(medient);
         }
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -47,7 +43,7 @@ controller.createAccount = (req,res) => {
           from: `noreply@spectrumgoals.nl`,
           subject: `Activeer je SpectrumGoals Leerdoelen Monitor Account`,
           text: `Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
-          html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
+          html: `<img src="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/img/logo_lg.png"><br>Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
         }
         sgMail.send(msg).then(() => {
             console.log('\x1b[36m',`[controller.accounts]\x1b[0m E-mail sent to `+account.email);
