@@ -28,12 +28,12 @@ controller.createAccount = (req,res) => {
     account.isActivated = 0;
     account.createdBy = req.session.user.id;
  
-    Account.create(account).then((account)=>{
-        if(account.profile === 'medient'){
+    Account.create(account).then((response)=>{
+        if(response.profile === 'medient'){
             const medient = {
                 id : uuidv4(),
-                account : account.id,
-                indication : account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]
+                account : response.id,
+                indication : response.indication.split('-')[2]+'-'+response.indication.split('-')[1]+'-'+response.indication.split('-')[0]
             }
             Medient.create(medient);
         }
@@ -42,8 +42,8 @@ controller.createAccount = (req,res) => {
           to: `${response.email}`,
           from: `noreply@spectrumgoals.nl`,
           subject: `Activeer je SpectrumGoals Leerdoelen Monitor Account`,
-          text: `Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
-          html: `<img src="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/img/logo_lg.png"><br>Beste ${account.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/verify?uuid=${account.id}">Klik hier om je Account te activeren</a>`,
+          text: `Beste ${response.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${response.id}">Klik hier om je Account te activeren</a>`,
+          html: `<img src="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/img/logo_lg.png"><br>Beste ${response.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/verify?uuid=${response.id}">Klik hier om je Account te activeren</a>`,
         }
         sgMail.send(msg).then(() => {
             console.log('\x1b[36m',`[controller.accounts]\x1b[0m E-mail sent to `+response.email);
