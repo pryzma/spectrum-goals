@@ -70,7 +70,7 @@ controller.deleteTarget = (req,res) => {
 }
 
 controller.getMedients = (req,res) => {
-  connection.query('SELECT MedientTargets.medient, Accounts.firstName,Accounts.lastName FROM MedientTargets LEFT JOIN Accounts ON Accounts.id=MedientTargets.medient WHERE MedientTargets.target="'+req.params.target+'";',(err, items)=>{
+  connection.query('SELECT MedientTargets.medient, Accounts.firstName,Accounts.lastName FROM MedientTargets LEFT JOIN Accounts ON Accounts.id=MedientTargets.medient LEFT JOIN Subjects ON Subjects.id=MedientTargets.subject LEFT JOIN Categories ON Categories.id=MedientTargets.category WHERE MedientTargets.target="'+req.params.target+'";',(err, items)=>{
     if (!err) {
         //console.log(items)
         res.json(items);

@@ -57,13 +57,14 @@ const teamListTableLabels = {
 };
 
 /** Overview of accounts */
-function accountsOverview() {
+function accountsOverview(callback) {
   $('#amModal').modal('hide')
   $.get('html/templates/accounts.html', (data) => {
     $(application.config.main).html(data);
     $('#newAccount').on('click', () => {
       newAccount();
     });
+    if(callback) callback();
     $('#search').on('input', () => {
       let value = $('#search').val();
       let arr = $('tbody tr');
@@ -166,8 +167,11 @@ function accountDelete(id){
         method : 'delete',
         url : 'api/accounts/'+id,
         callback : () => {
-          component.alert({ class : 'danger', message : '<i class="fas fa-times"></i> Account verwijderd' });
-          accountsOverview();
+          
+          accountsOverview(()=>{
+            component.alert({ class : 'danger', message : '<i class="fas fa-times"></i> Account verwijderd' });
+          });
+          
         }
       });
 
@@ -255,14 +259,16 @@ function newAccount() {
           
         })
         if($('#accountsTeammembersTab').hasClass('active')){
-          $('#profileSelect').val('teammember')
+          $('#profileSelect').val('teammember');
+          $('#profile').val('teammember');
           formGroupMedientIndication.remove()
         }else{
 
         }
         $('#profileSelect').on('change',(e)=>{
+
           const selectVal = e.target.value;
-          
+          $('#profile').val(selectVal);
 
           if(selectVal === 'teammember'){
             formGroupMedientIndication.remove()
@@ -308,6 +314,7 @@ function saveAccount(){
     }
   }
   if(validated){
+    
     component.api({
       method : 'post',
       url : 'api/accounts',
