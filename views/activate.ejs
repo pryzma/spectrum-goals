@@ -98,7 +98,7 @@ $(document).ready(function() {
         axios.post('verify',activateProfileFormObj)
         .then(function (account) {
           $('#activateProfileForm').remove()
-          $('#activateMessage').html(`Je account is geactiveerd. <a href="/signin">Je kunt nu inloggen</a> met gebruikersnaam <b><%= username %></b> en het wachtwoord dat je hebt opgegeven.`)
+          $('#activateMessage').html(`Je account is geactiveerd. <a href="/signin">Je kunt nu inloggen</a> met gebruikersnaam <b style="font-weight:900;"><%= username %></b> en het wachtwoord dat je hebt opgegeven.`)
         }).catch(function(error){
           $('#activateMessage').html(`Oeps! Er is iets fout gegaan. Neem contact met de systeembeheerder en geef onderstaande foutmelding door;<br> ${error}`);
         });
