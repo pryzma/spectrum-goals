@@ -11,8 +11,8 @@ module.exports = (app) => {
     let server;
     if(process.env.REF_HTTP_PROTOCOL === 'https'){
         const fs = require('fs'),
-        privateKey = fs.readFileSync('/etc/letsencrypt/live/emerald-dust.org/privkey.pem', 'utf8'),
-        certificate = fs.readFileSync('/etc/letsencrypt/live/emerald-dust.org/fullchain.pem', 'utf8'),
+        privateKey = fs.readFileSync('/etc/letsencrypt/live/spectrumgoals.nl/privkey.pem', 'utf8'),
+        certificate = fs.readFileSync('/etc/letsencrypt/live/spectrumgoals.nl/fullchain.pem', 'utf8'),
         credentials = { key: privateKey, cert: certificate };
         server = https.createServer(credentials);
     }else{
