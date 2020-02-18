@@ -69,9 +69,16 @@ const medientData = {
             if (three > medientIndicationDateExpired)  {
                 medientIndicationExpiredIcon.on('click',()=>{
                     moment.locale('nl');
+                    const IndicationMessage = $('<div></div>')
+                        .html('Indicatie '+ medient.name +' verloopt '+ moment(medient.indication).fromNow() +' ('+moment(medient.indication).format('LL')+')'),
+                        IndicationUpdateForm = component.form.fromModel({
+                            model : 'Medient',
+                            fields : { indication : { label : 'Indicatiedatum',value : moment(medient.indication).format('L') }}
+                        })
+                        IndicationMessage.append(IndicationUpdateForm)
                     component.modal({
                         title : 'Indicatie gaat verlopen',
-                        body : 'Indicatie '+ medient.name +' verloopt '+ moment(medient.indication).fromNow() +' ('+moment(medient.indication).format('LL')+')',
+                        body : IndicationMessage,
                         buttons : [
                             { txt : 'Sluiten', event : ['click',()=>{
                                 $('#amModal').modal('hide')
@@ -167,37 +174,103 @@ function medientDashboard(id){
     
 }
 // ........................................
+function medientEvaluationDelete(evaluation){
+    component.modal({
+        title : '<i class="fas fa-times"></i> Evaluatie verwijderen',
+        body : 'Weet je zeker dat je evaluatie geplaatst op '+moment(evaluation.date).format('LL')+' door '+evaluation.teamMemberName+' wilt verwijderen?',
+        buttons : [
+            {txt : 'Bevestigen', event:['click',()=>{
+                component.api({
+                    method : 'delete',
+                    url : `api/evaluations/${evaluation.id}`,
+                    callback : ()=>{
+                        $('#amModal').modal('hide')
+                        medientEvaluationOverview(evaluation.medient)
+                        component.alert({
+                            message : `<i class="fas fa-times"></i> Evaluatie verwijderd`
+                        })
+                    }
+                });
+            }]},
+            {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
+                $('#amModal').modal('hide')
+            }]}
+        ]
+    })
+}
 
+function medientEvaluationUpdate(evaluation){
+    const updateEvaluationForm = component.form.fromModel({
+        id : 'updateEvaluationForm',
+        model : 'Evaluation',
+        fields : {
+            evaluation : { label : 'Evaluatie', type : 'textarea', value : evaluation.evaluation  }
+        }
+    });
+    component.modal({
+        title : 'Evaluatie aanpassen',
+        body :  updateEvaluationForm,
+        buttons : [{txt : 'Opslaan', event : ['click', () => {
+                level.name = $('#updateEvaluationForm #name').val()
+                axios.put('api/levels',level ).then((response) => {
+                    $('#amModal').modal('hide')
+                    component.alert({message : '<i class="fas fa-pen"></i> Evaluatie aangepast'})
+                    medientEvaluationOverview(evaluation.medient)
+                }).catch(error => {
+                    console.log(error);
+                });
+            }]
+        }]
+    })
+}
 
 function medientEvaluationOverview(id){
     component.api({
         url : 'api/evaluations/medient/'+id,
         callback : (evaluations) => {
-            const overviewMedientEvaluationElement = $('#overviewMedientEvaluation').html('')
-            $('#addMedientEvaluation').off().on('click',()=>{
-                medientEvaluationAdd(id)
-            })
+            const overviewMedientEvaluationElement = $('#overviewMedientEvaluation').html('');
+            $('#addMedientEvaluation').off().on('click',()=>medientEvaluationAdd(id));
             dashboard.medientEvaluations = evaluations;
-            
+            moment.locale('nl');
             if(evaluations.length > 0 ){
-                evaluations.map((evaluation)=>{
-                   
-                    const overviewMedientEvaluationItemContentElement = $('<div></div>')
-                        .attr('class','medientEvaluationContent')
-                        .html(evaluation.evaluation)
-                    const overviewMedientEvaluationItemHeaderElement = $('<h3></h3>')
-                        .attr('class','medientEvaluationHeader')
-                        .html(evaluation.date)
-                    const overviewMedientEvaluationItemElement = $('<div></div>')
-                        .attr('id',evaluation.id)
-                        .attr('class','medientEvaluation')
-                        .append(overviewMedientEvaluationItemHeaderElement)
-                        .append(overviewMedientEvaluationItemContentElement)
-                    
-                    overviewMedientEvaluationElement.append(overviewMedientEvaluationItemElement)
-                });
+                // fetch team members data
+                component.api(application.object.accounts.teamData,()=>{
+                    console.log(application.object.accounts.teamList.data.filter((teamMember)=>teamMember.id==='4ad13f40-4642-4ab5-aea6-f21067019688'))
+                    evaluations.map((evaluation)=>{
+                        const teamMemberName = application.object.accounts.teamList.data.filter((teamMember)=>teamMember.id===evaluation.createdBy)[0].name;
+                        evaluation.teamMemberName = teamMemberName;
+                        const overviewMedientEvaluationItemContentElement = $('<div></div>')
+                            .attr('class','medientEvaluationContent')
+                            .html(evaluation.evaluation),
+                            overviewMedientEvaluationItemDateElement = $('<div></div>')
+                            .attr('class','medientEvaluationDate')
+                            .html(moment(evaluation.date).fromNow().replace('een paar seconden geleden', 'Zojuist') +' ('+moment(evaluation.date).format('LL')+') geplaatst door <b>'+teamMemberName+'</b>'),
+                            overviewMedientEvaluationDelete = $('<button></button>')
+                             .attr('class','btn btn-sm btn-outline-danger')
+                             .attr('style','margin-left:5px;')
+                             .html('<i class="fas fa-times" /> Verwijderen'),
+                             overviewMedientEvaluationUpdate = $('<button></button>')
+                             .attr('class','btn btn-sm btn-outline-primary')
+                             .html('<i class="fas fa-pen" /> Bewerken'),
+                            overviewMedientEvaluationOptions = $('<div></div>')
+                            .attr('class','medientEvaluationOptions right')
+                            .append(overviewMedientEvaluationUpdate)
+                            .append(overviewMedientEvaluationDelete),
+                            overviewMedientEvaluationItemElement = $('<div></div>')
+                            .attr('id',evaluation.id)
+                            .attr('class','medientEvaluation shadow')
+                            .append(overviewMedientEvaluationItemDateElement)
+                            .append(overviewMedientEvaluationItemContentElement)
+                            .append(overviewMedientEvaluationOptions);
+                            overviewMedientEvaluationDelete.on('click',()=>medientEvaluationDelete(evaluation));
+                            overviewMedientEvaluationUpdate.on('click',()=>medientEvaluationUpdate(evaluation));
+                        overviewMedientEvaluationElement.append(overviewMedientEvaluationItemElement);
+                    });
+                })
+                
+                
             }else{
-                overviewMedientEvaluationElement.html('Er zijn geen evaluaties voor huidige medient toegevoegd.')
+                overviewMedientEvaluationElement.html('Er zijn geen evaluaties voor huidige medient toegevoegd.');
             }
             
             
@@ -501,16 +574,16 @@ function medientGetContacts(id){
                     .attr('data-id',contact.id)
                     .addClass('medient_contact')
                 $medientPersonalInfoElement.append($medientContact);
-                $medientContact.hide();
-                const $medientContactItem = $('.medientContactItem').on('click',(e)=>{
-                    $medientContact.show()
-                    $('.medientContactItem').hide()
-                });
-                $medientContactItem.attr('id',medientContactElementId+'_item')
+                //$medientContact.hide();
+                //const $medientContactItem = $('.medientContactItem').on('click',(e)=>{
+                //    $medientContact.show()
+                //    $('.medientContactItem').hide()
+                //});
+                //$medientContactItem.attr('id',medientContactElementId+'_item')
                 $('#'+medientContactElementId+'_item .medientRelation').html(contact.relation)
                 console.log(contact.first_name+' '+contact.last_name)
                
-                $medientContact.before($medientContactItem)
+                //$medientContact.before($medientContactItem)
                 $('#'+medientContactElementId+'_item .medientContactName').val(contact.first_name+' '+contact.last_name);
                 /** map contact object keys to input fields */
                 Object.keys(contact).map((key, index) => $(`#${medientContactElementId} input#${key}`).val(contact[key]));
@@ -532,7 +605,7 @@ const medientTargetDataModify = (medientTarget) => {
     return { ...medientTarget, ...medientTargetAdd }
 }
 function medientGetTargets(id){
-    console.log(id)
+    
     const medientTargetsData = {
         url : 'api/targets/medient/'+id,
         modify : medientTargetDataModify
