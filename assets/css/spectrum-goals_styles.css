@@ -263,6 +263,25 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429caa', end
 
   }
 
+/* evaluations */
+  .medientEvaluation{
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+  }
+  .medientEvaluationDate {
+      font-size: smaller;
+      color: #7ea6ad;
+      text-align: right;
+  }
+  .medientEvaluation .medientEvaluationOptions{
+    visibility: hidden;
+  } 
+  .medientEvaluation:hover .medientEvaluationOptions{
+    visibility: visible;
+  } 
+
   #checkList{
       padding : 15px;
       margin-top: 15px;
@@ -311,11 +330,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d64d4d', end
     margin-top: 7px;
     width: 10px;
 }
-.targetElementLabel {
-    color: whitesmoke;
-    text-shadow: 1px 1px #666;
-   
-}
+
 .targetElementLabel:hover{
     font-weight: bold;
 }
