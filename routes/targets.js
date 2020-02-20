@@ -16,6 +16,9 @@ router.get('/', controller.isAuthenticated, (req, res) => {
 router.get('/medient/:medient', controller.isAuthenticated, (req, res) => {
   medientTargetsController.getTargets(req,res);
 });
+router.get('/medients/:target', controller.isAuthenticated, (req, res) => {
+  controller.getMedients(req,res);
+});
 router.get('/:id', controller.isAuthenticated, (req, res) => {
   controller.getOne(req,res);
 });

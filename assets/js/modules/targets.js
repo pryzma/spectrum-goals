@@ -14,7 +14,7 @@ const categoriesData = {
               categoryTabPane = $('#targetCategoriesContent').html();
 
         for(const category of categories){
-            const categoryCurrentTab = categoryTab,
+            const categoryCurrentTab = $(categoryTab),
                   categoryCurrentTabLink = $('<a></a>')
                      .attr('class','nav-link h4 tabAdded')
                      .attr('style','margin-bottom:0 !important;')
@@ -30,7 +30,18 @@ const categoriesData = {
                      .attr('data-category',category.id)
                      .attr('aria-labelledby',`${category.id}-tab`);
             $('#targetCategoriesContent').prepend(categoryCurrentTabPane)
-            $('#targetCategoriesTabs').prepend($(categoryCurrentTab).html(categoryCurrentTabLink).removeAttr('style'));
+            categoryCurrentTab.on('dragenter',(event)=>{
+                console.log(event)
+            })
+            document.addEventListener("dragenter", function(event) {
+                // highlight potential drop target when the draggable element enters it
+                if (event.target.className == "nav-item") {
+                    console.log(event)
+                }
+              
+              }, false);
+
+            $('#targetCategoriesTabs').prepend(categoryCurrentTab.html(categoryCurrentTabLink).removeAttr('style'));
         }
         $('#targetCategoriesTabs li a').first().tab('show');
         $('#targetCategoriesTabs li').last().remove()
@@ -54,7 +65,7 @@ const medientsObjData = {
     url : 'api/accounts/medients',
     modify : medientObjDataModify,
     callback : (data) => {
-        console.log(data)
+        
         medientsObj.data = data
     }
   };
@@ -98,7 +109,7 @@ function addTarget(subject){
         buttons : [{ txt : 'Opslaan', event : ['click',() => {
             const AddTargetData = component.form.fields({el : '#addTargetForm' });
             AddTargetData.subject = subject;
-            
+            AddTargetData.category = currentCategory();
             component.api({
                 url : 'api/targets',
                 method: 'post',
@@ -410,11 +421,27 @@ function addTargetLevel(target){
         }]}]
     });
 }
+function overviewTargetAssignedMedients(target){
+    component.api({
+        url : 'api/targets/medients/'+target.id,
+        callback : (medients)=>{
+            component.table({
+                el : '#TargetAssignedMedients',
+                model : 'Account',
+                cols : { firstName : { label : '' }, lastName :  { label : ''} },
+                data : medients
+            })
+            medients.map((medient)=>{
 
+            })
+            
+        }
+    })
+}   
 
 function overviewTargetLevels(target){
-
-    levelsSearch()
+    overviewTargetAssignedMedients(target)
+    //levelsSearch()
     $('#targetsBreadcrumb').html('<a href="#targets">Leerdoelen</a>');
     if(typeof target[0] === 'string'){
         component.api({
@@ -430,6 +457,7 @@ function overviewTargetLevels(target){
         medientsObj.data = data
         assignMedientTarget(target)
     });
+    
     // breadcrumbs
     $('.breadcrumb-item').removeClass('active');
     $('#targetSubjectBreadcrumb').remove();
@@ -451,7 +479,7 @@ function overviewTargetLevels(target){
     component.api({
         url : `api/levels/${target.id}`,
         callback : (levels) => {
-            console.log(levels)
+            
             $('#targetCategoriesContent').hide();
             $('#overviewTargetLevels').show();
             location.hash = '#'+target.id;
@@ -572,13 +600,18 @@ function assignMedientTarget(target){
                     title : 'Leerdoel toewijzen aan Medient',
                     body : 'Weet je zeker dat je leerdoel <b>'+target.name+'</b> wil toewijzen aan <b>'+medient.name+'</b>?',
                     buttons : [ { txt : 'Bevestigen', event : ['click',()=>{
+                        const assignMedientTargetData = {
+                            medient : medient.id,
+                            target : target.id,
+                            subject : target.subject.id,
+                            category : currentCategory()
+
+                        }
+                        console.log(assignMedientTargetData)
                         component.api({
                             method : 'post',
                             url : 'api/medients/target/add',
-                            data : {
-                                medient : medient.id,
-                                target : target.id
-                            },
+                            data : assignMedientTargetData,
                             callback : ()=>{
                                 $('#amModal').modal('hide');
                                 $('#TargetAssignMedients').hide()
