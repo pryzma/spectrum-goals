@@ -211,7 +211,7 @@ function medientEvaluationUpdate(evaluation){
         title : 'Evaluatie aanpassen',
         body :  updateEvaluationForm,
         buttons : [{txt : 'Opslaan', event : ['click', () => {
-                level.name = $('#updateEvaluationForm #name').val()
+                //level.name = $('#updateEvaluationForm #name').val()
                 axios.put('api/levels',level ).then((response) => {
                     $('#amModal').modal('hide')
                     component.alert({message : '<i class="fas fa-pen"></i> Evaluatie aangepast'})
@@ -228,14 +228,16 @@ function medientEvaluationOverview(id){
     component.api({
         url : 'api/evaluations/medient/'+id,
         callback : (evaluations) => {
+            
             const overviewMedientEvaluationElement = $('#overviewMedientEvaluation').html('');
             $('#addMedientEvaluation').off().on('click',()=>medientEvaluationAdd(id));
             dashboard.medientEvaluations = evaluations;
             moment.locale('nl');
             if(evaluations.length > 0 ){
+                console.log(evaluations)
                 // fetch team members data
                 component.api(application.object.accounts.teamData,()=>{
-                    console.log(application.object.accounts.teamList.data.filter((teamMember)=>teamMember.id==='4ad13f40-4642-4ab5-aea6-f21067019688'))
+                    console.log(application.object.accounts.teamList.data)
                     evaluations.map((evaluation)=>{
                         const teamMemberName = application.object.accounts.teamList.data.filter((teamMember)=>teamMember.id===evaluation.createdBy)[0].name;
                         evaluation.teamMemberName = teamMemberName;
