@@ -212,7 +212,7 @@ function medientEvaluationUpdate(evaluation){
         body :  updateEvaluationForm,
         buttons : [{txt : 'Opslaan', event : ['click', () => {
                 //level.name = $('#updateEvaluationForm #name').val()
-                axios.put('api/levels',level ).then((response) => {
+                axios.put('api/levels',evaluation ).then((response) => {
                     $('#amModal').modal('hide')
                     component.alert({message : '<i class="fas fa-pen"></i> Evaluatie aangepast'})
                     medientEvaluationOverview(evaluation.medient)
