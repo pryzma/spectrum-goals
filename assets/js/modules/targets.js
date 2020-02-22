@@ -489,22 +489,20 @@ function overviewTargetLevels(target){
             });
             $('.overviewTargetName').html(target.name);
             $('#addTargetLevel').off().on('click',()=>addTargetLevel(target));
-            for(const levelIndex in levels){
-                levels[levelIndex].target = target
-                overviewTargetSubLevels(levels[levelIndex])
-                const levelLabelTxt = levels[levelIndex].name.replace(/<3/g,'♥')
+            
+            levels.forEach((level)=>{
+                overviewTargetSubLevels(level)
+                const levelLabelTxt = level.name.replace(/<3/g,'♥')
                 const levelLabel = $('<div></div>')
-                        //.html(`Level ${levelIndex/1+1} : ${levelLabelTxt}`),
-                        .html(`Level <span class="levelOrder">${levels[levelIndex].sortOrder}</span> : <span class="levelName">${levelLabelTxt}</span>`),
+                        .html(`Level <span class="levelOrder">${level.sortOrder}</span> : <span class="levelName">${levelLabelTxt}</span>`),
                       subLevelContainer = $('<div></div')
                         .attr('class','subLevelContainer')
                         .attr('style','display:none;padding-left:25px;')
-                        .attr('id',levels[levelIndex].id),
+                        .attr('id',level.id),
                       levelElement = $('<div></div')
                         .attr('class','levelContainer btn btn-block left btn-primary btn-green ui-sortable-handle pointer shadow')
                         .attr('style','margin-top:5px;')
                         .append(levelLabel)
-                        
                     const levelDeleteBtn = $('<button></button>')
                             .attr('class','btn btn-nobg float-right')
                             .attr('style','padding-left: 5px; padding-right: 0')
@@ -514,7 +512,7 @@ function overviewTargetLevels(target){
                                 $( this ).attr('style','color: #fff;padding-left: 5px; padding-right: 0');
                             })
                             .html('<i class="fas fa-times"></i>')
-                            .on('click',()=>levelDelete(levels[levelIndex])),
+                            .on('click',()=>levelDelete(level)),
                           levelUpdateBtn = $('<button></button>')
                             .attr('class','btn btn-nobg float-right')
                             .attr('style','padding-left: 0; padding-right: 5px')
@@ -524,7 +522,7 @@ function overviewTargetLevels(target){
                                 $( this ).attr('style','color: #fff;padding-left: 0; padding-right: 5px');
                             })
                             .html('<i class="fas fa-pen"></i>')
-                            .on('click',()=>levelUpdate(levels[levelIndex])),
+                            .on('click',()=>levelUpdate(level)),
                           levelOptions = $('<div></div>')
                             .attr('class','levelOptions float-right')
                             .attr('style','z-index:1; margin-top: -32px;')
@@ -534,22 +532,21 @@ function overviewTargetLevels(target){
                           levelElement
                             .append(levelOptions)
                             .on('click',()=>{
-                                $('#'+levels[levelIndex].id+'.subLevelContainer').toggle()
+                                $('#'+level.id+'.subLevelContainer').toggle()
                             });
-
-
-                    
 
                 // overviewTargetSubLevels
                 const overviewTargetLevel = $('<div></div>')
                         .attr('class','overviewTargetLevel')
-                        .attr('id',`level_${levels[levelIndex].id}`)
+                        .attr('id',`level_${level.id}`)
                         .append(levelElement)
                         .append(subLevelContainer)
-                $('#overviewTargetLevelsBtns').append(overviewTargetLevel)
+                if(typeof level === 'object') $('#overviewTargetLevelsBtns').append(overviewTargetLevel)
                 //levelElement.after();
-                overviewTargetSubLevels(levels[levelIndex]);
-            }
+                overviewTargetSubLevels(level);
+                
+            });
+            
             // sortable
 
             $('#overviewTargetLevelsBtns').sortable({
@@ -564,10 +561,8 @@ function overviewTargetLevels(target){
             });
         }
     });
-    
-      
-
 }
+
 function updateTargetLevelOrder(target){
     const levels = []
     $('.overviewTargetLevel').each(function(index,item){
