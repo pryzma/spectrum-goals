@@ -25,7 +25,7 @@ controller.indicationNotification = function(){
         /** Datum over 3 maanden; wordt gematched met datum indicatie */
         const indicationNotificationDate = new Date(date.setMonth(date.getMonth() + 3));
         if (!err) {
-          for (let indication of indications) {
+          indications.forEach( (indication) => {
             if (indicationNotificationDate > indication.indication ) {
               if (today >= indication.indication) {
                 //console.log(indication.username + "'s indicatie is verlopen!");
@@ -68,7 +68,7 @@ controller.indicationNotification = function(){
                   html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><h3>Indicatie ${indication.username} verloopt op ${indication.indication}</h3><p>Indicatie van <b>${indication.username}</b> verloopt op ${indication.indication}</p>`,
                 };
                 sgMail.send(msg).then(() => {
-                  console.log('\x1b[1m\x1b[36m[controller.indicationNotification] \x1b[0m \x1b[3m ',`Notification mail sent for ${indication.username} ${indication.account} \x1b[0m`)
+                  console.log('\x1b[1m\x1b[36m[controller.indicationNotification] \x1b[0m \x1b[3m ',`Notification mail sent for ${indication.username} ${indication.account} \x1b[0m`);
                 }).catch(error => {
                   
                   console.error('\x1b[1m\x1b[36m[controller.indicationNotification] \x1b[0m \x1b[3m Error : ',error.toString() + '\x1b[0m');
@@ -78,7 +78,7 @@ controller.indicationNotification = function(){
             } else {
               console.log(indication.username + "'s indicatie is geldig.");
             }
-          }
+          });
         } else {
           throw err;
         }
@@ -89,5 +89,5 @@ controller.indicationNotification = function(){
 
 
 controller.indicationNotificationCheck = (()=>{
-    setTimeout(controller.indicationNotification,86400000) // fires indicationNotification once in 24h (86400000 ms)
+    setTimeout(controller.indicationNotification,86400000); // fires indicationNotification once in 24h (86400000 ms)
 })();

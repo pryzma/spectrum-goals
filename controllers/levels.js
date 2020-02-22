@@ -38,7 +38,7 @@ controller.updateLevel = (req,res,next) => {
         });
     }else{
         const response = [];
-        for(const item of req.body){
+        req.body.forEach ((item) => {
             connection.query(`UPDATE Levels SET name = '${item.name}', sortOrder = ${item.sortOrder} WHERE id = '${item.id}';`,(err,result)=>{
                 if (err) {
                     console.log(err);
@@ -46,7 +46,7 @@ controller.updateLevel = (req,res,next) => {
                     response.push(result);
                 }
             });
-        }
+        });
         res.json(response);
     }
 };
