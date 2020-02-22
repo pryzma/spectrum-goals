@@ -18,7 +18,7 @@ function dateTime() {
 
 controller.indicationNotification = function(){
     /** E-mail adres waar notificatie naar toe verzonden wordt */
-    const indicationNotificationEmail = 'bart@spectrummultimedia.nl'
+    const indicationNotificationEmail = 'bart@spectrummultimedia.nl';
     connection.query('SELECT indication,username,account FROM Medients LEFT JOIN Accounts ON Accounts.id = Medients.account;', (err, indications) => {
         let date = new Date();
         const today = new Date();
@@ -39,13 +39,13 @@ controller.indicationNotification = function(){
                 };
                 connection.query(`SELECT account FROM Notifications WHERE account='${indication.account}';`, (err, notifs) => {
                   if(err){
-                    throw err
+                    throw err;
                   }
                   if(notifs.length===0){
 
                     sgMail.send(msg).then(() => {
                       console.log(` Indicatie van ${indication.username} verloopt op ${indicationNotificationDate}; Bericht verzonden naar ${indicationNotificationEmail} `);
-                      connection.query(`INSERT INTO Notifications (id,account,createdAt,updatedAt) VALUES ('${require('uuid/v4')()}','${indication.account}','${dateTime()}','${dateTime()}')`)
+                      connection.query(`INSERT INTO Notifications (id,account,createdAt,updatedAt) VALUES ('${require('uuid/v4')()}','${indication.account}','${dateTime()}','${dateTime()}')`);
                     }).catch(error => {
                       //Log friendly error
                       console.error(error.toString());
@@ -55,7 +55,7 @@ controller.indicationNotification = function(){
                       const {headers, body} = response;
                     });
                   }
-                })
+                });
                 
               } else {
                 console.log(indication.username + "'s indicatie gaat verlopen op " + indication.indication);
@@ -85,9 +85,9 @@ controller.indicationNotification = function(){
         //connection.end();
       });
 
-}
+};
 
 
 controller.indicationNotificationCheck = (()=>{
     setTimeout(controller.indicationNotification,86400000) // fires indicationNotification once in 24h (86400000 ms)
-})()
+})();

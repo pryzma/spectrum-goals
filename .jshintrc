@@ -1,6 +1,8 @@
 {
   "esversion" : 9,
-  "curly" : true,
+  "curly" : false,
   "asi" : false,
-  "strict" : true
+  "strict" : true,
+  "node" : true,
+  "browser" : true
 }

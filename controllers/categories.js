@@ -1,8 +1,9 @@
 /**
 * controllers/categories.js
 */
-const controller = module.exports = {}
-const models = require('../models').sequelize.models
+'use strict';
+const controller = module.exports = {};
+const models = require('../models').sequelize.models;
 const Category = models.Category;
 const auth = require('./auth');
 const uuidv4 = require('uuid/v4');
@@ -16,21 +17,21 @@ controller.createCategory = (req,res) => {
     }).catch((err)=>{
         console.log(err);
     });
-}
+};
 
 controller.updateCategory = (req,res,next) => {
     Category.update(req.body,{where: { id: req.body.id } })
     .then(function(rowsUpdated) {
-        res.json(rowsUpdated)
+        res.json(rowsUpdated);
     })
     .catch(next);
-}
+};
 
 controller.getAll = (req,res) => {
     Category.findAll({order:[['name','DESC']]}).then((items) => {
         res.json(items);
     });
-}
+};
 
 controller.deleteCategory = (req,res) => {
     Category.destroy({
@@ -38,6 +39,6 @@ controller.deleteCategory = (req,res) => {
     }).then(()=>{
         controller.getAll(req,res);
     });
-}
+};
 
 controller.isAuthenticated = auth.isAuthenticated;

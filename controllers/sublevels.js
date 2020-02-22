@@ -1,6 +1,7 @@
 /*
 * controllers/sublevels.js
 */
+'use strict';
 const controller = module.exports = {};
 const models = require('../models').sequelize.models;
 const SubLevel = models.SubLevel;
@@ -17,26 +18,26 @@ controller.createSubLevel = (req,res) => {
     }).catch((err)=>{
         console.log(err);
     });
-}
+};
 
 controller.updateSubLevel = (req,res,next) => {
     SubLevel.update(req.body,{where: { id: req.body.id } })
     .then(function(rowsUpdated) {
-        res.json(rowsUpdated)
+        res.json(rowsUpdated);
     })
     .catch(next);
-}
+};
 
 controller.getAll = (req,res) => {
     SubLevel.findAll({order:[['name','DESC']]}).then((items) => {
         res.json(items);
     });
-}
+};
 controller.getLevelSubLevels = (req,res) => {
     SubLevel.findAll({where: {level: req.params.level },order:[['name','DESC']]}).then((items) => {
         res.json(items);
     });
-}
+};
 
 controller.deleteSubLevel = (req,res) => {
     SubLevel.destroy({
@@ -44,6 +45,6 @@ controller.deleteSubLevel = (req,res) => {
     }).then(()=>{
         controller.getAll(req,res);
     });
-}
+};
 
 controller.isAuthenticated = auth.isAuthenticated;
