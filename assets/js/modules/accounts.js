@@ -7,6 +7,7 @@ const accounts = {
   view : {
     default : account
   },
+  data : [],
   medientList : { data : [] },
   teamList : { data : [] },
   modify : (account) => {
@@ -20,6 +21,10 @@ const accounts = {
       account.indication = account.indication.split('T')[0]
     }
     return { ...account, ...accountAdd };
+  },
+  accountsData : {
+    url : 'api/accounts',
+    callback : (data) => accounts.data = data
   },
   medientsData : {
     url : 'api/accounts/medients',
@@ -246,7 +251,7 @@ function newAccount() {
       title : '<i class="fas fa-user-plus"></i> Account Aanmaken',
       body : newAccount,
       open : ()=>{
-        
+        $('form#accountInfo').disableAutoFill();
         $('#accountEditCancelBtn').on('click', ()=>$('#amModal').modal('hide'));
         const formGroupMedientIndication = $('#formGroupMedientIndication');
         $('input#indication').attr('autocomplete','off').datepicker({
@@ -290,8 +295,31 @@ function newAccount() {
         });
         //$('#accountSaveBtn').on('click', saveAccount);
         $('#accountInfo').on('submit',(e)=>{
+          $('#accountValidation').html('')
+          $('form#accountInfo input').removeClass('is-invalid')
           e.preventDefault();
-          saveAccount()
+          component.api({
+            url : 'api/accounts',
+            callback : (accounts)=>{
+              const accountFormData = component.form.fields({ el : 'form#accountInfo', model : 'Account'}),
+                    accountExistsMsg = [];
+              
+              accounts.map((account)=>{
+                if(accountFormData.username === account.username) accountExistsMsg.push({field : 'username',msg : `Gebruikersnaam <b>${accountFormData.username}</b> is al in gebruik`});
+                if(accountFormData.email === account.email) accountExistsMsg.push({field : 'email',msg : `E-mail adres <b>${accountFormData.email}</b> is al in gebruik voor account <b>${account.username}</b>`});
+              });
+              console.log(accountExistsMsg)
+              if(accountExistsMsg.length > 0){
+                accountExistsMsg.map((item)=>{
+                  $('#accountValidation').append('<p><i class="fas fa-exclamation"></i> '+item.msg+'</p>');
+                  $('form#accountInfo input#'+item.field).addClass('is-invalid')
+                })
+              }else{
+                saveAccount()
+              }
+              
+            }
+          })
         })
 
       }
@@ -301,8 +329,8 @@ function newAccount() {
 }
 
 function saveAccount(){
-  const accountFormData = component.form.fields({ el : 'form#accountInfo', model : 'Account'});
   
+  const accountFormData = component.form.fields({ el : 'form#accountInfo', model : 'Account'})
   let validated = true
   $('#accountInfo input').removeClass('invalid')
   for(const property in accountFormData){
