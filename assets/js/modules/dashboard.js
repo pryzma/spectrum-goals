@@ -140,7 +140,7 @@ function medientOverview(view){
 function medientDashboard(id){
     const dashboardElement = $('#dashboard'),
           dashboardMainElement = $('#dashboardMain'),
-          dashboardMainHtml = dashboardMainElement.html(),
+          //dashboardMainHtml = dashboardMainElement.html(),
           medient = medients.data.filter((medient)=>medient.id===id);
           $('.breadcrumb-item').removeClass('active');
           $('#medientBreadCrumb').remove();

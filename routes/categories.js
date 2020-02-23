@@ -14,6 +14,10 @@ router.get('/', controller.isAuthenticated, (req, res) => {
   controller.getAll(req, res);
 });
 
+router.get('/:category', controller.isAuthenticated, (req, res) => {
+  controller.getOne(req, res);
+});
+
 router.post('/', bodyParserJSON, (req, res) => {
   controller.createCategory(req, res);
 });

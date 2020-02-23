@@ -1,5 +1,4 @@
 'use strict';
-
 const account = {
     name : 'Account',
     default : accountDashboard,

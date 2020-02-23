@@ -33,6 +33,14 @@ controller.getAll = (req,res) => {
     });
 };
 
+
+controller.getOne = (req,res) => {
+    Category.findOne({ where: {id: req.params.category} }).then(category => { 
+        res.json(category);
+        return category.get({ plain: true });
+    });
+};
+
 controller.deleteCategory = (req,res) => {
     Category.destroy({
         where: {id : req.params.id}

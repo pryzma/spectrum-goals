@@ -1,7 +1,7 @@
 {
   "esversion" : 9,
   "curly" : false,
-  "asi" : false,
+  "asi" : true,
   "strict" : true,
   "node" : true,
   "browser" : true,

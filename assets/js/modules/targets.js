@@ -2,8 +2,8 @@
 const targets = {
     name : 'Leerdoelen',
     default : targetsOverview,
-    template : 'targetsCategories'
-    //template : 'targets'
+    template : 'targetsCategories',
+    categories : []
 }
 const categoriesData = {
     url : 'api/categories',
@@ -12,8 +12,8 @@ const categoriesData = {
             targets.categories = categories;
         const categoryTab = $('#targetCategoriesTabs').html(),
               categoryTabPane = $('#targetCategoriesContent').html();
-
-        for(const category of categories){
+        targets.categories = categories;
+        categories.forEach((category)=>{
             const categoryCurrentTab = $(categoryTab),
                   categoryCurrentTabLink = $('<a></a>')
                      .attr('class','nav-link h4 tabAdded')
@@ -29,30 +29,28 @@ const categoriesData = {
                      .attr('id',`${category.id}Subjects`)
                      .attr('data-category',category.id)
                      .attr('aria-labelledby',`${category.id}-tab`);
-            $('#targetCategoriesContent').prepend(categoryCurrentTabPane)
-            categoryCurrentTab.on('dragenter',(event)=>{
-                console.log(event)
-            })
+            $('#targetCategoriesContent').prepend(categoryCurrentTabPane);
+            
             document.addEventListener("dragenter", function(event) {
                 // highlight potential drop target when the draggable element enters it
                 if (event.target.className == "nav-item") {
-                    console.log(event)
+                    console.log(event);
                 }
               
               }, false);
 
             $('#targetCategoriesTabs').prepend(categoryCurrentTab.html(categoryCurrentTabLink).removeAttr('style'));
-        }
+        });
         $('#targetCategoriesTabs li a').first().tab('show');
-        $('#targetCategoriesTabs li').last().remove()
+        $('#targetCategoriesTabs li').last().remove();
         // $('#targetCategoriesContent div').first().addClass('active')
         }
         
     }
-}
+};
 const targetsData = {
     url : 'api/targets'
-}
+};
 const medientsObj = { data : [] };
 const medientObjDataModify = (account) => {
     const accountAdd = {
@@ -66,18 +64,16 @@ const medientsObjData = {
     modify : medientObjDataModify,
     callback : (data) => {
         
-        medientsObj.data = data
+        medientsObj.data = data;
     }
   };
 
 function categoryName(category){
-    if(category==='technical'){
-        return 'Technisch'
-    }else if(category==='work'){
-        return 'Werk'
-    }else{
-        return 'Persoonlijk'
-    }
+    let categoryName
+    targets.categories.map((item)=>{
+        if(item.id===category) categoryName = item.name;
+    });
+    return categoryName
 }
 
 function targetsOverview(){
@@ -148,16 +144,11 @@ function currentCategory(){
             currentCategoryValue = $(this).attr('data-category')
         }
     })
-    //console.log($('#targetCategoriesContent .tab-pane.active').attr('data-category'))
+    
     return currentCategoryValue
 }
 
 function saveSubject(target){
-    
-        //const AddSubjectData = component.form.fields({el : '#addSubjectForm' });
-        //AddSubjectData.category = 
-        
-
 
         const AddSubjectData = {
             id : component.uid(),
@@ -219,7 +210,7 @@ function overviewSubjects(category){
             const subjectsContainer = $(`#${category}Subjects div.row`)
             $('.subjectContainer').remove()
             
-            for(const subject of subjects){
+            subjects.forEach((subject)=>{
                 if(subject.category === category){
                     const addTargetBtn = component.btn({ 
                             html : '<i class="fas fa-plus"></i> Leerdoel toevoegen', 
@@ -304,7 +295,7 @@ function overviewSubjects(category){
                     targetsSearch()
                 }
 
-            }
+            });
         }
     })
 
@@ -362,6 +353,7 @@ function subjectDelete(subject){
     })
     
 }
+
 function subjectUpdate(subject){
     const updateSubjectForm = component.form.fromModel({
         id : 'updateSubjectForm',
@@ -421,6 +413,7 @@ function addTargetLevel(target){
         }]}]
     });
 }
+
 function overviewTargetAssignedMedients(target){
     component.api({
         url : 'api/targets/medients/'+target.id,
@@ -502,7 +495,7 @@ function overviewTargetLevels(target){
                       levelElement = $('<div></div')
                         .attr('class','levelContainer btn btn-block left btn-primary btn-green ui-sortable-handle pointer shadow')
                         .attr('style','margin-top:5px;')
-                        .append(levelLabel)
+                        .append(levelLabel);
                     const levelDeleteBtn = $('<button></button>')
                             .attr('class','btn btn-nobg float-right')
                             .attr('style','padding-left: 5px; padding-right: 0')
@@ -584,9 +577,9 @@ function assignMedientTarget(target){
     $('#overviewTargetAssignMedientInput').off().on('input',(event)=>{
       
         const searchTargetAssignMedientValue = event.target.value
-        searchTargetAssignMedientValue === '' ? $('#TargetAssignMedients').hide() : $('#TargetAssignMedients').show() 
+        //searchTargetAssignMedientValue === '' ? $('#TargetAssignMedients').hide() : $('#TargetAssignMedients').show(); 
       
-        $('#TargetAssignMedients').html('')
+        $('#TargetAssignMedients').html('');
         medientsObj.data.map((medient)=>{
             const searchTargetAssignMedientElement = $('<p>'+medient.name+'</p>')
             .attr('style','margin-bottom:0px;')
@@ -602,22 +595,22 @@ function assignMedientTarget(target){
                             category : currentCategory()
 
                         }
-                        console.log(assignMedientTargetData)
+                        
                         component.api({
                             method : 'post',
                             url : 'api/medients/target/add',
                             data : assignMedientTargetData,
                             callback : ()=>{
                                 $('#amModal').modal('hide');
-                                $('#TargetAssignMedients').hide()
-                                $('#overviewTargetAssignMedientInput').val('')
+                                $('#TargetAssignMedients').hide();
+                                $('#overviewTargetAssignMedientInput').val('');
                                 component.alert({
                                     message : 'Leerdoel <b>'+target.name+'</b> is toegewezen aan '+medient.name
-                                })
+                                });
                             }
                         })
                     }]},{txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-                        $('#amModal').modal('hide')
+                        $('#amModal').modal('hide');
                     }]}]
                 })
             })
@@ -691,7 +684,7 @@ function levelUpdate(level){
 
 function subjectTargetsBtns(args){
 
-    for(const target of args.targets){
+    args.targets.forEach((target)=>{
         if(target.subject === args.subject.id){
             const targetBtn = component.btn({
                 txt : target.name,
@@ -750,7 +743,7 @@ function subjectTargetsBtns(args){
 
         }
         
-    }
+    });
     if(args.callback) args.callback()
 }
 function targetCreate(){
@@ -823,7 +816,7 @@ function overviewTargetSubLevels(level){
         url : 'api/sublevels/'+level.id,
         callback : (sublevels)=>{
      
-            for(const sublevel of sublevels){
+            sublevels.forEach((sublevel)=>{
                 sublevel.level = level // replace sublevel object level property with level object
                 const subLevelElement = $('<div></div>')
                         .attr('class','subLevelElement subLevelContainer btn btn-block btn-white green ui-sortable-handle pointer shadow')
@@ -852,7 +845,7 @@ function overviewTargetSubLevels(level){
                 subLevelElement.append(subLevelOptions);
                 subLevelContainer.prepend(subLevelElement); 
                    
-            }
+            });
         }
     })
     
