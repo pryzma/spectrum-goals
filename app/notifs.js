@@ -5,7 +5,7 @@ const mysql = require('mysql');
 const env = process.env.NODE_ENV || "development";
 const config = require("../config/config")()[env];
 const sgMail = require('@sendgrid/mail');
-const authController = require("../controllers/auth")
+const authController = require("../controllers/auth");
 
 const connection = mysql.createConnection({
   host: config.host,
@@ -32,7 +32,7 @@ function notifIndication(){
             const today = new Date();
             let three = new Date(date.setMonth(date.getMonth() + 3));
             if (!err) {
-              for (let indication of indications) {
+              indications.forEach ((indication) => {
                 if (three > indication.indication) {
                   if (today >= indication.indication) {
                     
@@ -49,7 +49,7 @@ function notifIndication(){
                         console.log(` Indicatie van ${indication.username} verloopt op `);
                         sgMail.send(msg).then(() => {
                           console.log('E-mail sent to Bart');
-                          connection.query(`INSERT INTO Notifications (account) VALUES ('${indication.account}')`)
+                          connection.query(`INSERT INTO Notifications (account) VALUES ('${indication.account}')`);
                         }).catch(error => {
                           //Log friendly error
                           console.error(error.toString());
@@ -59,7 +59,7 @@ function notifIndication(){
                           const {headers, body} = response;
                         });
                       }
-                    })
+                    });
                     
                   } else {
                     console.log(indication.username + "'s indicatie gaat verlopen op " + indication.indication);
@@ -72,7 +72,7 @@ function notifIndication(){
                       html: `<img src="https://dev.emerald-dust.org/img/logo_lg.png"><br>Beste Bart,<br> De indicatie van Medient ${indication.username} gaat verlopen op ${indication.indication}.`,
                     };
                     sgMail.send(msg).then(() => {
-                      console.log('\x1b[1m\x1b[36m[notifs] \x1b[0m \x1b[3m ',`Notification mail sent for ${indication.username} ${indication.account} \x1b[0m`)
+                      console.log('\x1b[1m\x1b[36m[notifs] \x1b[0m \x1b[3m ',`Notification mail sent for ${indication.username} ${indication.account} \x1b[0m`);
                     }).catch(error => {
                       
                       console.error('\x1b[1m\x1b[36m[notifs] \x1b[0m \x1b[3m Error : ',error.toString() + '\x1b[0m');
@@ -82,7 +82,7 @@ function notifIndication(){
                 } else {
                   console.log(indication.username + "'s indicatie is geldig.");
                 }
-              }
+              });
             } else {
               throw err;
             }
@@ -92,7 +92,7 @@ function notifIndication(){
     
 }
 function dayCheck(){
-  console.log('\x1b[1m\x1b[36m',`[notifs] \x1b[0m \x1b[3m notifs. \x1b[0m`)
-  setTimeout(notifIndication,86400000) // fire notifIndication once in 24 hrs
+  console.log('\x1b[1m\x1b[36m',`[notifs] \x1b[0m \x1b[3m notifs. \x1b[0m`);
+  setTimeout(notifIndication,86400000); // fire notifIndication once in 24 hrs
 }
-module.exports = dayCheck
+module.exports = dayCheck;

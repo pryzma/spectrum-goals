@@ -1,7 +1,7 @@
+'use strict';
 const  passport = require('passport'),  
        LocalStrategy  = require('passport-local').Strategy,
        connection = require('./dbconn'),
-       //bcrypt = require('bcrypt'),
        bcrypt = require('bcryptjs'),
 auth = (app)=>{
     // passport setup
@@ -13,58 +13,41 @@ auth = (app)=>{
     passwordField: 'password',
     passReqToCallback: true //passback entire req to call back
   } , function (req, username, password, done){
-   
-    
-    
         if(!username || !password ) { return done(null, false, req.flash('message','All velden zijn verplicht!')); }
-      
         connection.query("select * from Accounts where username = ?", [username], function(err, rows){
-            
           if (err) { return done(req.flash('message',err)); }
-
           if(!rows.length){ return done(null, false, req.flash('message','Ongeldige gebruikersnaam en/of wachtwoord')); }
           bcrypt.compare(password, rows[0].password, function(err, res) {
             if(res){
-              console.log('\x1b[1m\x1b[32m',`${rows[0].id} passport.authenticate() OK\x1b[0m`)
+              console.log('\x1b[1m\x1b[32m',`${rows[0].id} passport.authenticate() OK\x1b[0m`);
               req.session.user = rows[0];
               app.user = rows[0];
               return done(null, rows[0]);
             }else{
-              console.log('\x1b[1m\x1b[31m',`passport.authenticate() FAILED\x1b[0m`)
-              console.log(password, rows[0].password)
+              console.log('\x1b[1m\x1b[31m',`passport.authenticate() FAILED\x1b[0m`);
+              console.log(password, rows[0].password);
               return done(null, false, req.flash('message','Ongeldige gebruikersnaam en/of wachtwoord'));
             }
-            
-            
-            
-            
           });
-         
-  
-          
-          
-         
         });
       }
   ));
 
   passport.serializeUser(function(user, done){
-      console.log(`passport.serializeUser : ${JSON.stringify(user)}`)
+      console.log(`passport.serializeUser : ${JSON.stringify(user)}`);
       done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done){
-    
       connection.query(`select * from Accounts where id ='${id}'`, function (err, rows){
-        console.log(`passport.deserializeUser : ${id}`)
+        console.log(`passport.deserializeUser : ${id}`);
         done(err, rows[0]);
       });
   });
 
   app.get('/signin', function(req, res){
-    const config = require('../config/app.json')
+    const config = require('../config/app.json');
     res.render('signin',{'name' : config.name, 'message' :req.flash('message')});
-
   });
 
   app.post("/signin",
@@ -82,6 +65,6 @@ auth = (app)=>{
       req.logout();
       res.redirect('/signin');
   });
-  return app
-}
+  return app;
+};
 module.exports = auth;

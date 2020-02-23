@@ -1,6 +1,7 @@
 /*
 * app/view.js
 */
+'use strict';
 const expressLayouts = require('express-ejs-layouts'),
 flash    = require('connect-flash'),
 path = require('path'),
@@ -13,5 +14,5 @@ view = (app) =>{
   // flash messages setup
   app.use(flash());
   return app;
-}
+};
 module.exports = view;

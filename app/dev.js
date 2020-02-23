@@ -1,8 +1,8 @@
 /*
 * app/dev.js
 */
-
-const morgan = require('morgan');
+'use strict';
+const morgan = require('morgan'),
 dev = (app)=>{ 
   
   const config = require('./config');
@@ -15,10 +15,9 @@ dev = (app)=>{
       tokens.status(req, res),
       tokens.res(req, res, 'content-length'), '-',
       tokens['response-time'](req, res), 'ms'
-    ].join(' ')
-  })
+    ].join(' ');
+  });
  
-  if(process.env.npm_lifecycle_event === 'dev') { app.use(morgan('dev')); } 
-  
-}
+  if(process.env.npm_lifecycle_event === 'dev') { app.use(morgan('dev')); }
+};
 module.exports = dev;

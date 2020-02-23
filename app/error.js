@@ -1,6 +1,7 @@
 /*
 * app/error.js
 */
+'use strict';
 const createError = require('http-errors');
 module.exports = (app)=>{
     // catch 404 and forward to error handler
@@ -18,4 +19,4 @@ module.exports = (app)=>{
     res.status(err.status || 500);
     res.render('error');
   });
-}
+};

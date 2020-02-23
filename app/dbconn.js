@@ -1,9 +1,8 @@
 /*
 * app/dbconn.js
 */
-
+'use strict';
   const mysql = require('mysql'),
-        dotenv = require('dotenv').config(),
         env = process.env.NODE_ENV || "development",
         config = require("../config/config")()[env];
 
@@ -21,6 +20,5 @@
       //console.log('\x1b[1m\x1b[32m',`db ${config.database} mysql.createConnection() OK\x1b[0m`)
     }
   });
-
 
 module.exports = connection;

@@ -1,6 +1,7 @@
 /*
 * app/config.js
 */
+'use strict';
 const _config = require('../config/app.json');
 function config(){
   _config.ref_adr = process.env.REF_ADR;
@@ -10,7 +11,7 @@ function config(){
   const models = require('../models');
   _config.models = new Object;
   for(let model of Object.getOwnPropertyNames(models.sequelize.models)){
-    _config.models[model] = models[model].rawAttributes
+    _config.models[model] = models[model].rawAttributes;
   }
 
 

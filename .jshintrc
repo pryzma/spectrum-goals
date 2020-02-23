@@ -4,5 +4,6 @@
   "asi" : false,
   "strict" : true,
   "node" : true,
-  "browser" : true
+  "browser" : true,
+  "globals" : { "$" : true, "component" : true, "application" : true, "moment" : true, "axios" : true }
 }

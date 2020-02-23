@@ -1,20 +1,18 @@
+'use strict';
 const medients = {
     name : 'Mediëntenlijst',
     default : medientOverview,
     template : 'medient_list'
-}
-const medientData = {
-    url : 'api/accounts/medients',
-    modify : (medient) => {
-        // modify medient data
-    }
-}
+};
+
 function medientOverview(){
-    const medientOverviewTable = {
+    return component.table({
         el : '#medientOverview',
         model : 'Account',
-        data : medientData
-    }
-    return component.table(medientOverviewTable)
+        data : {
+            url : 'api/accounts/medients'
+        }
+    });
 }
+
 application.add('medients',medients);

@@ -1,10 +1,11 @@
 /*
 * app/manifest.js
 */
-const package = require('../package.json'),
+'use strict';
+const package_json = require('../package.json'),
 manifest = (app)=>{
-    const config = require('./config')(package,app)
-    console.log('\x1b[36m',`[route]\x1b[0m \x1b[37mhttp://127.0.0.1:3000/manifest.json\x1b[0m\x1b[36m \x1b[0m`)
+    const config = require('./config')(package_json,app);
+    console.log('\x1b[36m',`[route]\x1b[0m \x1b[37mhttp://127.0.0.1:3000/manifest.json\x1b[0m\x1b[36m \x1b[0m`);
     app.get('/manifest.json', (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({
@@ -13,5 +14,5 @@ manifest = (app)=>{
           name : config.name
         }));
       });
-}
+};
 module.exports = manifest;

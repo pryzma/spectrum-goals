@@ -1,6 +1,7 @@
 /*
 * app/dev.js
 */
+'use strict';
 const cookieParser = require('cookie-parser'),
 bodyParser = require('body-parser'),
 parser = (app)=>{
@@ -9,5 +10,5 @@ parser = (app)=>{
   app.use(bodyParser.urlencoded({ extended: false }));
   // cookieparser
   app.use(cookieParser());
-}
+};
 module.exports = parser;
