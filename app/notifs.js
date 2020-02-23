@@ -4,18 +4,8 @@ const mysql = require('mysql'),
       env = process.env.NODE_ENV,
       config = require("../config/config")()[env],
       sgMail = require('@sendgrid/mail'),
-      connection = require('./dbconn');
-
-function dateTime() {
-  let now = new Date();
-  let hour = (now.getHours() < 10 ? "0" + now.getHours() : now.getHours());
-  let minutes = (now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes());
-  let seconds = (now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds());
-  let month = (now.getMonth() + 1 < 10 ? "0" + (now.getMonth() + 1) : (now.getMonth() + 1));
-  return `${now.getDate()}-${month}-${now.getFullYear()} (${hour}:${minutes}:${seconds}): `;
-}
-
-
+      dbconn = require('./dbconn'),
+      connection = dbconn.connection;
 
 function notifIndication(){
 
@@ -46,7 +36,6 @@ function notifIndication(){
                           
                           console.error(error.toString());
                           const {message, code, response} = error;
-                          //Extract response msg
                           const {headers, body} = response;
                         });
                       }
@@ -71,13 +60,13 @@ function notifIndication(){
                     });
                   }
                 } else {
-                  //console.log(indication.username + "'s indicatie is geldig.");
+                  
                 }
               });
             } else {
               throw err;
             }
-            connection.end();
+            //connection.end();
           });
     
     

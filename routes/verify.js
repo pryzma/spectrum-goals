@@ -1,5 +1,5 @@
 'use strict';
-const connection = require('../app/dbconn'),
+const connection = require('../app/dbconn').connection,
       express = require('express'),
       bodyParser = require('body-parser'),
       flash = require('connect-flash'),

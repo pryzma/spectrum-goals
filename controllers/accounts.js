@@ -3,7 +3,8 @@
 */
 'use strict';
 const controller = module.exports = {};
-const connection = require('../app/dbconn'),
+const dbconn = require('../app/dbconn'),
+      connection = dbconn.connection,
       uuidv4 = require('uuid/v4'),
       sgMail = require('@sendgrid/mail'),
       bcrypt = require('bcryptjs');
@@ -135,7 +136,7 @@ controller.getAll = (req,res) => {
 controller.getMedients = (req,res) => {
    connection.query('SELECT * FROM Medients LEFT JOIN Accounts ON Accounts.id = Medients.account;', (err, accounts) => {
        if(err){
-            console.error(err)
+            console.error(err);
        }else{
             res.json(accounts);
        }

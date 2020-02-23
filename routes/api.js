@@ -1,5 +1,5 @@
 'use strict';
-const connection = require('../app/dbconn'),
+const connection = require('../app/dbconn').connection,
       config = require('../app/config'),
       dotenv = require('dotenv').config(),
       express = require('express'),

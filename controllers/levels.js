@@ -4,7 +4,7 @@
 'use strict';
 const controller = module.exports = {};
 const models = require('../models').sequelize.models;
-const connection = require('../app/dbconn');
+const connection = require('../app/dbconn').connection;
 const Level = models.Level;
 const SubLevel = models.SubLevel;
 const auth = require('./auth');

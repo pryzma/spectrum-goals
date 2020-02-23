@@ -1,6 +1,6 @@
 'use strict';
 const controller = module.exports = {},
-      connection = require('../app/dbconn'),
+      connection = require('../app/dbconn').connection,
       env = process.env.NODE_ENV || "development",
       sgMail = require('@sendgrid/mail'),
       config = require("../config/config")()[env];

@@ -9,7 +9,7 @@ const Level = models.Level;
 const SubLevel = models.SubLevel;
 const auth = require('./auth');
 const uuidv4 = require('uuid/v4');
-const connection = require('../app/dbconn');
+const connection = require('../app/dbconn').connection;
 
 
 controller.createTarget = (req,res) => {

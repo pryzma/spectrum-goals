@@ -9,7 +9,7 @@ const MedientTarget = models.MedientTarget;
 const Target = models.Target;
 const targetController = require('./targets');
 const uuidv4 = require('uuid/v4');
-const connection = require('../app/dbconn');
+const connection = require('../app/dbconn').connection;
 
 controller.getOne = (req,res) => {
     //console.log(`controller.getOne(${req})`)
