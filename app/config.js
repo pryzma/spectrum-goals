@@ -9,7 +9,7 @@ function config(){
   _config.npm_lifecycle_event = process.env.npm_lifecycle_event;
   _config.ref_ws_port = process.env.REF_WS_PORT;
   const models = require('../models');
-  _config.models = new Object;
+  _config.models = {};
   for(let model of Object.getOwnPropertyNames(models.sequelize.models)){
     _config.models[model] = models[model].rawAttributes;
   }

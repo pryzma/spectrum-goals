@@ -2,13 +2,9 @@
 * app/dev.js
 */
 'use strict';
-const morgan = require('morgan'),
-dev = (app)=>{ 
-  
-  const config = require('./config');
-  
+const morgan = require('morgan');
+module.exports = (app)=>{ 
   morgan(function (tokens, req, res) {
-      
     return [
       tokens.method(req, res),
       tokens.url(req, res),
@@ -17,7 +13,5 @@ dev = (app)=>{
       tokens['response-time'](req, res), 'ms'
     ].join(' ');
   });
- 
   if(process.env.npm_lifecycle_event === 'dev') { app.use(morgan('dev')); }
 };
-module.exports = dev;

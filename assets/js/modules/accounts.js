@@ -1,6 +1,15 @@
 /** accounts module object */
 'use strict';
-const accounts = {
+const accountsModify = (account) => {
+  const accountAdd = {
+    name : account.firstName + ' ' +  account.lastName
+  };
+  if(account.profile === 'medient') {
+    account.indication = account.indication.split('T')[0];
+  }
+  return { ...account, ...accountAdd };
+},
+accounts = {
   name : 'Accounts',
   default : accountsOverview,
   template : 'accounts',
@@ -10,26 +19,20 @@ const accounts = {
   data : [],
   medientList : { data : [] },
   teamList : { data : [] },
-  modify : (account) => {
-    const accountAdd = {
-      name : account.firstName + ' ' +  account.lastName,
-      test : account.indication.split('T')[0]
-    };
-    if(account.profile === 'medient') {
-      account.indication = account.indication.split('T')[0];
-    }
-    return { ...account, ...accountAdd };
-  },
+  modify : accountsModify,
   accountsData : {
     url : 'api/accounts',
+    modify : accountsModify,
     callback : (data) => accounts.data = data
   },
   medientsData : {
     url : 'api/accounts/medients',
+    modify : accountsModify,
     callback : (data) => accounts.medientList.data = data
   },
   teamData : {
     url : 'api/accounts/teammembers',
+    modify : accountsModify,
     callback : (data) => accounts.teamList.data = data
   }
 };

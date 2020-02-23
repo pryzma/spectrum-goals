@@ -1,18 +1,27 @@
 'use strict';
-
-module.exports = (app) => {
+module.exports = () => {
     const webSocket = require('websocket'),
           webSocketServer = webSocket.server,
           http = require('http'),
-          https = require('https');
-    const env = process.env;
+          https = require('https'),
+          env = process.env,
+          privateKeyPath = `/etc/letsencrypt/live/${env.REF_ADR}/privkey.pem`,
+          certificatePath = `/etc/letsencrypt/live/${env.REF_ADR}/fullchain.pem`
     let server;
+
     if(process.env.REF_HTTP_PROTOCOL === 'https'){
-        const fs = require('fs'),
-        privateKey = fs.readFileSync('/etc/letsencrypt/live/spectrumgoals.nl/privkey.pem', 'utf8'),
-        certificate = fs.readFileSync('/etc/letsencrypt/live/spectrumgoals.nl/fullchain.pem', 'utf8'),
-        credentials = { key: privateKey, cert: certificate };
-        server = https.createServer(credentials);
+        const fs = require('fs');
+     
+        if( fs.existsSync(privateKeyPath) && fs.existsSync(certificatePath) ){
+            server = https.createServer({ 
+                key: fs.readFileSync(privateKeyPath, 'utf8'), 
+                cert: fs.readFileSync(certificatePath, 'utf8')
+            });
+        }else{
+            if(!fs.existsSync(privateKeyPath)) console.error('\x1b[36m',`[websocket]\x1b[0m ${privateKeyPath} does not exist`);
+            if(!fs.existsSync(certificatePath)) console.error('\x1b[36m',`[websocket]\x1b[0m ${certificatePath} does not exist`);
+        }
+                
     }else{
         server = http.createServer();
     }
@@ -27,52 +36,29 @@ module.exports = (app) => {
     const wsServer = new webSocketServer({
         httpServer: server
     });
-
     console.log('\x1b[36m',`[websocket]\x1b[0m  Server started on ${env.REF_WS_PROTOCOL}://${env.REF_ADR}:${env.REF_WS_PORT}/ on ${(Date()).split('GMT')[0]}\x1b[0m`);
-
-    const getUniqueID = () => { // generate unique id
-        const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-        return s4() + s4() + '-' + s4();
-    };
     const messages = [],clients = {};
     wsServer.on('request', function(request) {
-        // assign user id to request
-        //const userID = app.user.id ? app.user.id : getUniqueID();
-        const userID = getUniqueID();
-        console.log('\x1b[36m',`[websocket]\x1b[0m  Connection on ${request.origin} assigned to ${userID}`);
-        // rewrite this to accept only requests from allowed origin
-        const connection = request.accept(null, request.origin);
-        // assign id to client connection
-        clients[userID] = connection;
-        // send asigned id to client
-        connection.sendUTF(JSON.stringify({client : userID}));
-        // print client connection to console
-        console.log('\x1b[36m',`[websocket]\x1b[0m  Client : ${userID} in [${Object.getOwnPropertyNames(clients)}]`);
-        // server recieved message
-        connection.on('message', function(message) {
+        const wsConnectionId = require('uuid/v4')();
+        console.log('\x1b[36m',`[websocket]\x1b[0m  Connection on ${request.origin} assigned to ${wsConnectionId}`);
+        const wsConnection = request.accept(null, request.origin);
+        clients[wsConnectionId] = wsConnection;
+        wsConnection.sendUTF(JSON.stringify({client : wsConnectionId}));
+        console.log('\x1b[36m',`[websocket]\x1b[0m  Client : ${wsConnectionId} in [${Object.getOwnPropertyNames(clients)}]`);
+        wsConnection.on('message', function(message) {
             if (message.type === 'utf8') {
-                message.from = userID;
+                message.from = wsConnectionId;
                 message.date = (new Date().toJSON());
                 messages.push(message);
-                // print recieved message to console
                 console.log('\x1b[36m',`[websocket]\x1b[0m  Message : ${JSON.stringify(message)}`);
-                console.log(messages); // print current messages to console
             }
         });
-        // user disconnected
-        connection.on('close', function(connection) {
-            // remove user from the list of connected clients
-            delete clients[userID];
-            console.log('\x1b[36m',`[websocket]\x1b[0m  Client : ${userID} disconnected`);
+        wsConnection.on('close', function() {
+            delete clients[wsConnectionId];
+            console.log('\x1b[36m',`[websocket]\x1b[0m  Client : ${wsConnectionId} disconnected`);
         });
         setInterval(() => {
-            //console.log(`Socket sendMessage : ${sendMessage}`)
-            //if(lastuser != userID && messages.length > messagesLength){
-                connection.sendUTF(JSON.stringify(messages));
-                //sendMessage = false
-                //messagesLength = messages.length;
-                //lastuser = userID;
-            //}
+                wsConnection.sendUTF(JSON.stringify(messages));
         },3000);
     });
 };

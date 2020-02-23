@@ -25,10 +25,11 @@ auth = (app)=>{
               return done(null, rows[0]);
             }else{
               console.log('\x1b[1m\x1b[31m',`passport.authenticate() FAILED\x1b[0m`);
-              console.log(password, rows[0].password);
+              // console.log(password, rows[0].password);
               return done(null, false, req.flash('message','Ongeldige gebruikersnaam en/of wachtwoord'));
             }
           });
+          //connection.end();
         });
       }
   ));
@@ -42,6 +43,7 @@ auth = (app)=>{
       connection.query(`select * from Accounts where id ='${id}'`, function (err, rows){
         console.log(`passport.deserializeUser : ${id}`);
         done(err, rows[0]);
+        //connection.end();
       });
   });
 

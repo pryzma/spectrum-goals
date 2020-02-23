@@ -15,16 +15,15 @@ const Medient = models.Medient;
 const auth = require('./auth');
 
 controller.createAccount = (req,res) => {
-
     const account = req.body;
-    const contact = {}; // create contact
+    const contact = {}; 
     contact.id = uuidv4();
     account.contact = contact.id;
     contact.first_name = account.firstName;
     contact.last_name = account.lastName;
     contact.email = account.email;
     Contact.create(contact);
-    account.id = uuidv4/* jshint node: true, browser: true */
+    account.id = uuidv4
     ();
     account.password = '';
     account.isActivated = 0;
@@ -50,18 +49,12 @@ controller.createAccount = (req,res) => {
         sgMail.send(msg).then(() => {
             console.log('\x1b[36m',`[controller.accounts]\x1b[0m E-mail sent to `+response.email);
         }).catch(error => {
-
-            //Log friendly error
             console.error(error.toString());
-
-            
         });
         res.json(response);
-        // return a non-undefined value to signal that we didn't forget to return
         return null;
-
     }).catch((err)=>{
-        console.log(err);
+        console.error(err);
     });
 
 };
@@ -80,7 +73,7 @@ controller.verifyAccount = (req,res) => {
             bcrypt.hash(account_.password, salt, function(err, hash) {
                 connection.query(`UPDATE Accounts SET password='${hash}',isActivated=1 WHERE id='${account_.id}'`, (err, result) => {
 
-                    const accountCreatedBy = connection.query(`SELECT * FROM Accounts WHERE id='${account[0].createdBy}'`, (err,result) => {
+                    connection.query(`SELECT * FROM Accounts WHERE id='${account[0].createdBy}'`, (err,result) => {
                         const msg = {
                             to: `${result[0].email}`,
                             from: `noreply@spectrumgoals.nl`,
@@ -140,14 +133,12 @@ controller.getAll = (req,res) => {
 };
 
 controller.getMedients = (req,res) => {
-    /*
-    Account.findAll({where: {profile: 'medient'}, order:[['id','DESC']]}).then((accounts) => {
-        res.json(accounts)
-    });
-    */
    connection.query('SELECT * FROM Medients LEFT JOIN Accounts ON Accounts.id = Medients.account;', (err, accounts) => {
-       console.log(accounts)
-        res.json(accounts);
+       if(err){
+            console.error(err)
+       }else{
+            res.json(accounts);
+       }
     });
 };
 
