@@ -1,8 +1,9 @@
 {
   "esversion" : 9,
   "curly" : false,
-  "asi" : false,
+  "asi" : true,
   "strict" : true,
   "node" : true,
-  "browser" : true
+  "browser" : true,
+  "globals" : { "$" : true, "application" : true, "component" : true,"moment" : true, "axios" : true }
 }

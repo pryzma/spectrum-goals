@@ -1,4 +1,5 @@
  /** dashboard module object */
+ 'use strict';
 const showmedientOverviewAlt =true;
 const dashboard = {
     name : 'Dashboard',
@@ -146,8 +147,8 @@ function medientOverview(view){
  */
 function medientDashboard(id){
     const dashboardElement = $('#dashboard'),
-          dashboardMainElement = $('#dashboardMain')
-          dashboardMainHtml = dashboardMainElement.html(),
+          dashboardMainElement = $('#dashboardMain'),
+          //dashboardMainHtml = dashboardMainElement.html(),
           medient = medients.data.filter((medient)=>medient.id===id);
           $('.breadcrumb-item').removeClass('active');
           $('#medientBreadCrumb').remove();

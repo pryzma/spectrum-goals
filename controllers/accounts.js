@@ -146,6 +146,7 @@ controller.getMedients = (req,res) => {
     });
     */
    connection.query('SELECT * FROM Medients LEFT JOIN Accounts ON Accounts.id = Medients.account;', (err, accounts) => {
+       console.log(accounts)
         res.json(accounts);
     });
 };
@@ -158,9 +159,8 @@ controller.getTeamMembers = (req,res) => {
 };
 
 controller.getOne = (req,res) => {
-    //console.log(`controller.getOne(${req})`)
-    //return connection.query(`SELECT * FROM accounts WHERE id='${req}'`, (err,result) => result);
-    Account.findOne({ where: {id: req} }).then(account => {
+    Account.findOne({ where: {id: req.params.account} }).then(account => {  
+        res.json(account);
         return account.get({ plain: true });
     });
 };

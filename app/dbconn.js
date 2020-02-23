@@ -1,9 +1,8 @@
 /*
 * app/dbconn.js
 */
-
+'use strict';
   const mysql = require('mysql'),
-        dotenv = require('dotenv').config(),
         env = process.env.NODE_ENV || "development",
         config = require("../config/config")()[env];
 

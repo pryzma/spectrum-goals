@@ -1,4 +1,4 @@
-/* jshint esversion: 9 */
+'use strict';
  /** accounts module object */
 const accounts = {
   name : 'Accounts',
@@ -28,12 +28,10 @@ const accounts = {
   },
   medientsData : {
     url : 'api/accounts/medients',
-    modify : medientDataModify,
     callback : (data) => accounts.medientList.data = data
   },
   teamData : {
     url : 'api/accounts/teammembers',
-    modify : medientDataModify,
     callback : (data) => accounts.teamList.data = data
   }
 

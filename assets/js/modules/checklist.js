@@ -1,3 +1,4 @@
+'use strict';
 const checklist = {
     name : 'Checklist',
     default : checklistOverview
