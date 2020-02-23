@@ -1,6 +1,7 @@
 /*
 * assets/js/helpers.js
 */
+'use strict';
 const helper = (() => {
   return { 
     form : { 
@@ -25,13 +26,13 @@ const helper = (() => {
     alert : (args) => alert(args),
     api : api,
     date : date
-  }
-})() // invoke
+  };
+})(); // invoke
 // helper.date
 function date(){
   let today = new Date();
-  const dd = today.getDate();
-  const mm = today.getMonth() + 1; //January is 0!
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1; //January is 0!
 
   var yyyy = today.getFullYear();
   if (dd < 10) dd = '0' + dd;
@@ -68,7 +69,7 @@ function api(args,callback){
       return args.callback(data);
     
     return data;
-  })
+  });
 }
 // helper.modal
 /*
@@ -98,37 +99,30 @@ function modal(args){
       args.save();
     });
   }
-  console.log(args)
-
+  console.log(args);
   if(args.buttons){
     const button_container = document.createElement('div');
-    button_container.setAttribute('id','button_container')
+    button_container.setAttribute('id','button_container');
     const footer = document.getElementById('amModalFooter');
-    for(let button of args.buttons){
-      
-      
+    args.buttons.forEach((button) => {
       const button_ = document.createElement('button');
-      button_.setAttribute( 'class', `btn btn-${button.class}`)
+      button_.setAttribute( 'class', `btn btn-${button.class}`);
       button_.innerHTML = button.html;
       if(typeof button.onClick === 'function' ){
         button_.addEventListener('click', (event)=>{
           button.onClick(event);
-        })
-        
+        });
       }
-      button_container.appendChild(button_)
-      
-    }
-    footer.appendChild(button_container)
+      button_container.appendChild(button_);
+    });
+    footer.appendChild(button_container);
   }
-  
   $amModal.on('hidden.bs.modal', function (e) {
     $('#amModalTitle').html('');
     $('#amModalBody').html('');
     $('#button_container').remove();
     if(typeof args.close === 'function') args.close();
   });
-  
 }
 // table
 /*
@@ -177,7 +171,7 @@ function table(args){
         tableInsert(args,table);
         if(args.data.callback) args.data.callback(data);
       }
-    }
+    };
     if(args.data.modify) apiObj.modify = args.data.modify;
     return api(apiObj,()=> table );
   }else{
@@ -189,7 +183,7 @@ function table(args){
   function tableBody(table,props,data,args){
     const tbody = document.createElement('tbody');
     let tr,td;
-    for(let item of data){
+    data.forEach ((item) => {
       tr = document.createElement('tr');
       if(item.id) tr.setAttribute('id',item.id);
       if(args.onRowClick) {
@@ -203,7 +197,7 @@ function table(args){
         tr.appendChild(td);
       }
       tbody.appendChild(tr);
-    }
+    });
     table.appendChild(tbody);
     return table;
   }
@@ -226,7 +220,7 @@ function formData(form){
   for(let [key,value] of formData.entries())
     formObj[key] = value;
   
-  return formObj
+  return formObj;
 }
 // helper.form.post
 /*
@@ -245,7 +239,7 @@ function formPost(args,callback){
     event.preventDefault();
     axios.post(args.url,formObj)
     .then((formObj) => {
-      callback(formObj)
+      callback(formObj);
     }).catch(function(error){
       $(args.el).html(`A error has occured : ${error}`);
     });
@@ -271,15 +265,15 @@ function formFromModel(args){
         formBtnSave = document.createElement('button');
         formBtnSave.setAttribute('class','btn btn-primary btn-lg');
         formBtnSave.innerHTML = args.btnSaveTxt;
-        form.setAttribute('encType','multipart/form-data')
+        form.setAttribute('encType','multipart/form-data');
         let model,props;
         if(typeof args.model==='string'){
-          props = Object.getOwnPropertyNames(models[args.model])
+          props = Object.getOwnPropertyNames(models[args.model]);
         }else if(args.model.constructor === Array ){
-          props = []
+          props = [];
           for(let item of args.model){
             for(let prop of Object.getOwnPropertyNames(models[item]))
-              props.push(prop)
+              props.push(prop);
           }
         }
   for(let prop in args.fields){
@@ -287,16 +281,16 @@ function formFromModel(args){
       // append row to form
       form.appendChild(formRow(prop,args));
     }else{
-      console.log(prop)
+      console.log(prop);
       if(prop.split('_')[0] === 'header'){
-        const header = document.createElement(prop.split('_')[1])
-        header.innerHTML = args.fields[prop]
-        form.appendChild(header)
+        const header = document.createElement(prop.split('_')[1]);
+        header.innerHTML = args.fields[prop];
+        form.appendChild(header);
       }
     }
   }
-  if(!args.insert) args.insert = 'append'
-  if(!args.el) args.el = application.config.main
+  if(!args.insert) args.insert = 'append';
+  if(!args.el) args.el = application.config.main;
   $(args.el)[args.insert](form);
   // submit event
   form.appendChild(formBtnSave);
@@ -304,24 +298,24 @@ function formFromModel(args){
     event.preventDefault();
     const data = formData(form);
     if(args.url){
-      if(!args.method) args.method = 'post'
+      if(!args.method) args.method = 'post';
       if(args.method){
         if(args.before){
           //axios.interceptors.request.use((data) => {
-            args.before(data)
+            args.before(data);
           //});
         }
 
         axios[args.method](args.url,data)
         .then((data) => {
-          if(args.onSubmit)args.onSubmit(data)
-        })
+          if(args.onSubmit)args.onSubmit(data);
+        });
       }
     }else {
       if(args.onSubmit) args.onSubmit();
     } 
   });
-  return form
+  return form;
   // form group row
   function formRow(prop,args){
     // row
@@ -330,33 +324,31 @@ function formFromModel(args){
     // label
     const formRowLabel  = document.createElement('label');
     formRowLabel.setAttribute('for',prop);
-    formRowLabel.setAttribute('class','col-sm-2 col-form-label')
+    formRowLabel.setAttribute('class','col-sm-2 col-form-label');
     formRowLabel.innerHTML = args.fields[prop].label;
     formRow.appendChild(formRowLabel);
     const formInputCol = document.createElement('div');
     formInputCol.setAttribute('class','col-sm-10');
     if(args.fields[prop].use){
-      formInputCol.appendChild(args.fields[prop].use())
+      formInputCol.appendChild(args.fields[prop].use());
     }else{
       // input
       const formRowInput = document.createElement('input');
       if(args.fields[prop].type){
         formRowInput.setAttribute('type',args.fields[prop].type);
-        
       }
       formRowInput.setAttribute('class','form-control');
       formRowInput.setAttribute('id',prop);
       formRowInput.setAttribute('name',prop);
       if(args.fields[prop].value){
-        formRowInput.setAttribute('value',args.fields[prop].value)
+        formRowInput.setAttribute('value',args.fields[prop].value);
       }
-      formInputCol.appendChild(formRowInput)
+      formInputCol.appendChild(formRowInput);
       if(args.fields[prop].type === 'date') {
         $(`#${prop}`).datepicker();
-        console.log(prop)
+        console.log(prop);
       }
     }
-    
     formRow.appendChild(formInputCol);
     return formRow;
   }

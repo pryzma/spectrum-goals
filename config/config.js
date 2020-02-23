@@ -1,4 +1,5 @@
-dotenv = require('dotenv').config();
+'use strict';
+const dotenv = require('dotenv').config();
 const config = function(){
     return {
         development : {
@@ -10,6 +11,6 @@ const config = function(){
             sendgrid : process.env.SENDGRID_API_KEY,
             logging : false
         }
-    }
-}
+    };
+};
 module.exports = config;

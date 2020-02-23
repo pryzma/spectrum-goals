@@ -17,5 +17,4 @@ router.put('/', bodyParserJSON, (req, res, next) => {
   controller.updateMedient(req,res, next);
 });
 
-
 module.exports = router;

@@ -1,10 +1,11 @@
 /*
 * assets/js/components.js
 */
+'use strict';
 const server = (() => {
     return {
         api : api
-    }
+    };
 })();
 
 function api(args,callback){
@@ -21,9 +22,8 @@ function api(args,callback){
                 return callback(data);
             if(args.callback) 
                 return args.callback(data);
-      
             return data;
-        })
+        });
     }
-  }
-  export default server;
+}
+export default server;
