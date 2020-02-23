@@ -7,19 +7,23 @@ const express = require('express'),
       app = express(),
       bodyParserJSON = app.use(bodyParser.urlencoded({extended : true}));
       app.use(bodyParser.json());
-      
+
 const router = express.Router();
 const controller = require('../controllers/targets');
 const medientTargetsController = require('../controllers/medients');
+
 router.get('/', controller.isAuthenticated, (req, res) => {
   controller.getAll(req,res);
 });
+
 router.get('/medient/:medient', controller.isAuthenticated, (req, res) => {
   medientTargetsController.getTargets(req,res);
 });
+
 router.get('/medients/:target', controller.isAuthenticated, (req, res) => {
   controller.getMedients(req,res);
 });
+
 router.get('/:id', controller.isAuthenticated, (req, res) => {
   controller.getOne(req,res);
 });

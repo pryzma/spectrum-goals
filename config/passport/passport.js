@@ -1,4 +1,4 @@
-//const bcrypt = require("bcrypt");
+'use strict';
 const bcrypt = require("bcryptjs");
 const passport = function(passport,account){
     const Account = account;
@@ -7,13 +7,13 @@ const passport = function(passport,account){
         usernameField: "email",
         passwordField: "password",
         passReqToCallback: true // allows us to pass back the entire request to the callback
-    }
+    };
     const LocalStrategySignup = function(req, email, password, done) { 
         Account.findOne({where:{email:email}}).then(createAccount(account,email,password));
-    }
+    };
     const generateHash = function(password) { // hash password
         return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-    }
+    };
     const createAccount = function(account,email,password){
         if(account){ // account with given email already exists
             return done(null, false, {message: "That email is already taken"});
@@ -28,13 +28,12 @@ const passport = function(passport,account){
                 if (!newAccount) {
                   return done(null, false);
                 }
-  
                 if (newAccount) {
                   return done(null, newAccount);
                 }
-            })
+            });
         }
-    }
+    };
 
     //  local-signup strategy setup
     passport.use("local-signup",new LocalStrategy(LocalStrategyObj, 
@@ -52,7 +51,5 @@ const passport = function(passport,account){
             account ? done(null, account.get()) : done(account.errors, null);
         });
     });
-
-
-}
+};
 module.exports = passport;

@@ -11,5 +11,5 @@ module.exports =  function(){
             sendgrid : process.env.SENDGRID_API_KEY,
             logging : false
         }
-    }
-}
+    };
+};
