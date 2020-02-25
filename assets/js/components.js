@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /** 
 * assets/js/components.js
  */
@@ -231,7 +231,7 @@ const component = (() => {
     time : time,
     type : type,
     uid : uid
-  }
+  };
   // .................................................
   // component.date
   /**
@@ -241,7 +241,7 @@ const component = (() => {
    * @param {HTMLElement} args.el - Target Element
    */
   function date(args){
-    let format = typeof args === 'object' ? args.format : args
+    let format = typeof args === 'object' ? args.format : args;
     const now = new Date();
     let dd = now.getDate();
     let mm = now.getMonth() + 1; 
@@ -251,7 +251,7 @@ const component = (() => {
     if (mm < 10) mm = '0' + mm;
     format = format ? format : 'mm-dd-yyyy';
     format = format.replace('dd',dd).replace('mm',mm).replace('yyyy',yyyy);
-    if(typeof args.modify === 'function') format = args.modify(format)
+    if(typeof args.modify === 'function') format = args.modify(format);
     if(args.el){
       componentElementOutput({
         el : args.el,
@@ -271,9 +271,9 @@ const component = (() => {
   function time(args){
     let now = new Date();
     let hh = now.getHours();
-    hh = hh.toString().length === 1 ? `0${hh}` : hh
+    hh = hh.toString().length === 1 ? `0${hh}` : hh;
     let mm = now.getMinutes();
-    mm = mm.toString().length === 1 ? `${mm}0` : mm
+    mm = mm.toString().length === 1 ? `${mm}0` : mm;
     now = `${hh}:${mm}`;
     if(typeof args.modify === 'function') now = args.modify(now);
     if(args.el){
@@ -295,15 +295,15 @@ const component = (() => {
    */
   function uid(args){  
       const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      const format = args ? args.format : 's4s4-s4'
-      const output = format.replace(new RegExp('s4', 'g'), s4())
+      const format = args ? args.format : 's4s4-s4';
+      const output = format.replace(new RegExp('s4', 'g'), s4());
       if(typeof args === 'object' && args.el){
         componentElementOutput({
           el : args.el,
           output : output
         });
       }
-      return output
+      return output;
   
   }
   // .................................................
@@ -322,7 +322,7 @@ const component = (() => {
     }
   })
   */
-  const authModels = new Array
+  const authModels = new Array([]);
   /**
    * 
    * @param {object} args 
@@ -333,22 +333,22 @@ const component = (() => {
    
       // authData
       type(args.data,'object',()=>{
-        let authData 
+        let authData;
         api(args.data,(data)=>{
           authData = data;
         });
-      })
+      });
       // authModel
       type(args.data.model,'object',()=>{
         const model = args.data.model,
         modelName = authModels[Object.getOwnPropertyNames(model)[0]];
         type(args.data.model[modelName],'object',()=>{
           authModels[modelName] = args.data.model; // add object to authModels
-        })
+        });
         type(args.data.model[modelName],'array',()=>{
-          for(authModel in args.data.model[modelName])
-            authModels[modelName][authModel] = args.data.model[modelName][authModel]
-        })
+          for(let authModel in args.data.model[modelName])
+            authModels[modelName][authModel] = args.data.model[modelName][authModel];
+        });
         
       });
     
@@ -399,7 +399,7 @@ const component = (() => {
       
           return data;
       }
-    })
+    });
   }
  // .................................................
  // component.iterator
@@ -467,7 +467,7 @@ function each(args,callback){
   function repeat(args){
     if(typeof args.data === 'object'){
       const apiObj = args;
-      apiObj.url = args.data.url
+      apiObj.url = args.data.url;
       return api(apiObj,(data)=>{
         apiObj.data = data;
         repeat(apiObj);
@@ -479,10 +479,10 @@ function each(args,callback){
     (()=>{
       output =+ args.template;
       for(let dataItem in args.data[index] )
-        output.replace(`{${dataItem}}`,item[dataItem])
+        output.replace(`{${dataItem}}`,item[dataItem]);
       
       index++;
-    })().repeat(args.data.length)
+    })().repeat(args.data.length);
     //}
     if(args.el){
       componentElementOutput({
@@ -498,7 +498,7 @@ function each(args,callback){
    * @param {string} args 
    */
   function err(args){
-    throw args
+    throw args;
   }
   /**
    * @description Type Component
@@ -511,21 +511,21 @@ function each(args,callback){
   })
    */
   function type(args,type,callback){
-    const argsTypeOf = typeof args;
-    if(args.prototype === Array) argsTypeOf = 'array'
+    let argsTypeOf = typeof args;
+    if(args.prototype === Array) argsTypeOf = 'array';
     if( argsTypeOf != type ) err(`component.type called with type '${type}' but args is  typeof ${argsTypeOf} `);
-    typeof callback === 'function' ?  callback(args) : err('component.type callback is not a function')
+    typeof callback === 'function' ?  callback(args) : err('component.type callback is not a function');
   }
 
   function componentElementOutput(args){
     
       if(typeof args.el === 'object'){
         if(args.el instanceof jQuery){
-          args.append ? args.el.append(args.output) :  args.el.html(args.output)
+          args.append ? args.el.append(args.output) : args.el.html(args.output);
         }else{
           const outputFragement = document.createDocumentFragment();
-          outputFragement.append(args.output)
-          args.append ? args.el.appendChild(outputFragement) : args.el.innerHTML = args.output
+          outputFragement.append(args.output);
+          args.append ? args.el.appendChild(outputFragement) : args.el.innerHTML = args.output;
         }
       }
       
@@ -554,17 +554,17 @@ function each(args,callback){
   function el(args){
     
     if(args.protoype === Array){
-      const name = args[0].split(':')[1]
-      const element = document.createElement(args[0].split(':')[0])
-      const attrs = args[1]
+      const name = args[0].split(':')[1];
+      const element = document.createElement(args[0].split(':')[0]);
+      const attrs = args[1];
       if(attrs.appendTo){
-        const appendTo = document.querySelectorAll(attrs.appendTo)
-        appendTo.appendChild(element)
-        delete attrs.appendTo
+        const appendTo = document.querySelectorAll(attrs.appendTo);
+        appendTo.appendChild(element);
+        delete attrs.appendTo;
       }
       if(attrs.component){
         if(args.protoype === Array){
-         component[attrs.component[0]](attrs.component[1])
+         component[attrs.component[0]](attrs.component[1]);
         }
       }
       
@@ -582,7 +582,7 @@ function each(args,callback){
         element : element,
         name : name
       });
-      return element
+      return element;
     }
   }
   /**
@@ -641,26 +641,26 @@ function each(args,callback){
    */
   function breadcrumb(args){
     const breadcrumbsElement = document.createElement('nav');
-    breadcrumbsElement.setAttribute('aria-label','breadcrumb')
+    breadcrumbsElement.setAttribute('aria-label','breadcrumb');
     const olElement = document.createElement('ol');
-    let breadcrumbs
+    let breadcrumbs;
     if(typeof args === 'object'){
-      breadcrumbs = args.breadcrumbs
+      breadcrumbs = args.breadcrumbs;
     }else if(args.prototype === Array){
-      breadcrumbs = args
+      breadcrumbs = args;
     }
     breadcrumbs.map((breadcrumb)=>{
       const liElement = document.createElement('ol');
-      liElement.setAttribute('class','breadcrumb-item')
-      liElement.innerHTML = breadcrumb
-      olElement.appendChild(liElement)
-    })
-    breadcrumbsElement.appendChild(olElement)
+      liElement.setAttribute('class','breadcrumb-item');
+      liElement.innerHTML = breadcrumb;
+      olElement.appendChild(liElement);
+    });
+    breadcrumbsElement.appendChild(olElement);
     componentElementOutput({
       el : args.el,
       output : breadcrumbsElement
     });
-    return breadcrumbsElement
+    return breadcrumbsElement;
   }
 
  /**
@@ -746,10 +746,10 @@ function each(args,callback){
  
   function btn(args){
     const btn = document.createElement('button');
-    if(!args.class) args.class = 'primary'
+    if(!args.class) args.class = 'primary';
 
     btn.setAttribute('class',`btn btn-${args.class}`);
-    if(args.style) btn.setAttribute('style',args.style)
+    if(args.style) btn.setAttribute('style',args.style);
     if(!args.id) args.id = uid();
     btn.setAttribute('id',args.id);
 
@@ -759,12 +759,12 @@ function each(args,callback){
     }
     
     if(args.tooltip){
-      btn.setAttribute('data-toggle','tooltip')
-      btn.setAttribute('data-placement','top')
+      btn.setAttribute('data-toggle','tooltip');
+      btn.setAttribute('data-placement','top');
       /**  */
-      args.tooltip.title ? btn.setAttribute('title',args.tooltip) : btn.setAttribute('title',args.tooltip)
+      args.tooltip.title ? btn.setAttribute('title',args.tooltip) : btn.setAttribute('title',args.tooltip);
        /**  */
-      args.tooltip.trigger ? $(btn).tooltip({trigger : args.tooltip.trigger }) : $(btn).tooltip({trigger : 'hover focus'})
+      args.tooltip.trigger ? $(btn).tooltip({trigger : args.tooltip.trigger }) : $(btn).tooltip({trigger : 'hover focus'});
     }
     // confirm
     /**  */
@@ -772,12 +772,12 @@ function each(args,callback){
       
       // confirm(args.confirm)
       /**  */
-      const $amModal = $('#amModal')
+      const $amModal = $('#amModal');
       const confirm = () => {
         args.confirm.confirm();
         /**   */
         if(args.confirm.hideOnConfirm)$amModal.modal('hide');
-      }
+      };
       const cancel = () => $(btn).popover('hide');
       
       args.confirm.trigger = 'focus';
@@ -787,17 +787,17 @@ function each(args,callback){
       $(btn).popover(args.confirm).on('shown.bs.popover', () => { // popover is shown
 
         
-        if(!args.confirm.class) args.confirm.class = 'primary'
+        if(!args.confirm.class) args.confirm.class = 'primary';
         const $confirmBtn = $('<button></button>')
             .attr('class',`btn btn-sm btn-${args.confirm.class} confirm`)
             .html('Confirm')
             .on('click',confirm); // confirm method of confirm object in arguments
-        $('.popover-body').append($confirmBtn)
+        $('.popover-body').append($confirmBtn);
         const $cancelBtn = $('<button></button>')
             .attr('class','btn btn-sm cancel')
             .html('Cancel')
             .on('click',cancel);
-        $('.popover-body').append($cancelBtn)
+        $('.popover-body').append($cancelBtn);
       
       });
       
@@ -819,10 +819,10 @@ function each(args,callback){
   function btn_group(args){
 
     const btn_group = document.createElement('div');
-    btn_group.setAttribute('class','btn-group')
-    btn_group.setAttribute('role','group')
+    btn_group.setAttribute('class','btn-group');
+    btn_group.setAttribute('role','group');
     args.btns.map((btn)=>{
-      btn_group.appendChild(btn(btn))
+      btn_group.appendChild(btn(btn));
     });
     if(args.el){
       componentElementOutput({
@@ -830,7 +830,7 @@ function each(args,callback){
         output : btn_group
       });
     }
-    return btn_group
+    return btn_group;
   }
 
  /**
@@ -858,7 +858,7 @@ function each(args,callback){
       const confirmEvent = () => {
         args.confirm.confirm();
         if(args.confirm.hideOnConfirm)$amModal.modal('hide');
-      }
+      };
       const cancelEvent = () => $confirmElement.popover('hide');
       
       args.confirm.trigger = 'focus';
@@ -867,23 +867,23 @@ function each(args,callback){
       $confirmElement.popover(args.confirm).on('shown.bs.popover', () => { // popover is shown
 
         
-        if(!args.confirm.class) args.confirm.class = 'primary'
+        if(!args.confirm.class) args.confirm.class = 'primary';
         const $confirmBtn = $('<button></button>')
             .attr('class',`btn btn-sm btn-${args.confirm.class} confirm`)
             .html('Confirm')
             .on('click',confirmEvent); 
-        $('.popover-body').append($confirmBtn)
+        $('.popover-body').append($confirmBtn);
         const $cancelBtn = $('<button></button>')
             .attr('class','btn btn-sm cancel')
             .html('Cancel')
             .on('click',cancelEvent);
-        $('.popover-body').append($cancelBtn)
+        $('.popover-body').append($cancelBtn);
       
       }).on('hidden.bs.popover', () => { // popover is hidden
           //button_.removeEventListener('click',confirm);
       });
       
-      return $confirmElement
+      return $confirmElement;
   }
   // .................................................
   // component.modal
@@ -922,7 +922,7 @@ function each(args,callback){
    
     const $amModal = $('#amModal').modal();
 
-    $('#amModalTitle').html(args.title)
+    $('#amModalTitle').html(args.title);
     $amModal.on('shown.bs.modal', () => { // modal is shown
       
       args.tabs ? $('#amModalBody').html(navTabs(args.tabs)) : $('#amModalBody').html(args.body);  
@@ -948,15 +948,15 @@ function each(args,callback){
     }
     if(args.buttons){
       const button_container = document.createElement('div');
-      button_container.setAttribute('id','button_container')
+      button_container.setAttribute('id','button_container');
       const footer = document.getElementById('amModalFooter');
-      $('#amModalFooter #button_container .btn').remove()
+      $('#amModalFooter #button_container .btn').remove();
       for(let button of args.buttons){
         const button_ = component.btn(button);
-        button_container.appendChild(button_)
+        button_container.appendChild(button_);
         
       }
-      footer.appendChild(button_container)
+      footer.appendChild(button_container);
     }
     $amModal.on('hidden.bs.modal', function (e) {
       $('#amModalTitle').html('');
@@ -969,10 +969,10 @@ function each(args,callback){
       
 
       $amModal.remove();
-      amModalContainer.html($amModalElement)
+      amModalContainer.html($amModalElement);
      
     });
-    return $amModal
+    return $amModal;
   }
   
  /**
@@ -994,8 +994,8 @@ function each(args,callback){
     tabsContent.setAttribute('class','tab-content');
     const tabs = args.tabs;
     let tabIndex = 0;
-    if(!tabs.prototype === Array) err('component.navTabs : args.tabs expected as array but is of type ' + typeof tabs)
-    for(let tab of tabs){
+    if(tabs.prototype !== Array) err('component.navTabs : args.tabs expected as array but is of type ' + typeof tabs);
+    tabs.forEach ((tab) => {
       if(tab.label){
         const tabId = uid(),
       tabElement = document.createElement('li'),
@@ -1007,13 +1007,12 @@ function each(args,callback){
       tabLink.setAttribute('href',`#${tabId}`);
       tabLink.setAttribute('class',tabLinkClass);
       tabLink.setAttribute('role','tab');
-      tabLink.setAttribute('aria-controls',tabId)
+      tabLink.setAttribute('aria-controls',tabId);
       tabLink.setAttribute('data-toggle','tab');
       tabLink.innerHTML = tab.label;
       tabLink.addEventListener('click',(event)=>{
-        
         $('.nav-tabs a[href="' + event.target.href + '"]').tab('show');
-      })
+      });
       tabElement.setAttribute('class','nav-item');
       tabElement.appendChild(tabLink);
       tabsElement.appendChild(tabElement);
@@ -1026,8 +1025,7 @@ function each(args,callback){
       tabsContent.appendChild(tabContent);
       tabIndex++;
       }
-      
-    }
+    });
     tabsFragment.appendChild(tabsElement);
     tabsFragment.appendChild(tabsContent);
     if(args.el){
@@ -1055,8 +1053,8 @@ function each(args,callback){
     navsContent.setAttribute('class','nav-content');
     const navs = args.navs;
     let navIndex = 0;
-    if(!navs.prototype === Array) err('component.navs : args.navs expected as array but is of type ' + typeof navs)
-    for(let nav of navs){
+    if(navs.prototype !== Array) err('component.navs : args.navs expected as array but is of type ' + typeof navs);
+    navs.forEach ((nav) => {
       if(nav.label){
         const navId = uid(),
       navElement = document.createElement('li'),
@@ -1068,13 +1066,13 @@ function each(args,callback){
       navLink.setAttribute('href',`#${navId}`);
       navLink.setAttribute('class',navLinkClass);
       navLink.setAttribute('role','tab');
-      navLink.setAttribute('aria-controls',navId)
+      navLink.setAttribute('aria-controls',navId);
       navLink.setAttribute('data-toggle',args.type);
       navLink.innerHTML = nav.label;
       navLink.addEventListener('click',(event)=>{
         
         $(`nav-${args.type}s a[href="` + event.target.href + '"]').tab('show');
-      })
+      });
       navElement.setAttribute('class','nav-item');
       navElement.appendChild(navLink);
       navsElement.appendChild(navElement);
@@ -1088,7 +1086,7 @@ function each(args,callback){
       navIndex++;
       }
       
-    }
+    });
     navsFragment.appendChild(navsElement);
     navsFragment.appendChild(navsContent);
     if(args.el){
@@ -1171,18 +1169,18 @@ function each(args,callback){
             table = tableBody(table,Object.getOwnPropertyNames(data[0]),data,args);
             tableInsert(args,table);
           }else{
-            $(args.el).html('No Data')
+            $(args.el).html('No Data');
           }
          
           if(args.data.callback) args.data.callback(data);
         }
-      }
+      };
       if(args.data.modify) apiObj.modify = args.data.modify;
       api(apiObj);
     }else{
       table = tableBody(table,props,args.data,args);
       table = tableInsert(args,table);
-      return table
+      return table;
 
     }
     
@@ -1190,7 +1188,7 @@ function each(args,callback){
     function tableBody(table,props,data,args){
       const tbody = document.createElement('tbody');
       let tr,td;
-      for(let item of data){
+      data.forEach((item) => {
         tr = document.createElement('tr');
         if(item.id) tr.setAttribute('id',item.id);
         if(args.methods){
@@ -1208,31 +1206,30 @@ function each(args,callback){
         if(args.options){
           td = document.createElement('td');
           const button_group = document.createElement('div');
-          button_group.setAttribute('class','btn-group')
-          for(let option of Object.getOwnPropertyNames(args.options)){
+          button_group.setAttribute('class','btn-group');
+          Object.getOwnPropertyNames(args.options).forEach ((option) => {
             const button = document.createElement('button');
-            const icon = document.createElement('i')
-            button.setAttribute('class','btn')
+            const icon = document.createElement('i');
+            button.setAttribute('class','btn');
             if(option === 'view'){
-              icon.setAttribute('class','fas fa-eye')
+              icon.setAttribute('class','fas fa-eye');
             }else if(option === 'edit'){
-              icon.setAttribute('class','fas fa-edit')
+              icon.setAttribute('class','fas fa-edit');
             }else if(option === 'delete'){
-              icon.setAttribute('class','fas fa-trash')
+              icon.setAttribute('class','fas fa-trash');
             }
             button.addEventListener('click',(event)=>{
               event.preventDefault();
               args.options[option](item);
-            })
+            });
             button_group.appendChild(button);
-          }
+          });
           td.appendChild(button_group);
           tr.appendChild(td);
         }
         tbody.appendChild(tr);
-      }
+      });
       table.appendChild(tbody);
-      
       return table;
     }
   
@@ -1258,13 +1255,13 @@ function each(args,callback){
    *  
    */
   function formData(args){
-    let form = typeof args === 'object' ? args.el : args
-    form = form instanceof HTMLElement ? form :  document.querySelector(form)
-    const model = application.config.models[args.model]
+    let form = typeof args === 'object' ? args.el : args;
+    form = form instanceof HTMLElement ? form :  document.querySelector(form);
+    const model = application.config.models[args.model];
     const formData = new FormData(form),formObj = {};
   
     for (let item in model) { 
-      if($('#'+form.id+' #'+item).val()) formData.append(item, $('#'+form.id+' #'+item).val())
+      if($('#'+form.id+' #'+item).val()) formData.append(item, $('#'+form.id+' #'+item).val());
     }
    
     for(let field of formData.entries()){
@@ -1272,7 +1269,7 @@ function each(args,callback){
       formObj[field[0]] = field[1];
     }
     
-    return formObj
+    return formObj;
   }
   // .................................................
   // component.form.post
@@ -1293,19 +1290,19 @@ function each(args,callback){
    */
   function formPost(args,callback){
     const form = document.getElementById(args.el);
-    const formDataObj = args.model ? {el : form,model : args.model} : {el :form}
+    const formDataObj = args.model ? {el : form,model : args.model} : {el :form};
     const formObj = formData(formDataObj);
     
     
       axios.post(args.url,formObj)
       .then((formObj) => {
-        if(typeof callback==='function') callback(formObj)
-        if(typeof args.callback==='function') args.callback(formObj)
+        if(typeof callback==='function') callback(formObj);
+        if(typeof args.callback==='function') args.callback(formObj);
       }).catch(function(error){
         $(args.el).html(`A error has occured : ${error}`);
       });
     
-    return form
+    return form;
   }
 
 /**
@@ -1315,12 +1312,12 @@ function each(args,callback){
  */
   function formFieldsObj(args){
     const formElement = document.querySelectorAll(`${args.el} input`),
-          dataObject = new Object,
+          dataObject = new Object({}),
           dataArray = Array.prototype.slice.call(formElement);
     
     for(const el in dataArray)
       dataObject[dataArray[el].id] = dataArray[el].value;
-    return dataObject
+    return dataObject;
   }
   // .................................................
   /*
@@ -1369,12 +1366,12 @@ function each(args,callback){
           if(args.card) formFooter.setAttribute('class','card-footer');
           let model,props;
           if(typeof args.model==='string'){
-            props = Object.getOwnPropertyNames(models[args.model])
+            props = Object.getOwnPropertyNames(models[args.model]);
           }else if(args.model.constructor === Array ){
-            props = []
+            props = [];
             for(let item of args.model){
               for(let prop of Object.getOwnPropertyNames(models[item]))
-                props.push(prop)
+                props.push(prop);
             }
           }
     let index =0;
@@ -1385,9 +1382,9 @@ function each(args,callback){
       }else{
         
         if(prop.split('_')[0] === 'header'){
-          const header = document.createElement(prop.split('_')[1])
-          header.innerHTML = args.fields[prop]
-          const hr = document.createElement('hr')
+          const header = document.createElement(prop.split('_')[1]);
+          header.innerHTML = args.fields[prop];
+          const hr = document.createElement('hr');
           formBody.appendChild(header);
           formBody.appendChild(hr);
         }else if(prop === 'field'){
@@ -1398,29 +1395,29 @@ function each(args,callback){
       }
       index++;
     }
-    if(!args.insert) args.insert = 'append'
+    if(!args.insert) args.insert = 'append';
     //if(!args.el) args.el = application.config.main
     if(args.el) $(args.el)[args.insert](form);
     // submit event
     if(args.btnSaveTxt) { formFooter.appendChild(formBtnSave); }
     form.appendChild(formBody);
-    if(args.card) form.appendChild(formFooter)
+    if(args.card) form.appendChild(formFooter);
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const data = formData(form);
       if(args.url){
-        if(!args.method) args.method = 'post'
+        if(!args.method) args.method = 'post';
         if(args.method){
           if(args.before){
             //axios.interceptors.request.use((data) => {
-              args.before(data)
+              args.before(data);
             //});
           }
   
           axios[args.method](args.url,data)
           .then((data) => {
-            if(args.onSubmit)args.onSubmit(data)
-          })
+            if(args.onSubmit)args.onSubmit(data);
+          });
         }
       }else {
         if(args.onSubmit) args.onSubmit(data);
@@ -1432,13 +1429,13 @@ function each(args,callback){
         output : form
       });
     }
-    return form
+    return form;
     
   }
   
   // form group row
   function formRow(prop,args){
-    const usePropArgs = typeof prop === 'object'
+    const usePropArgs = typeof prop === 'object';
     if(usePropArgs) args = prop;
     // row
     const formRow = document.createElement('div');
@@ -1446,12 +1443,12 @@ function each(args,callback){
     // label
     const formRowLabel  = document.createElement('label');
     formRowLabel.setAttribute('for',prop);
-    formRowLabel.setAttribute('class','col-sm-2 col-form-label')
+    formRowLabel.setAttribute('class','col-sm-2 col-form-label');
     formRowLabel.innerHTML = usePropArgs ? args.label : args.fields[prop].label;
     formRow.appendChild(formRowLabel);
     const formInputCol = document.createElement('div');
     formInputCol.setAttribute('class','col-sm-10');
-    let argsUse
+    let argsUse;
     try{
       argsUse = args.fields[prop].use;
     }catch(e){
@@ -1461,7 +1458,7 @@ function each(args,callback){
       $(formInputCol).append(argsUse()); 
     }else{
       // input type
-      const formRowInputType = args.fields[prop].type
+      const formRowInputType = args.fields[prop].type;
       const formRowInput = formRowInputType === 'textarea' ? document.createElement('textarea') : document.createElement('input');
 
       try{
@@ -1482,7 +1479,7 @@ function each(args,callback){
         }
       }
      
-      formInputCol.appendChild(formRowInput)
+      formInputCol.appendChild(formRowInput);
       if(usePropArgs){
         if(args.type === 'date') $(`#${args.id}`).datepicker();
       }else{
@@ -1512,36 +1509,33 @@ function each(args,callback){
       valueMissing:    args.valueMissing,   // `required` attr
       emailMismatch:   args.emailMismatch,  // Invalid email
       patternMismatch: args.patternMismatch,// `pattern` attr
-    }
+    };
     
     function getCustomMessage (type, validity) {
       if (validity.typeMismatch) {
-        return customMessages[`${type}Mismatch`]
+        return customMessages[`${type}Mismatch`];
       } else {
         for (const invalidKey in customMessages) {
           if (validity[invalidKey]) {
-            return customMessages[invalidKey]
+            return customMessages[invalidKey];
           }
         }
       }
     }
     
-    const formElementInputs = document.querySelectorAll('input, select, textarea')
+    const formElementInputs = document.querySelectorAll('input, select, textarea');
     formElementInputs.forEach(function(input){
       function checkValidity () {
-        const message = input.validity.valid
-          ? null
-          : getCustomMessage(input.type, input.validity, customMessages)
-        input.setCustomValidity(message || '')
+        const message = input.validity.valid ? null
+          : getCustomMessage(input.type, input.validity, customMessages);
+        input.setCustomValidity(message || '');
       }
       input.addEventListener('invalid', function () {
-        input.classList.add('invalid')
+        input.classList.add('invalid');
       });
       input.addEventListener('input', checkValidity);
       input.addEventListener('invalid', checkValidity);
-    })
-    
-   
+    });
   }
   // .................................................
   // alert 
@@ -1556,7 +1550,7 @@ function each(args,callback){
    * @example component.alert({ message : 'This is a alert' });
    */
   function alert(args){
-    args.class = args.class ? args.class : 'primary'
+    args.class = args.class ? args.class : 'primary';
     const alert = $('<div></div>')
       .addClass(`alert alert-${args.class}`)
       .html(args.message);
@@ -1564,14 +1558,12 @@ function each(args,callback){
     $(application.object.config.main).prepend(alert);
     if(args.fadeOut){
       setTimeout(()=>{
-      
         alert.fadeOut(()=>{
-          alert.remove()
+          alert.remove();
         });
-       
       },args.fadeOut);
     }
-    return alert
+    return alert;
   }
   // .................................................
   // calendar
@@ -1608,13 +1600,11 @@ function each(args,callback){
       .attr('class','table table-calendar table-bordered table-striped'),
           $calendarTableHeader = $('<thead></thead>'),
           $calendarTableHeadersWeekDays = $('<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>'),
-          $calendarTableBody = $('<tbody></tbody>')
- 
-    $calendarTableHeader.append($calendarTableHeadersWeekDays)
+          $calendarTableBody = $('<tbody></tbody>');
+    $calendarTableHeader.append($calendarTableHeadersWeekDays);
     $calendarTable.append($calendarTableHeader);
-  
-    let $calendarTableRow
-    args = args ? args : {}
+    let $calendarTableRow;
+    args = args ? args : {};
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const now = new Date(),
     dd = args.d ? args.d : now.getDate(),
@@ -1636,18 +1626,17 @@ function each(args,callback){
         url : args.data.url,
         callback : (data) => {
           if(data[0]){
-            calendarBuild(data)
+            calendarBuild(data);
           }else{
-            $(args.el).html('No Data')
+            $(args.el).html('No Data');
           }
-         
           if(args.data.callback) args.data.callback(data);
         }
-      }
+      };
       if(args.data.modify) apiObj.modify = args.data.modify;
       api(apiObj); 
     }else{
-      calendarBuild()
+      calendarBuild();
     }
     /**
      * 
@@ -1656,16 +1645,13 @@ function each(args,callback){
     function calendarBuild(data){
       
       while(prevMonthStart < prevMonthDays ){
-        weekDayNum = new Date(`${yyyy}-${prevMonth}-${prevMonthStart}`).getDay()
-        if(weekDayNum===0)$calendarTableRow = $('<tr></tr>')
-        let $calendarTableCell = $('<td></td>').attr('style','background-color:#fff;')
-        $calendarTableRow.append($calendarTableCell.html(prevMonthStart).addClass('text-muted'))
-        
+        weekDayNum = new Date(`${yyyy}-${prevMonth}-${prevMonthStart}`).getDay();
+        if(weekDayNum===0)$calendarTableRow = $('<tr></tr>');
+        let $calendarTableCell = $('<td></td>').attr('style','background-color:#fff;');
+        $calendarTableRow.append($calendarTableCell.html(prevMonthStart).addClass('text-muted'));
         if(data){
           for(let item of data){
-            
             if(item.date.split('T')[0] === `${yyyy}-${prevMonth}-${prevMonthStart}`){
-              
               let $eventItem = $('<div></div>')
                     .attr('class','event begin end')
                     .html(`<i class="far fa-calendar"></i> ${item.name}`);
@@ -1673,22 +1659,19 @@ function each(args,callback){
             }
           }
         }
-        if(weekDayNum===6)$calendarTableBody.append($calendarTableRow)
-        prevMonthStart++
+        if(weekDayNum===6)$calendarTableBody.append($calendarTableRow);
+        prevMonthStart++;
       }
       // current month
       while(start < days ){
-
-        if(start.toString().length<2)start = `0${start}`
-        weekDayNum = new Date(`${yyyy}-${mm}-${start}`).getDay()
-        if(weekDayNum===0)$calendarTableRow = $('<tr></tr>')
-        let $calendarTableCell = $('<td></td>')
-        $calendarTableCell.attr('data-date',`${yyyy}-${mm}-${start}`)
-        $calendarTableCell.attr('id',`date-${yyyy}-${mm}-${start}`)
+        if(start.toString().length<2)start = `0${start}`;
+        weekDayNum = new Date(`${yyyy}-${mm}-${start}`).getDay();
+        if(weekDayNum===0)$calendarTableRow = $('<tr></tr>');
+        let $calendarTableCell = $('<td></td>');
+        $calendarTableCell.attr('data-date',`${yyyy}-${mm}-${start}`);
+        $calendarTableCell.attr('id',`date-${yyyy}-${mm}-${start}`);
        // dd = (component.date('dd')/1);
-       
-        dd === (start/1) ? $calendarTableRow.append($calendarTableCell.addClass('today').html(`<b>${start}</b>`)) : $calendarTableRow.append($calendarTableCell.html(start))
-        
+        dd === (start/1) ? $calendarTableRow.append($calendarTableCell.addClass('today').html(`<b>${start}</b>`)) : $calendarTableRow.append($calendarTableCell.html(start));
         if(dd > start){
           $calendarTableCell.addClass('past');
         }else{
@@ -1716,15 +1699,13 @@ function each(args,callback){
           }
         }
         if(weekDayNum===6) $calendarTableBody.append($calendarTableRow);
-        start = (start/1)
+        start = (start/1);
         start++;
       }
       $calendarTable.append($calendarTableBody);
      
     }
-
-    
-    const $calendarMonths = $('<div></div>').attr('class','dropdown')
+    const $calendarMonths = $('<div></div>').attr('class','dropdown');
     // calendarMonths dropdown 
     // https://getbootstrap.com/docs/4.3/components/dropdowns/
     $calendarMonths.append($('<a></a>')
@@ -1735,7 +1716,7 @@ function each(args,callback){
       .html(months[mm-1]));
     const $calendarMonthsMenu = $('<div></div>')
       .attr('class','dropdown-menu')
-      .attr('aria-labelledby','calendarMonths')
+      .attr('aria-labelledby','calendarMonths');
     months.map(month => {
       if(month!==months[mm-1]) $calendarMonthsMenu.append(
         $('<a></a>')
@@ -1748,7 +1729,7 @@ function each(args,callback){
     $documentFragment.append($calendarMonths);
     $documentFragment.append($calendarTable);
     $(args.el).html($documentFragment);
-    return $documentFragment
+    return $documentFragment;
   }
   // .................................................
   // editor; all in one CRUD component
@@ -1779,11 +1760,14 @@ function each(args,callback){
   })
   */
   function editor(args){
+    let editorView;
+    let editorAdd;
+    let editorOverview;
     // module presets
-    application.object[args.module].template = 'editor'
-    application.object[args.module].default = editorOverview
-    application.object[args.module].add = { default : editorAdd }
-    application.object[args.module].view = { default : editorView }
+    application.object[args.module].template = 'editor';
+    application.object[args.module].default = editorOverview;
+    application.object[args.module].add = { default : editorAdd };
+    application.object[args.module].view = { default : editorView };
     // set routes
     application.routes[`${args.module}/add`] = `${args.module}.add`;
     application.routes[`${args.module}/view`] = `${args.module}.view`;
@@ -1795,19 +1779,18 @@ function each(args,callback){
         application.object[args.module].data = data;
         args.data.callback();
       }
-    }
+    };
     // view
-    const editorView = (id) => {
- 
+    editorView = (id) => {
       args.view.data = application.object[args.module].data.filter((item) => item.id === id)[0];
       component[args.view.use.component](args.view);
-    }
+    };
     // add
-    const editorAdd = () => {
+    editorAdd = () => {
       component[args.add.use.component](args.add);
-    }
+    };
     // overview
-    const editorOverview = () => {
+    editorOverview = () => {
       if(!args.overview.us.class && args.us.overview.component === 'table')
         args.use.overview.class = 'table-striped table-hover';
 
@@ -1818,10 +1801,10 @@ function each(args,callback){
         class : args.use.overview.class,
         cols : args.use.overview.cols,
 
-      })
-    }
+      });
+    };
     //api call
-    api(editorData)
+    api(editorData);
   }
   // component.$
   /*
@@ -1829,17 +1812,17 @@ function each(args,callback){
   */
 
  methods.$ = function(args){
-  let element
+  let element;
   if(typeof args === 'string'){
     if(args.contains('#') || args.contains('.')){
-      element = $(args.split(':')[0])
+      element = $(args.split(':')[0]);
     }else{
-      const el = args.split(':')[0]
-      element = $(`<${el}></${el}>`)
+      const el = args.split(':')[0];
+      element = $(`<${el}></${el}>`);
     }
     
   }else if(args.prototype === Array){
-    const name = args[0].split(':')[1]
+    const name = args[0].split(':')[1];
     if(!component[name]){
       componentMethods({
         element : element,
@@ -1848,8 +1831,8 @@ function each(args,callback){
     }
   }
   
-  return element
-}
+  return element;
+};
 // componentMethods
 
 function componentMethods(args){
@@ -1857,12 +1840,12 @@ function componentMethods(args){
     for(const method in methods){
     
       component[args.name][method] = (args)=>{
-        args.el = args.element
-        component[method](args)
-      }
+        args.el = args.element;
+        component[method](args);
+      };
     }
-    component[name].el = args.element
+    component[name].el = args.element;
   }
 }
-  return methods
+  return methods;
 })();

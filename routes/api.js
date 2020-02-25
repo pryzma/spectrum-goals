@@ -1,4 +1,5 @@
-const connection = require('../app/dbconn'),
+'use strict';
+const connection = require('../app/dbconn').connection,
       config = require('../app/config'),
       dotenv = require('dotenv').config(),
       express = require('express'),
@@ -10,13 +11,11 @@ const connection = require('../app/dbconn'),
       app.use(bodyParser.json());
 
 const router = express.Router();
-const models = require('../models').sequelize.models
+const models = require('../models').sequelize.models;
 
 const setRoute = (http,controller,route, method,req,res) => {
-
     return router[http](route, controller.isAuthenticated, (req, res) => {
         controller[method](req,res);
     });
-  
-}
+};
 module.exports = setRoute;

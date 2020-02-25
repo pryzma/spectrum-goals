@@ -1,5 +1,6 @@
-dotenv = require('dotenv').config();
-const config = function(){
+'use strict';
+require('dotenv').config();
+module.exports =  function(){
     return {
         development : {
             host: process.env.DB_HOST_development,
@@ -10,6 +11,5 @@ const config = function(){
             sendgrid : process.env.SENDGRID_API_KEY,
             logging : false
         }
-    }
-}
-module.exports = config;
+    };
+};

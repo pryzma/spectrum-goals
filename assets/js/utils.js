@@ -1,10 +1,11 @@
+'use strict';
 const utils = (()=>{
 
   // utils.date
   function date(format){
     let today = new Date();
-    const dd = today.getDate();
-    const mm = today.getMonth() + 1; //January is 0!
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1; //January is 0!
   
     var yyyy = today.getFullYear();
     if (dd < 10) dd = '0' + dd;
@@ -19,15 +20,15 @@ const utils = (()=>{
   function time(){
     let today = new Date();
     let hh = today.getHours();
-    hh = hh.toString().length === 1 ? `0${hh}` : hh
+    hh = hh.toString().length === 1 ? `0${hh}` : hh;
     let mm = today.getMinutes();
-    mm = mm.toString().length === 1 ? `${mm}0` : mm
+    mm = mm.toString().length === 1 ? `${mm}0` : mm;
 
     return `${hh}:${mm}`;
   }
   // utils.datetime
   function datetime(){
-      return `${date()} ${time()}`
+      return `${date()} ${time()}`;
   }
   // utils.uid
   function uid(){  // generate unique id
@@ -48,6 +49,6 @@ const utils = (()=>{
       datetime : datetime,
       uid : uid,
       uuidv4 : uuidv4
-  }
-})()
+  };
+})();
 //exports.default = utils;

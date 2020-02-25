@@ -1,6 +1,7 @@
 /*
 * routes/accounts.js
 */
+'use strict';
 const express = require('express'),
       bodyParser = require('body-parser'),
       app = express(),
@@ -12,6 +13,11 @@ const controller = require('../controllers/accounts');
 
 router.get('/', controller.isAuthenticated, (req, res) => {
   controller.getAll(req,res);
+});
+
+
+router.get('/account/:account', controller.isAuthenticated, (req, res) => {
+  controller.getOne(req,res);
 });
 
 router.get('/medients', controller.isAuthenticated, (req, res) => {

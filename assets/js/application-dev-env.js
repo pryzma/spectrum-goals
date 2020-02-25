@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /*
 * Application Client 0.12 Dev Environment
@@ -13,13 +13,13 @@ application.devLogs = [
     }
 ];
 const dev = (()=>{
-    const appName = application.config.name + ' '+ application.config.version
+    const appName = application.config.name + ' '+ application.config.version;
     
     function devLog(log){
         if(eval(log.condition))console[log.type]('application-dev-env : '+log.msg);
     }
     function devLogs(){
-        application.devLogs.map((log)=>devLog(log))
+        application.devLogs.map((log)=>devLog(log));
     }
     
     function devCard(){
@@ -32,11 +32,11 @@ const dev = (()=>{
         //$mainElement.after($devStatsElement);
     }
     if(application.config.logs) {
-        console.log(appName + ' Development Environment')
+        console.log(appName + ' Development Environment');
         devLogs();
         devCard();
     }
     return {
         log : devLog
-    }
-})()
+    };
+})();
