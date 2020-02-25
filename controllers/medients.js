@@ -42,9 +42,9 @@ controller.updateMedient = (req,res,next) => {
 }
 controller.getTargets = (req,res) => {
     
-    connection.query('SELECT MedientTargets.target, Targets.name FROM MedientTargets LEFT JOIN Targets ON Targets.id=MedientTargets.target WHERE MedientTargets.medient="'+req.params.medient+'";',(err, items)=>{
+    connection.query('SELECT MedientTargets.target, Targets.name, Subjects.name FROM MedientTargets LEFT JOIN Targets ON Targets.id=MedientTargets.target LEFT JOIN Subjects ON Subjects.id=MedientTargets.subject WHERE MedientTargets.medient="'+req.params.medient+'";',(err, items)=>{
         if (!err) {
-            console.log(items)
+            //console.log(items)
             res.json(items);
         } else {
             console.log(err);
