@@ -94,6 +94,8 @@ const component = (() => {
     editor : editor,
     /** Element Component */
     el : el,
+    /** Template Component */
+    template : template,
     /** Form Component */
     form : { 
       /** Form Post Component 
@@ -175,8 +177,12 @@ const component = (() => {
       tabs : navTabs
     },
     navs : navs,
-    /** Button Repeat Component */
+    /** Repeat Component */
     repeat : repeat,
+    /** Iterate Component */
+    iterate : iterate,
+    /** Each Component */
+    each : each,
     /** Bootstrap Table Component
      * @see {@link https://getbootstrap.com/docs/4.3/content/tables/}
      * @example component.table({
@@ -395,7 +401,52 @@ const component = (() => {
       }
     });
   }
- 
+ // .................................................
+ // component.iterator
+ /*
+ component.iterator(['some','data'],(item)=>item+' value') // ['some value','data value'],
+ */
+ function iterate(array,callback){
+   // call Symbol.iterator on array
+  array[Symbol.iterator] = function(){
+    let i = 0;
+    let array = this;
+    return {
+      next : function(){
+        if(i >= array.length){
+          return { done:true }
+        }else{
+          const value = callback(array[i])
+          return { value, done : false }
+        }
+      }
+    }
+  }
+  return array
+}
+// .................................................
+ // component.each
+ /*
+ component.each({
+   el : '#targetElement',
+   url : 'api/endpoint',
+   component : 'card',
+   fields : {
+      title : name
+   }
+  }),
+ */
+function each(args,callback){
+  if(args.url){
+    api(args,(data)=>{
+      iterate(data,(item)=>{
+        const component = methods[args.component](args);
+        $(args.el).append(component);
+        if(callback) callback(item);
+      })
+    })
+  }
+}
  // .................................................
  // component.repeat
  /*
@@ -404,6 +455,7 @@ const component = (() => {
    template : '{propName} is replaced'
  })
  */
+
 /**
  * @description Repeat Component, maps template string to (fetched) data, returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String"><pre>String</pre></a>
  * @param {object} args - Arguments object
@@ -531,6 +583,55 @@ const component = (() => {
         name : name
       });
       return element;
+    }
+  }
+  /**
+   * 
+   * @description Template Component 
+   * @example component.template({
+   *    url : 'path/to/template.html',
+   *    data : 'api/endpoint'
+   * })
+   */
+  function template(args,callback){
+    if(args.template && !args.url ) args.url = 'html/templates/'+args.template+'.html'
+    if(args.url){
+      $.get(args.url,(template)=>{
+        const templateElement = $(template)
+        if(typeof args.data === 'string'){
+          api({url : args.data},(data)=>{
+            templateData(data)
+          })
+        }
+      })
+    }else{
+      templateData(args.data)
+    }
+    if(callback)callback()
+    function templateData(data){
+      if(Array.isArray(data)){
+        data.map((item)=>{
+          Object.keys(item).map((key,index)=>{
+            const templateItemElement = templateElement.find('.'+key)
+            if (templateItemElement.nodeName == "INPUT" ) {
+              templateItemElement.val(item[key])
+            }else{
+              templateItemElement.html(item[key])
+            }
+          });
+          $(args.el).append(templateElement)
+        })
+      }else if(typeof data === 'object'){
+        Object.keys(data).map((key,index)=>{
+          const templateItemElement = templateElement.find('.'+key)
+            if (templateItemElement.nodeName == "INPUT" ) {
+              templateItemElement.val(data[key])
+            }else{
+              templateItemElement.html(data[key])
+            }
+        })
+        $(args.el).html(templateElement)
+      }
     }
   }
   /**
