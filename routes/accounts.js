@@ -29,17 +29,22 @@ router.get('/teammembers', controller.isAuthenticated, (req, res) => {
 });
 
 router.post('/', bodyParserJSON, (req, res) => {
-  controller.createAccount(req,res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.createAccount(req,res);
+  });
 });
 
 
 router.put('/', bodyParserJSON, (req, res, next) => {
-  controller.updateAccount(req,res,next);
+  controller.isAuthenticated(req, res,()=>{
+    controller.updateAccount(req,res,next);
+  });
 });
 
 router.delete('/:id',bodyParserJSON, (req,res) => {
-
-  controller.deleteAccount(req,res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.deleteAccount(req,res);
+  });
 });
 
 module.exports = router;

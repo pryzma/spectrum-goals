@@ -121,6 +121,32 @@ const initRequire = (_require,callback) => {
       require(_require,callback);
     }
   };
+
+//..............................................................................
+//
+const initQueue = (prop,path,callback) => {
+
+  require(`${path}${object[prop][position]}`, () =>{
+    debug(`application.initQueue : ${path}${object[prop][position]} loaded`);
+    if(position === object[prop].length-1){
+      position = 0;
+      finish = new Date();
+      loadtime = finish - start;
+      application.loadtime = loadtime;
+      debug(`application.initinitQueue complete in ${loadtime} ms: init load`);
+      
+      $(window).on( 'hashchange',()=>load(()=>{
+        // event load
+
+      }));
+      if(callback) callback();
+    } else {
+
+      position++; // next position in modules array
+      initQueue();
+    }
+  });
+};
 //..............................................................................
 //
 const initModules = () => {

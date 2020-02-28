@@ -230,7 +230,10 @@ const component = (() => {
     },
     time : time,
     type : type,
-    uid : uid
+    uid : uid,
+    queue : queue,
+    require : require,
+    encrypt : encrypt
   };
   // .................................................
   // component.date
@@ -1833,6 +1836,53 @@ function each(args,callback){
   
   return element;
 };
+// component.require
+  /*
+ component.require({
+   url : 'script.js'
+ });
+  
+  */
+ function require(args){
+  $.get(args.url).done(() => {
+    if(args.callback) args.callback();
+  });
+  
+}
+// component.queue
+  /*
+ component.queue({
+   data : application.object.config.require
+ });
+  
+  */
+ function queue(args){
+  const queue = new Object({}),
+        model = args.model ? args.model : err('component.queue args.model undefined'),
+        data = args.data;
+  queue.id = uid();
+  if(typeof data === 'string'){
+
+  }else{
+
+  }
+    
+  return queue
+}
+// component.encrypt
+  /*
+  const MyModelEncrypt = component.encrypt({
+    model : 'MyModel'
+  });
+  
+  */
+ function encrypt(args){
+   const encrypt = new Object({}),
+         model = args.model ? args.model : err('component.encrypt args.model undefined');
+         encrypt.id = uid();
+
+   return encrypt
+ }
 // componentMethods
 
 function componentMethods(args){

@@ -352,6 +352,7 @@ function medientPersonalInfo(medient){
     }
 
     $('#medientAdditionalInfo').off().on('click',()=>medientAdditionalInfo(medient));
+    $('#medientAdditionalInfoPDFExport').off().on('click',()=>medientAdditionalInfoPDFExport(medient));
 
     $('button#medientEditBtn').on('click',()=>{
         $('input#indication').removeClass('medientIndicationExpired');
@@ -487,8 +488,14 @@ function medientPersonalInfoSave(){
         });
     
 }
-// ........................................
 
+// ........................................
+function medientAdditionalInfoPDFExport(medient){
+    Object.keys(medient[0]).map((key, index) => {
+        
+    });
+}
+// ........................................
 function medientTargets(id){
     console.log(id);
     medientGetTargets(id);

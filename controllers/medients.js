@@ -6,39 +6,35 @@ const controller = module.exports = {};
 const models = require('../models').sequelize.models;
 const Medient = models.Medient;
 const MedientTarget = models.MedientTarget;
-const Target = models.Target;
-const targetController = require('./targets');
 const uuidv4 = require('uuid/v4');
 const connection = require('../app/dbconn').connection;
+const auth = require('./auth');
 
 controller.getOne = (req,res) => {
-    //console.log(`controller.getOne(${req})`)
-    //return connection.query(`SELECT * FROM accounts WHERE id='${req}'`, (err,result) => result);
     Medient.findOne({ where: {account: req} }).then(medient => {
+        res.json(medient);
         return medient.get({ plain: true });
-       
     });
 };
 
 controller.addTarget = (req,res) => {
-    const medientTarget = req.body;
-          
+    const medientTarget = req.body;    
     medientTarget.id = uuidv4();
     MedientTarget.create(medientTarget).then((medientTarget)=>{
         res.json(medientTarget);
     }).catch((err)=>{
-        console.log(err);
+        console.error(err);
     });
 };
 controller.updateMedient = (req,res,next) => {
-    console.log(req.body);
+    
     Medient.update(req.body,{where: { account: req.body.id } })
     .then(function(rowsUpdated) {
-        console.log('controller.updateMedient : '+rowsUpdated+' rows updated');
+        
         res.json(rowsUpdated);
     })
     .catch((err =>{
-        console.log('controller.updateMedient : '+err);
+        console.error(err);
     }));
 };
 controller.getTargets = (req,res) => {
@@ -71,3 +67,8 @@ controller.getTargets = (req,res) => {
         res.json(items);
     });*/
 };
+controller.MedientPDFExport = (req,res) =>{
+    const medient = controller.getOne(req,res);
+    res.json(medient);
+};
+controller.isAuthenticated = auth.isAuthenticated;
