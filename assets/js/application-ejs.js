@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /*
 * Application Client 0.12 EJS integration
@@ -9,7 +9,7 @@
 application.ejs = (template) =>{
     if(!template) template = application.page();
     application.render('ejs',()=> ejsTemplate(template));
-}
+};
 
 const ejsTemplate = function(template){
     const module = application.module(); // get module object
@@ -18,12 +18,10 @@ const ejsTemplate = function(template){
         if(ejs){ // ejs object is available
             ejs.render(template,module); // render ejs template
         }else{
-            console.warn('ejs is not available')
+            console.warn('ejs is not available');
         }
     }else{
-        console.warn('ejs is called whith templateEngine '+templateEngine)
+        console.warn('ejs is called whith templateEngine '+templateEngine);
     }
     return template;
-}
-
-    
+};

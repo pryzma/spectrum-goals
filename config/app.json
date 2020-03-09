@@ -34,6 +34,7 @@
         "cdns" : [
             { "name" : "jQuery", "url" : "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", "type" : "script", "sri" : "sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="},
             { "name" : "jQuery UI", "url" : "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js", "type" : "script", "sri" : "sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM=" }, 
+            { "name" : "jQuery disable Autofill", "url" : "https://cdn.jsdelivr.net/npm/disableautofill/src/jquery.disableAutoFill.min.js","type" : "script", "sri" : "sha384-fKOvHWQDSPEVR2NdvlXtWqI0Bk1bYUGqudSwRKasWZ6Y65BQuPcKGBnpUGK91qCM"},
             { "name" : "Axios", "url" : "https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js", "type" : "script", "sri" : "sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs="},
             { "name" : "Bootstrap (JS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js", "type" : "script", "sri" : "sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" },    
             { "name" : "Bootstrap (CSS)", "url" : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css", "type" : "stylesheet", "sri" : "sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY" },    

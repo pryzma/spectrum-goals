@@ -1,9 +1,10 @@
 /*
 * routes/auth.js
 */
+'use strict';
 const render = require('../app/render');
 const controller = require('../controllers/auth');
-const passportStrategy = 'local'
+const passportStrategy = 'local';
 function auth(){
     app.get('/signin', controller.signin);
     
@@ -12,7 +13,7 @@ function auth(){
         failureRedirect: '/signin',
         failureFlash: true
     }), function(req, res){
-        render(res,'signin',{'message' :req.flash('message')})
+        render(res,'signin',{'message' :req.flash('message')});
     });
 
     app.get('/logout', controller.logout);

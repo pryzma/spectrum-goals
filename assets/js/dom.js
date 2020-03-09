@@ -1,6 +1,7 @@
 /*
 * assets/js/dom.js
 */
+'use strict';
 const DOM = ((args)=>{
   // element
   /*
@@ -16,31 +17,30 @@ DOM.element(['table',{id : 'myTable',class : 'table'},
 */
   function element( args, callback ){
     const isArray = ( arr ) => Array.isArray(arr);
-    if ( !isArray( args ) ) 
-      return element.call( this, Array.prototype.slice.call( arguments ) )
     let name = args[0],
         attributes = args[1],
         element = document.createElement( name ),
         start = 1;
+    if ( !isArray( args ) ) 
+      return element.call( this, Array.prototype.slice.call( arguments ) );
     if(attributes.id){
-      
     }
     if ( typeof attributes === 'object' && attributes !== null && !isArray( attributes ) ) {
       for ( let attribute in attributes ) 
-        element.setAttribute( attribute ,attributes[ attribute ] )
-      start = 2
+        element.setAttribute( attribute ,attributes[ attribute ] );
+      start = 2;
     }
     for ( let index = start; index < tag.length; index++ ) {
       if( isArray( tag[ index ] ) ){
-        element.appendChild(DOM.create( tag[ index ] ) )
+        element.appendChild(DOM.create( tag[ index ] ) );
       } else {
-        element.appendChild( document.createTextNode( tag[ index ] ) )
+        element.appendChild( document.createTextNode( tag[ index ] ) );
       }
     }
-    if( callback ) callback()
-    return element
+    if( callback ) callback();
+    return element;
   }
   return {
     element : element
-  }
+  };
 })();

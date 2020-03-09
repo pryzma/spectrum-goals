@@ -2,9 +2,9 @@
 const targets = {
     name : 'Leerdoelen',
     default : targetsOverview,
-    template : 'targetsCategories'
-    //template : 'targets'
-}
+    template : 'targetsCategories',
+    categories : []
+};
 const categoriesData = {
     url : 'api/categories',
     callback : (categories)=>{
@@ -12,9 +12,9 @@ const categoriesData = {
             targets.categories = categories;
         const categoryTab = $('#targetCategoriesTabs').html(),
               categoryTabPane = $('#targetCategoriesContent').html();
-
-        for(const category of categories){
-            const categoryCurrentTab = categoryTab,
+        targets.categories = categories;
+        categories.forEach((category)=>{
+            const categoryCurrentTab = $(categoryTab),
                   categoryCurrentTabLink = $('<a></a>')
                      .attr('class','nav-link h4 tabAdded')
                      .attr('style','margin-bottom:0 !important;')
@@ -29,19 +29,28 @@ const categoriesData = {
                      .attr('id',`${category.id}Subjects`)
                      .attr('data-category',category.id)
                      .attr('aria-labelledby',`${category.id}-tab`);
-            $('#targetCategoriesContent').prepend(categoryCurrentTabPane)
-            $('#targetCategoriesTabs').prepend($(categoryCurrentTab).html(categoryCurrentTabLink).removeAttr('style'));
-        }
+            $('#targetCategoriesContent').prepend(categoryCurrentTabPane);
+            
+            document.addEventListener("dragenter", function(event) {
+                // highlight potential drop target when the draggable element enters it
+                if (event.target.className == "nav-item") {
+                    console.log(event);
+                }
+              
+              }, false);
+
+            $('#targetCategoriesTabs').prepend(categoryCurrentTab.html(categoryCurrentTabLink).removeAttr('style'));
+        });
         $('#targetCategoriesTabs li a').first().tab('show');
-        $('#targetCategoriesTabs li').last().remove()
+        $('#targetCategoriesTabs li').last().remove();
         // $('#targetCategoriesContent div').first().addClass('active')
         }
         
     }
-}
+};
 const targetsData = {
     url : 'api/targets'
-}
+};
 const medientsObj = { data : [] };
 const medientObjDataModify = (account) => {
     const accountAdd = {
@@ -54,34 +63,32 @@ const medientsObjData = {
     url : 'api/accounts/medients',
     modify : medientObjDataModify,
     callback : (data) => {
-        console.log(data)
-        medientsObj.data = data
+        
+        medientsObj.data = data;
     }
   };
 
 function categoryName(category){
-    if(category==='technical'){
-        return 'Technisch'
-    }else if(category==='work'){
-        return 'Werk'
-    }else{
-        return 'Persoonlijk'
-    }
+    let categoryName;
+    targets.categories.map((item)=>{
+        if(item.id===category) categoryName = item.name;
+    });
+    return categoryName;
 }
 
 function targetsOverview(){
     component.api(categoriesData,()=>{
-        overviewSubjects(currentCategory())
+        overviewSubjects(currentCategory());
         $('.addSubject').on('click',()=>{
-            addSubject()
+            addSubject();
         }).droppable({
             drop: function( event, ui ) {
                 //console.log(ui.helper[0].id)
-                addSubject(ui.helper[0].id)
+                addSubject(ui.helper[0].id);
             }
         });
-        $('#targetCreateBtn').on('click',targetCreate)
-    })
+        $('#targetCreateBtn').on('click',targetCreate);
+    });
 }
 
 function addTarget(subject){
@@ -98,24 +105,22 @@ function addTarget(subject){
         buttons : [{ txt : 'Opslaan', event : ['click',() => {
             const AddTargetData = component.form.fields({el : '#addTargetForm' });
             AddTargetData.subject = subject;
-            
+            AddTargetData.category = currentCategory();
             component.api({
                 url : 'api/targets',
                 method: 'post',
                 data : AddTargetData,
                 callback : ()=>{
                     $('#amModal').modal('hide');
-                    overviewSubjects(currentCategory())
+                    overviewSubjects(currentCategory());
                 }
             });
             
         }]}]
-
-    })
+    });
 }
 
 function addSubject(target){
-    
     const addSubjectForm = component.form.fromModel({
         id : 'addSubjectForm',
         model : 'Subject',
@@ -127,33 +132,25 @@ function addSubject(target){
         title : 'Onderwerp toevoegen',
         body : addSubjectForm,
         buttons : [{ txt : 'Opslaan', event : ['click',() => saveSubject(target)]}]
-    })
+    });
 }
 function currentCategory(){
-    let currentCategoryValue
+    let currentCategoryValue;
     $('#targetCategoriesContent .tab-pane').each(function(){
-            
         if($(this).hasClass('active')){
-            currentCategoryValue = $(this).attr('data-category')
+            currentCategoryValue = $(this).attr('data-category');
         }
-    })
-    //console.log($('#targetCategoriesContent .tab-pane.active').attr('data-category'))
-    return currentCategoryValue
+    });
+    return currentCategoryValue;
 }
 
 function saveSubject(target){
-    
-        //const AddSubjectData = component.form.fields({el : '#addSubjectForm' });
-        //AddSubjectData.category = 
-        
-
 
         const AddSubjectData = {
             id : component.uid(),
             name : $('#name').val(),
             category : currentCategory()
-        }
-        
+        };
         component.api({
             url : 'api/subjects',
             method: 'post',
@@ -166,49 +163,40 @@ function saveSubject(target){
                     component.api({
                         url : 'api/targets',
                         callback : (targets)=>{
-                            const target_ = targets.filter((item)=>item.id===target)
-                     
-                            target_[0].subject = AddSubjectData.id
+                            const target_ = targets.filter((item)=>item.id===target);
+                            target_[0].subject = AddSubjectData.id;
                             axios.put('api/targets',target_[0]).then(()=>{
-                                targetsOverview(currentCategory())
+                                targetsOverview(currentCategory());
                                 $('#amModal').modal('hide');
-                            })
-                        }})
-                    
+                            });
+                        }});
                 }else{
                     $('#amModal').modal('hide');
-            
-                    overviewSubjects(currentCategory())
+                    overviewSubjects(currentCategory());
                 }
-                
             }
         });
-        
-    
 }
 function overviewSubjects(category){
-    $('#targetsBreadcrumb').html('Leerdoelen')
+    $('#targetsBreadcrumb').html('Leerdoelen');
     $('.nav .nav-link').off().on('click',(event)=>{
-        overviewSubjects($(event.target).attr('data-category'))
-
+        overviewSubjects($(event.target).attr('data-category'));
     });
-    $('#targets').data('category',category)
+    $('#targets').data('category',category);
     $('#categoryBreadcrumb').remove();
     $('#targetSubjectBreadcrumb').remove();
     $('#targetBreadcrumb').remove();
     const categoryBreadcrumb = $('<li></li>')
         .addClass('breadcrumb-item active')
         .attr('id','categoryBreadcrumb')
-        .html(categoryName(category))
+        .html(categoryName(category));
     $('#targetsBreadcrumbs').append(categoryBreadcrumb);
-
     component.api({
         url : 'api/subjects',
         callback : (subjects) =>{
-            const subjectsContainer = $(`#${category}Subjects div.row`)
-            $('.subjectContainer').remove()
-            
-            for(const subject of subjects){
+            const subjectsContainer = $(`#${category}Subjects div.row`);
+            $('.subjectContainer').remove();
+            subjects.forEach((subject)=>{
                 if(subject.category === category){
                     const addTargetBtn = component.btn({ 
                             html : '<i class="fas fa-plus"></i> Leerdoel toevoegen', 
@@ -241,65 +229,54 @@ function overviewSubjects(category){
                             .attr('class','col-md-3 subjectContainer card shadow')
                             .html(subjectHeader)
                             .append(targetBtnsContainer)
-                            .append(addTargetBtn)
-                            
+                            .append(addTargetBtn);
                           component.api({
                             url : 'api/targets',
                             callback : (targets)=>{
-                            
                                 subjectTargetsBtns({
                                   targets : targets,
                                   container :  targetBtnsContainer,
                                   subject : subject,
                                   callback : ()=>{
-                                    
                                     $(`#${subject.id} div.targetBtnsContainer`)
                                     .sortable({
                                         start : function( event, ui ) {
-                                            $(event.target).addClass('grabbing')
+                                            $(event.target).addClass('grabbing');
                                         },
                                         stop : function( event, ui  ) {
-                                            $(event.target).removeClass('grabbing')
+                                            $(event.target).removeClass('grabbing');
                                         }
                                     }).draggable()
                                     .disableSelection();
                                   }
-                                })
-                                
+                                });
                           }
-                    })
+                    });
                     subjectsContainer.prepend(subjectContainer);
                     $('#'+subject.id).droppable({
                         drop: function( event, ui ) {
                             const updateMoveTarget = {
                                 id : ui.helper[0].id,
                                 subject : subject.id
-                            }
-                            const updateMoveTargetSubject = $(ui.helper[0]).attr('data-subject')
+                            };
+                            const updateMoveTargetSubject = $(ui.helper[0]).attr('data-subject');
                             if(subject.id != updateMoveTargetSubject){
                                 axios.put('api/targets', updateMoveTarget ).then(() => {
-                                    $('#amModal').modal('hide')
-                                    component.alert({message : '<i class="fas fa-pen"></i> Leerdoel verplaatst naar '+subject.name})
-                                    targetsOverview()
-                                })
+                                    $('#amModal').modal('hide');
+                                    component.alert({message : '<i class="fas fa-pen"></i> Leerdoel verplaatst naar '+subject.name});
+                                    targetsOverview();
+                                });
                             }
-                            
-                                
-                            
-                            
                         }
-                    })
-                    $(`#subjectHeader_${subject.id}`).after(subjectOptions)
-                    targetsSearch()
+                    });
+                    $(`#subjectHeader_${subject.id}`).after(subjectOptions);
+                    targetsSearch();
                 }
-
-            }
+            });
         }
-    })
-
+    });
 }
 function targetsSearch(){
-
     $('#targetsSearch').attr('placeholder','Zoek in alle leerdoelen').on('input', (event) => {
         let value = $(`#${event.target.id}`).val();
         let arr = $(`#overviewSubjects div.btn`);
@@ -325,10 +302,9 @@ function levelsSearch(){
             arr[i].style.display = "none";
           }
         }
-      });
+    });
 }
 function subjectDelete(subject){
-                                
     component.modal({
         title : '<i class="fas fa-times"></i> Onderwerp  verwijderen',
         body : 'Weet je zeker dat je <b>'+subject.name+ '</b> (en onderliggende leerdoelen, (sub)levels) wilt verwijderen?',
@@ -338,19 +314,19 @@ function subjectDelete(subject){
                     method : 'delete',
                     url : `api/subjects/${subject.id}`,
                     callback : ()=>{
-                        $('#amModal').modal('hide')
-                        targetsOverview()
-                        component.alert({message : `<i class="fas fa-times"></i> Onderwerp <b>${subject.name}</b> verwijderd`})
+                        $('#amModal').modal('hide');
+                        targetsOverview();
+                        component.alert({message : `<i class="fas fa-times"></i> Onderwerp <b>${subject.name}</b> verwijderd`});
                     }
                 });
             }]},
             {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-                $('#amModal').modal('hide')
+                $('#amModal').modal('hide');
             }]}
         ]
-    })
-    
+    });
 }
+
 function subjectUpdate(subject){
     const updateSubjectForm = component.form.fromModel({
         id : 'updateSubjectForm',
@@ -363,18 +339,16 @@ function subjectUpdate(subject){
         title : 'Onderwerp aanpassen',
         body : updateSubjectForm,
         buttons : [{txt : 'Opslaan', event : ['click', () => {
-                
-                subject.name = $('#updateSubjectForm #name').val()
+                subject.name = $('#updateSubjectForm #name').val();
                 axios.put('api/subjects',subject ).then(() => {
-                    $('#amModal').modal('hide')
-                    component.alert({message : '<i class="fas fa-pen"></i> Onderwerp aangepast'})
-                    targetsOverview()
+                    $('#amModal').modal('hide');
+                    component.alert({message : '<i class="fas fa-pen"></i> Onderwerp aangepast'});
+                    targetsOverview();
                 }).catch(error => {
-                    
                 });
             }]
         }]
-    })
+    });
 }
 function addTargetLevel(target){
     const addTargetLevelForm = component.form.fromModel({
@@ -390,46 +364,60 @@ function addTargetLevel(target){
         body : addTargetLevelForm,
         buttons : [{ txt : 'Opslaan', event : ['click',() => {
             const AddTargetLevelData = component.form.fields({el : '#addTargetLevelForm' });
-            AddTargetLevelData.subject = target.subject.id
-            AddTargetLevelData.target = target.id
-            AddTargetLevelData.sortOrder = targetLevelsLength+1
+            AddTargetLevelData.subject = target.subject.id;
+            AddTargetLevelData.target = target.id;
+            AddTargetLevelData.sortOrder = targetLevelsLength+1;
             component.api({
                 url : 'api/levels',
                 method: 'post',
                 data : AddTargetLevelData,
                 callback : ()=>{
                     $('#amModal').modal('hide');
-                    overviewTargetLevels(target)
-                   
+                    overviewTargetLevels(target);
                 }
             });
-            
         }]},
         {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-            $('#amModal').modal('hide')
+            $('#amModal').modal('hide');
         }]}]
     });
 }
 
+function overviewTargetAssignedMedients(target){
+    component.api({
+        url : 'api/targets/medients/'+target.id,
+        callback : (medients)=>{
+            component.table({
+                el : '#TargetAssignedMedients',
+                model : 'Account',
+                cols : { firstName : { label : '' }, lastName :  { label : ''} },
+                data : medients
+            });
+            medients.map((medient)=>{
+            });
+        }
+    });
+}
 
 function overviewTargetLevels(target){
-
-    levelsSearch()
+    overviewTargetAssignedMedients(target);
+    //levelsSearch()
     $('#targetsBreadcrumb').html('<a href="#targets">Leerdoelen</a>');
     if(typeof target[0] === 'string'){
         component.api({
             url:'api/targets/'+target,
             callback : (target)=>{
-                return overviewTargetLevels(target)
+                return overviewTargetLevels(target);
             }
-        })
+        });
     }
-    levelsSearch(target)
-    $('.overviewTargetSubjectName').html(target.subject.name)
+    levelsSearch(target);
+    $('.overviewTargetSubjectName').html(target.subject.name);
     component.api(medientsObjData,(data)=>{
-        medientsObj.data = data
-        assignMedientTarget(target)
+        medientsObj.data = data;
+        assignMedientTarget(target);
     });
+
     // breadcrumbs
     $('.breadcrumb-item').removeClass('active');
     $('#targetSubjectBreadcrumb').remove();
@@ -438,20 +426,19 @@ function overviewTargetLevels(target){
         .addClass('breadcrumb-item')
         .html(target.subject.name.replace(/<3/g,'♥'));
     $('#targetsBreadcrumbs').append(targetSubjectBreadCrumb);
-    
     $('#targetBreadcrumb').remove();
     const targetBreadCrumb = $('<li></li>')
         .attr('id','targetBreadcrumb')
         .addClass('breadcrumb-item active')
         .html(target.name.replace(/<3/g,'♥'));
     $('#targetsBreadcrumbs').append(targetBreadCrumb);
-    
+
    // target levels
     $('#overviewTargetLevelsBtns').html('');
     component.api({
         url : `api/levels/${target.id}`,
         callback : (levels) => {
-            console.log(levels)
+            
             $('#targetCategoriesContent').hide();
             $('#overviewTargetLevels').show();
             location.hash = '#'+target.id;
@@ -461,22 +448,20 @@ function overviewTargetLevels(target){
             });
             $('.overviewTargetName').html(target.name);
             $('#addTargetLevel').off().on('click',()=>addTargetLevel(target));
-            for(const levelIndex in levels){
-                levels[levelIndex].target = target
-                overviewTargetSubLevels(levels[levelIndex])
-                const levelLabelTxt = levels[levelIndex].name.replace(/<3/g,'♥')
+            
+            levels.forEach((level)=>{
+                overviewTargetSubLevels(level);
+                const levelLabelTxt = level.name.replace(/<3/g,'♥');
                 const levelLabel = $('<div></div>')
-                        //.html(`Level ${levelIndex/1+1} : ${levelLabelTxt}`),
-                        .html(`Level <span class="levelOrder">${levels[levelIndex].sortOrder}</span> : <span class="levelName">${levelLabelTxt}</span>`),
+                        .html(`Level <span class="levelOrder">${level.sortOrder}</span> : <span class="levelName">${levelLabelTxt}</span>`),
                       subLevelContainer = $('<div></div')
                         .attr('class','subLevelContainer')
                         .attr('style','display:none;padding-left:25px;')
-                        .attr('id',levels[levelIndex].id),
+                        .attr('id',level.id),
                       levelElement = $('<div></div')
                         .attr('class','levelContainer btn btn-block left btn-primary btn-green ui-sortable-handle pointer shadow')
                         .attr('style','margin-top:5px;')
-                        .append(levelLabel)
-                        
+                        .append(levelLabel);
                     const levelDeleteBtn = $('<button></button>')
                             .attr('class','btn btn-nobg float-right')
                             .attr('style','padding-left: 5px; padding-right: 0')
@@ -486,7 +471,7 @@ function overviewTargetLevels(target){
                                 $( this ).attr('style','color: #fff;padding-left: 5px; padding-right: 0');
                             })
                             .html('<i class="fas fa-times"></i>')
-                            .on('click',()=>levelDelete(levels[levelIndex])),
+                            .on('click',()=>levelDelete(level)),
                           levelUpdateBtn = $('<button></button>')
                             .attr('class','btn btn-nobg float-right')
                             .attr('style','padding-left: 0; padding-right: 5px')
@@ -496,52 +481,47 @@ function overviewTargetLevels(target){
                                 $( this ).attr('style','color: #fff;padding-left: 0; padding-right: 5px');
                             })
                             .html('<i class="fas fa-pen"></i>')
-                            .on('click',()=>levelUpdate(levels[levelIndex])),
+                            .on('click',()=>levelUpdate(level)),
                           levelOptions = $('<div></div>')
                             .attr('class','levelOptions float-right')
                             .attr('style','z-index:1; margin-top: -32px;')
                             .append(levelDeleteBtn)
-                            .append(levelUpdateBtn)
-                          
+                            .append(levelUpdateBtn);
                           levelElement
                             .append(levelOptions)
                             .on('click',()=>{
-                                $('#'+levels[levelIndex].id+'.subLevelContainer').toggle()
+                                $('#'+level.id+'.subLevelContainer').toggle();
                             });
-
-
-                    
 
                 // overviewTargetSubLevels
                 const overviewTargetLevel = $('<div></div>')
                         .attr('class','overviewTargetLevel')
-                        .attr('id',`level_${levels[levelIndex].id}`)
+                        .attr('id',`level_${level.id}`)
                         .append(levelElement)
-                        .append(subLevelContainer)
-                $('#overviewTargetLevelsBtns').append(overviewTargetLevel)
+                        .append(subLevelContainer);
+                if(typeof level === 'object') $('#overviewTargetLevelsBtns').append(overviewTargetLevel);
                 //levelElement.after();
-                overviewTargetSubLevels(levels[levelIndex]);
-            }
+                overviewTargetSubLevels(level);
+                
+            });
+            
             // sortable
 
             $('#overviewTargetLevelsBtns').sortable({
                 start : function( event, ui ) {
-
-                    $(event.target).addClass('grabbing')
+                    $(event.target).addClass('grabbing');
                 },
                 stop : function( event, ui  ) {
-                    $(event.target).removeClass('grabbing')
-                    updateTargetLevelOrder(target)
+                    $(event.target).removeClass('grabbing');
+                    updateTargetLevelOrder(target);
                 }
             });
         }
     });
-    
-      
-
 }
+
 function updateTargetLevelOrder(target){
-    const levels = []
+    const levels = [];
     $('.overviewTargetLevel').each(function(index,item){
         const overviewTargetLevelId = item.id,
               overviewTargetLevelName = $(`#${overviewTargetLevelId} .levelName`).text(),
@@ -549,21 +529,19 @@ function updateTargetLevelOrder(target){
                 id : overviewTargetLevelId.replace('level_',''),
                 sortOrder : index+1,
                 name : overviewTargetLevelName
-              }
+              };
         levels.push(level);
     });
-    
     axios.put('api/levels',levels ).then((response) => {
         overviewTargetLevels(target);
     });
 }
 function assignMedientTarget(target){
     $('#overviewTargetAssignMedientInput').off().on('input',(event)=>{
+        const searchTargetAssignMedientValue = event.target.value;
+        //searchTargetAssignMedientValue === '' ? $('#TargetAssignMedients').hide() : $('#TargetAssignMedients').show(); 
       
-        const searchTargetAssignMedientValue = event.target.value
-        searchTargetAssignMedientValue === '' ? $('#TargetAssignMedients').hide() : $('#TargetAssignMedients').show() 
-      
-        $('#TargetAssignMedients').html('')
+        $('#TargetAssignMedients').html('');
         medientsObj.data.map((medient)=>{
             const searchTargetAssignMedientElement = $('<p>'+medient.name+'</p>')
             .attr('style','margin-bottom:0px;')
@@ -572,32 +550,33 @@ function assignMedientTarget(target){
                     title : 'Leerdoel toewijzen aan Medient',
                     body : 'Weet je zeker dat je leerdoel <b>'+target.name+'</b> wil toewijzen aan <b>'+medient.name+'</b>?',
                     buttons : [ { txt : 'Bevestigen', event : ['click',()=>{
+                        const assignMedientTargetData = {
+                            medient : medient.id,
+                            target : target.id,
+                            subject : target.subject.id,
+                            category : currentCategory()
+                        };
                         component.api({
                             method : 'post',
                             url : 'api/medients/target/add',
-                            data : {
-                                medient : medient.id,
-                                target : target.id
-                            },
+                            data : assignMedientTargetData,
                             callback : ()=>{
                                 $('#amModal').modal('hide');
-                                $('#TargetAssignMedients').hide()
-                                $('#overviewTargetAssignMedientInput').val('')
+                                $('#TargetAssignMedients').hide();
+                                $('#overviewTargetAssignMedientInput').val('');
                                 component.alert({
                                     message : 'Leerdoel <b>'+target.name+'</b> is toegewezen aan '+medient.name
-                                })
+                                });
                             }
-                        })
+                        });
                     }]},{txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-                        $('#amModal').modal('hide')
+                        $('#amModal').modal('hide');
                     }]}]
-                })
-            })
+                });
+            });
             $('#TargetAssignMedients')
-                .append(searchTargetAssignMedientElement)
-                
-
-        })
+                .append(searchTargetAssignMedientElement);
+        });
         let value = $(`#${event.target.id}`).val();
         let arr = $(`#TargetAssignMedients p`);
         let filter = new RegExp(value, 'i');
@@ -608,8 +587,7 @@ function assignMedientTarget(target){
             arr[i].style.display = "none";
           }
         }
-        
-    })
+    });
 }
 function levelDelete(level){
     component.modal({
@@ -621,19 +599,19 @@ function levelDelete(level){
                     method : 'delete',
                     url : `api/levels/${level.id}`,
                     callback : ()=>{
-                        $('#amModal').modal('hide')
-                        overviewTargetLevels(level.target)
+                        $('#amModal').modal('hide');
+                        overviewTargetLevels(level.target);
                         component.alert({
                             message : `<i class="fas fa-times"></i> Level verwijderd`
-                        })
+                        });
                     }
                 });
             }]},
             {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-                $('#amModal').modal('hide')
+                $('#amModal').modal('hide');
             }]}
         ]
-    })
+    });
 }
 
 function levelUpdate(level){
@@ -648,89 +626,80 @@ function levelUpdate(level){
         title : 'Level aanpassen',
         body : updateLevelForm,
         buttons : [{txt : 'Opslaan', event : ['click', () => {
-                level.name = $('#updateLevelForm #name').val()
+                level.name = $('#updateLevelForm #name').val();
                 axios.put('api/levels',level ).then((response) => {
-                    $('#amModal').modal('hide')
-                    component.alert({message : '<i class="fas fa-pen"></i> Level aangepast'})
-                    overviewTargetLevels(level.target)
+                    $('#amModal').modal('hide');
+                    component.alert({message : '<i class="fas fa-pen"></i> Level aangepast'});
+                    overviewTargetLevels(level.target);
                 }).catch(error => {
                     console.log(error);
                 });
             }]
         }]
-    })
+    });
 }
 
 function subjectTargetsBtns(args){
-
-    for(const target of args.targets){
+    args.targets.forEach((target)=>{
         if(target.subject === args.subject.id){
             const targetBtn = component.btn({
                 txt : target.name,
                 class : 'yellow btn-block left ui-state-default',
                 id : target.id,
                 event : ['click',()=>{
-                    target.subject = args.subject
-                    overviewTargetLevels(target)
+                    target.subject = args.subject;
+                    overviewTargetLevels(target);
                 }]
-            })
+            });
             const targetElement = $('<div></div>')
                                         .addClass('btn btn-yellow btn-block left pointer shadow')
                                         .on('mousedown',(e)=>{
-                                            $(e.target).addClass('grabbing')
+                                            $(e.target).addClass('grabbing');
                                         })
                                         .on('mouseup',(e)=>{
-                                            $(e.target).removeClass('grabbing')
-                                        })
+                                            $(e.target).removeClass('grabbing');
+                                        });
             const targetElementLabel = $('<div></div>')
                                          .html(target.name)
                                          .attr('style','width:80%')
                                          .attr('class','targetElementLabel')
                                          .addClass('pointer')
                                          .on('click',()=>{
-                                            target.subject = args.subject
-                                            overviewTargetLevels(target)
-                                         })
-            targetElement.append(targetElementLabel)
+                                            target.subject = args.subject;
+                                            overviewTargetLevels(target);
+                                         });
+            targetElement.append(targetElementLabel);
             const targetDeleteBtn = $('<button></button>')
                 .attr('class','btn btn-nobg')
                 .html('<i class="fas fa-times"></i>')
-                .on('click',(event)=>targetDelete(target))
+                .on('click',(event)=>targetDelete(target));
             const targetUpdateBtn = $('<button></button>')
             .attr('class','btn btn-nobg')
             .html('<i class="fas fa-pen"></i>')
-            .on('click',(event)=>targetUpdate(target))
-
-            
+            .on('click',(event)=>targetUpdate(target));
             const targetOptions = $('<div></div>')
                 .attr('class','targetOptions float-right')
-                .attr('style','margin-top:-38px;')
-            
+                .attr('style','margin-top:-38px;');
             const targetContainer = $('<div></div>')
                 .attr('class','targetContainer')
                 .attr('data-subject',target.subject)
-                .attr('id',target.id)
-            
-            
+                .attr('id',target.id);
             targetOptions.append(targetUpdateBtn);
             targetOptions.append(targetDeleteBtn);
             targetElement.append(targetOptions);
             targetContainer.append(targetElement);
-
             args.container.prepend(targetContainer);
-
-
         }
-        
-    }
-    if(args.callback) args.callback()
+    });
+    if(args.callback) args.callback();
 }
+
 function targetCreate(){
     $.get('html/templates/targetCreate.html', (data) => {
         $(application.config.main).html(data);
-    
-      });
+    });
 }
+
 function targetDelete(target){
     component.modal({
         title : 'Leerdoel verwijderen',
@@ -741,17 +710,18 @@ function targetDelete(target){
                     method : 'delete',
                     url : 'api/targets/'+target.id,
                     callback : ()=>{
-                        $('#amModal').modal('hide')
-                        targetsOverview()
+                        $('#amModal').modal('hide');
+                        targetsOverview();
                     }
-                })
+                });
             }]},
             {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-                $('#amModal').modal('hide')
+                $('#amModal').modal('hide');
             }]}
         ]
-    })
+    });
 }
+
 function targetUpdate(target){
     const updateTargetForm = component.form.fromModel({
         id : 'updateTargetForm',
@@ -764,21 +734,19 @@ function targetUpdate(target){
         title : 'Leerdoel aanpassen',
         body : updateTargetForm,
         buttons : [{txt : 'Opslaan', event : ['click', () => {
-                
-                target.name = $('#updateTargetForm #name').val()
+                target.name = $('#updateTargetForm #name').val();
                 axios.put('api/targets',target ).then(() => {
-                    $('#amModal').modal('hide')
-                    component.alert({message : '<i class="fas fa-pen"></i> Leerdoel aangepast'})
-                    targetsOverview()
+                    $('#amModal').modal('hide');
+                    component.alert({message : '<i class="fas fa-pen"></i> Leerdoel aangepast'});
+                    targetsOverview();
                 }).catch(error => {
-                    
                 });
             }]
         },
         {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-            $('#amModal').modal('hide')
+            $('#amModal').modal('hide');
         }]}]
-    })
+    });
 }
 
 function overviewTargetSubLevels(level){
@@ -788,15 +756,13 @@ function overviewTargetSubLevels(level){
             event : ['click',()=>addSubLevel(level)],
             class : 'btn-nobg btn-block text-muted left'
           });
-   
     subLevelContainer.append(subLevelAddBtn);
-    
     component.api({
         url : 'api/sublevels/'+level.id,
         callback : (sublevels)=>{
      
-            for(const sublevel of sublevels){
-                sublevel.level = level // replace sublevel object level property with level object
+            sublevels.forEach((sublevel)=>{
+                sublevel.level = level; // replace sublevel object level property with level object
                 const subLevelElement = $('<div></div>')
                         .attr('class','subLevelElement subLevelContainer btn btn-block btn-white green ui-sortable-handle pointer shadow')
                         .attr('style','margin-top:5px;'),
@@ -823,12 +789,9 @@ function overviewTargetSubLevels(level){
                 subLevelOptions.append(subLevelDeleteBtn);
                 subLevelElement.append(subLevelOptions);
                 subLevelContainer.prepend(subLevelElement); 
-                   
-            }
+            });
         }
-    })
-    
-    
+    });
 }
 
 function addSubLevel(level){
@@ -856,17 +819,15 @@ function addSubLevel(level){
                     $('#amModal').modal('hide');
                     overviewTargetSubLevels(level);
                 }
-            });           
+            });
         }]},
         {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-            $('#amModal').modal('hide')
+            $('#amModal').modal('hide');
         }]}]
     });
-
 }
 
 function subLevelUpdate(sublevel,level){
- 
     const updateSubLevelForm = component.form.fromModel({
         id : 'updateSubLevelForm',
         model : 'Target',
@@ -878,13 +839,12 @@ function subLevelUpdate(sublevel,level){
         title : 'Sublevel aanpassen',
         body : updateSubLevelForm,
         buttons : [{txt : 'Opslaan', event : ['click', () => {
-                const subLevelData = sublevel
+                const subLevelData = sublevel;
                 subLevelData.level = sublevel.level.id; // assign id to level property of sublevel object
                 subLevelData.name = $('#updateSubLevelForm #name').val();
                 axios.put('api/sublevels',subLevelData ).then(() => {
                     $('#amModal').modal('hide');
-                    component.alert({message : '<i class="fas fa-pen"></i> Sublevel aangepast'})
-                    
+                    component.alert({message : '<i class="fas fa-pen"></i> Sublevel aangepast'});
                     overviewTargetSubLevels(level);
                 }).catch(error => {
                     console.log(error);
@@ -892,9 +852,9 @@ function subLevelUpdate(sublevel,level){
             }]
         },
         {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-            $('#amModal').modal('hide')
+            $('#amModal').modal('hide');
         }]}]
-    })
+    });
 }
 
 function subLevelDelete(sublevel, level){
@@ -907,17 +867,17 @@ function subLevelDelete(sublevel, level){
                     method : 'delete',
                     url : 'api/sublevels/'+sublevel.id,
                     callback : ()=>{
-                        $('#amModal').modal('hide')
-                        component.alert({message : '<i class="fas fa-pen"></i> Sublevel verwijderd'})
+                        $('#amModal').modal('hide');
+                        component.alert({message : '<i class="fas fa-pen"></i> Sublevel verwijderd'});
                         overviewTargetSubLevels(sublevel.level);
                     }
-                })
+                });
             }]},
             {txt : 'Annuleren', class: 'secondary', event:['click',()=>{
-                $('#amModal').modal('hide')
+                $('#amModal').modal('hide');
             }]}
         ]
-    })
+    });
 }
 
 application.add('targets',targets);
