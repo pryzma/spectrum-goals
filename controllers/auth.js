@@ -16,7 +16,7 @@ controller.logout = (req, res) => {
 };
 controller.isAuthenticated = (req, res, next) => {
     if (req.session.user)
-        return next(req, res);
+        return next();
     res.status(403).end();
 };
 

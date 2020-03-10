@@ -29,34 +29,41 @@ controller.createAccount = (req,res) => {
     account.password = '';
     account.isActivated = 0;
     account.createdBy = req.session.user.id;
- 
-    Account.create(account).then((response)=>{
-        if(response.profile === 'medient'){
-            const medient = {
-                id : uuidv4(),
-                account : response.id,
-                indication : response.indication.split('-')[2]+'-'+response.indication.split('-')[1]+'-'+response.indication.split('-')[0]
-            };
-            Medient.create(medient);
-        }
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        const msg = {
-          to: `${response.email}`,
-          from: `noreply@spectrumgoals.nl`,
-          subject: `Activeer je SpectrumGoals Leerdoelen Monitor Account`,
-          text: `Beste ${response.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt met gebruikersnaam <b>${response.username}</b> op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${response.id}">Klik hier om je Account te activeren</a>`,
-          html: `<img src="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/img/logo_lg.png"><br>Beste ${response.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account met gebruikersnaam <b>${response.username}</b>  voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/verify?uuid=${response.id}">Klik hier om je Account te activeren</a>`,
-        };
-        sgMail.send(msg).then(() => {
-            console.log('\x1b[36m',`[controller.accounts]\x1b[0m E-mail sent to `+response.email);
-        }).catch(error => {
-            console.error(error.toString());
+    if(account.profile === 'medient'){
+        Medient.create({
+            id : uuidv4(),
+            account : response.id,
+            indication : response.indication.split('-')[2]+'-'+response.indication.split('-')[1]+'-'+response.indication.split('-')[0]
         });
-        res.json(response);
-        return null;
-    }).catch((err)=>{
-        console.error(err);
+    };
+    connection.query(`SELECT * FROM Accounts WHERE username='${account.username}' OR email='${account.email}'`, (err,result) => {
+
+        if(result.length > 0){ // result.length should be 0
+            throw(`controller.createAccount : Username ${account.username} or email ${account.email} already exists`)
+        }else{
+            Account.create(account).then((response)=>{
+        
+                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                const msg = {
+                  to: `${response.email}`,
+                  from: `noreply@spectrumgoals.nl`,
+                  subject: `Activeer je SpectrumGoals Leerdoelen Monitor Account`,
+                  text: `Beste ${response.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account voor je aangemaakt met gebruikersnaam <b>${response.username}</b> op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_URL}verify?uuid=${response.id}">Klik hier om je Account te activeren</a>`,
+                  html: `<img src="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/img/logo_lg.png"><br>Beste ${response.firstName},<br> ${req.session.user.firstName} ${req.session.user.lastName} heeft een account met gebruikersnaam <b>${response.username}</b>  voor je aangemaakt op SpectrumGoals. Klik hieronder om je account te activeren en een wachtwoord te kiezen om je account te kunnen gebruiken.<br><br> <a href="${process.env.REF_HTTP_PROTOCOL}://${process.env.REF_ADR}/verify?uuid=${response.id}">Klik hier om je Account te activeren</a>`,
+                };
+                sgMail.send(msg).then(() => {
+                    console.log('\x1b[36m',`[controller.accounts]\x1b[0m E-mail sent to `+response.email);
+                }).catch(error => {
+                    console.error(error.toString());
+                });
+                res.json(response);
+                return null;
+            }).catch((err)=>{
+                console.error(err);
+            });
+        }
     });
+    
 
 };
 controller.verifyAccount = (req,res) => {
