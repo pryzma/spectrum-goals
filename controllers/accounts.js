@@ -32,8 +32,8 @@ controller.createAccount = (req,res) => {
     if(account.profile === 'medient'){
         Medient.create({
             id : uuidv4(),
-            account : response.id,
-            indication : response.indication.split('-')[2]+'-'+response.indication.split('-')[1]+'-'+response.indication.split('-')[0]
+            account : account.id,
+            indication : account.indication.split('-')[2]+'-'+account.indication.split('-')[1]+'-'+account.indication.split('-')[0]
         });
     };
     connection.query(`SELECT * FROM Accounts WHERE username='${account.username}' OR email='${account.email}'`, (err,result) => {

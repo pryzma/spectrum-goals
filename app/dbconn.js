@@ -14,7 +14,6 @@
 module.exports = {
   connection : connection,
   query : (query,fields,callback)=>{
-    console.log(typeof fields);
     if(typeof fields === 'object'){
       connection.query(query,fields,(err,res)=>{
         if(err){
