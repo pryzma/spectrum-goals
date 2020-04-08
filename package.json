@@ -34,7 +34,7 @@
     "websocket": "^1.0.31"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2",
+    "nodemon": "^2.0.3",
     "sequelize-cli": "^5.5.1"
   }
 }
