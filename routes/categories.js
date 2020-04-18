@@ -12,11 +12,15 @@ const router = express.Router();
 const controller = require('../controllers/categories');
 
 router.get('/', controller.isAuthenticated, (req, res) => {
-  controller.getAll(req, res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.getAll(req, res);
+  });
 });
 
 router.get('/:category', controller.isAuthenticated, (req, res) => {
-  controller.getOne(req, res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.getOne(req, res);
+  });
 });
 
 router.post('/', bodyParserJSON, (req, res) => {
