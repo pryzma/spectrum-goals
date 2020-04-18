@@ -8,6 +8,19 @@ const Category = models.Category;
 const auth = require('./auth');
 const uuidv4 = require('uuid/v4');
 
+controller.getAll = (req,res) => {
+    Category.findAll({order:[['name','DESC']]}).then((categories) => {
+        res.json(categories);
+    });
+};
+
+controller.getOne = (req,res) => {
+    Category.findOne({ where: {id: req.params.category} }).then(category => { 
+        res.json(category);
+        return category.get({ plain: true });
+    });
+};
+
 controller.createCategory = (req,res) => {
     const category = req.body,
     uuid = uuidv4();
@@ -25,20 +38,6 @@ controller.updateCategory = (req,res,next) => {
         res.json(rowsUpdated);
     })
     .catch(next);
-};
-
-controller.getAll = (req,res) => {
-    Category.findAll({order:[['name','DESC']]}).then((items) => {
-        res.json(items);
-    });
-};
-
-
-controller.getOne = (req,res) => {
-    Category.findOne({ where: {id: req.params.category} }).then(category => { 
-        res.json(category);
-        return category.get({ plain: true });
-    });
 };
 
 controller.deleteCategory = (req,res) => {
