@@ -20,15 +20,21 @@ router.get('/:category', controller.isAuthenticated, (req, res) => {
 });
 
 router.post('/', bodyParserJSON, (req, res) => {
-  controller.createCategory(req, res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.createCategory(req, res);
+  })
 });
 
 router.put('/', bodyParserJSON, (req, res, next)  => {
-  controller.updateCategory(req, res, next);
+  controller.isAuthenticated(req, res,()=>{
+    controller.updateCategory(req, res, next);
+  });
 });
 
 router.delete('/:id', bodyParserJSON, (req, res) => {
-  controller.deleteCategory(req, res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.deleteCategory(req, res);
+  });
 });
 
 module.exports = router;
