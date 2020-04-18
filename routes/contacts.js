@@ -12,21 +12,33 @@ const router = express.Router();
 const controller = require('../controllers/contacts');
 
 router.get('/', controller.isAuthenticated, (req, res) => {
-  controller.getAll(req,res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.getAll(req,res);
+  });
 });
 router.get('/medient/:id', controller.isAuthenticated, (req, res) => {
-  controller.getMedientContacts(req.params.id,res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.getMedientContacts(req.params.id,res);
+  });
 });
 router.get('/:id', controller.isAuthenticated, (req, res) => {
-  controller.getOne(req.id);
+  controller.isAuthenticated(req, res,()=>{
+    controller.getOne(req.id);
+  });
 });
 router.post('/', bodyParserJSON, (req, res) => {
-  controller.createContact(req,res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.createContact(req,res);
+  });
 });
 router.put('/', bodyParserJSON, (req, res, next) => {
-  controller.updateContact(req,res, next);
+  controller.isAuthenticated(req, res,()=>{
+    controller.updateContact(req,res, next);
+  });
 });
 router.delete('/:id',bodyParserJSON, (req,res) => {
-  controller.deleteContact(req,res);
+  controller.isAuthenticated(req, res,()=>{
+    controller.deleteContact(req,res);
+  });
 });
 module.exports = router;
