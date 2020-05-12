@@ -5,7 +5,7 @@
 const controller = module.exports = {};
 const models = require('../models').sequelize.models;
 const connection = require('../app/dbconn').connection;
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid');
 const auth = require('./auth');
 
 const Evaluation = models.Evaluation;

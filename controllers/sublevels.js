@@ -6,7 +6,7 @@ const controller = module.exports = {};
 const models = require('../models').sequelize.models;
 const SubLevel = models.SubLevel;
 const auth = require('./auth');
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid');
 
 
 controller.createSubLevel = (req,res) => {

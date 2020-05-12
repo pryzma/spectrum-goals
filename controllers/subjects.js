@@ -9,7 +9,7 @@ const Target = models.Target;
 const Level = models.Level;
 const SubLevel = models.SubLevel;
 const auth = require('./auth');
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid');
 
 controller.createSubject = (req,res) => {
     const subject = req.body;

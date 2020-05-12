@@ -45,7 +45,7 @@ controller.indicationNotification = function(){
 
                     sgMail.send(msg).then(() => {
                       console.log(` Indicatie van ${indication.username} verloopt op ${indicationNotificationDate}; Bericht verzonden naar ${indicationNotificationEmail} `);
-                      connection.query(`INSERT INTO Notifications (id,account,createdAt,updatedAt) VALUES ('${require('uuid/v4')()}','${indication.account}','${dateTime()}','${dateTime()}')`);
+                      connection.query(`INSERT INTO Notifications (id,account,createdAt,updatedAt) VALUES ('${require('uuid')()}','${indication.account}','${dateTime()}','${dateTime()}')`);
                     }).catch(error => {
                       //Log friendly error
                       console.error(error.toString());

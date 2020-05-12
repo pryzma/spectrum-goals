@@ -8,7 +8,7 @@ const connection = require('../app/dbconn').connection;
 const Level = models.Level;
 const SubLevel = models.SubLevel;
 const auth = require('./auth');
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid');
 
 controller.createLevel = (req,res) => {
     const level = req.body,

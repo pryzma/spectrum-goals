@@ -6,7 +6,7 @@ const controller = module.exports = {};
 const models = require('../models').sequelize.models;
 const Medient = models.Medient;
 const MedientTarget = models.MedientTarget;
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid');
 const connection = require('../app/dbconn').connection;
 const auth = require('./auth');
 

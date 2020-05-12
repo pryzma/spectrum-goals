@@ -5,7 +5,7 @@
 const controller = module.exports = {};
 const dbconn = require('../app/dbconn'),
       connection = dbconn.connection,
-      uuidv4 = require('uuid/v4'),
+      uuidv4 = require('uuid'),
       sgMail = require('@sendgrid/mail'),
       bcrypt = require('bcryptjs');
 
