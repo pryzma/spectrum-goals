@@ -11,17 +11,17 @@ module.exports = () => {
 
     if(process.env.REF_HTTP_PROTOCOL === 'https'){
         const fs = require('fs');
-     
+
         if( fs.existsSync(privateKeyPath) && fs.existsSync(certificatePath) ){
-            server = https.createServer({ 
-                key: fs.readFileSync(privateKeyPath, 'utf8'), 
+            server = https.createServer({
+                key: fs.readFileSync(privateKeyPath, 'utf8'),
                 cert: fs.readFileSync(certificatePath, 'utf8')
             });
         }else{
             if(!fs.existsSync(privateKeyPath)) console.error('\x1b[36m',`[websocket]\x1b[0m ${privateKeyPath} does not exist`);
             if(!fs.existsSync(certificatePath)) console.error('\x1b[36m',`[websocket]\x1b[0m ${certificatePath} does not exist`);
         }
-                
+
     }else{
         server = http.createServer();
     }
@@ -39,7 +39,7 @@ module.exports = () => {
     console.log('\x1b[36m',`[websocket]\x1b[0m  Server started on ${env.REF_WS_PROTOCOL}://${env.REF_ADR}:${env.REF_WS_PORT}/ on ${(Date()).split('GMT')[0]}\x1b[0m`);
     const messages = [],clients = {};
     wsServer.on('request', function(request) {
-        const wsConnectionId = require('uuid')();
+        const wsConnectionId = require('uuid');
         console.log('\x1b[36m',`[websocket]\x1b[0m  Connection on ${request.origin} assigned to ${wsConnectionId}`);
         const wsConnection = request.accept(null, request.origin);
         clients[wsConnectionId] = wsConnection;
