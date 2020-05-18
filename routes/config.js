@@ -5,7 +5,7 @@ const config = require('../app/config'),
 const router = express.Router();
 const controller = require('../controllers/auth');
 router.get('/', controller.isAuthenticated, (req, res) => {
-    console.log(config)
+    //console.log(config)
     const _config = config(),
     obj = _config.client;
     

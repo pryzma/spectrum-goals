@@ -16,7 +16,8 @@ router.get('/', controller.isAuthenticated, (req, res) => {
         controller.getAll(req,res);
     });
 });
-router.get('/:category', controller.isAuthenticated, (req, res) => {
+
+router.get('/:checklist', controller.isAuthenticated, (req, res) => {
     controller.isAuthenticated(req, res,()=>{
         controller.getOne(req, res);
     });  
