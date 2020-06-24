@@ -30,7 +30,7 @@
     "passport-local": "^1.0.0",
     "sequelize": "^6.1.0",
     "session-memory-store": "^1.0.0",
-    "uuid": "^8.1.0",
+    "uuid": "^8.2.0",
     "websocket": "^1.0.31"
   },
   "devDependencies": {
