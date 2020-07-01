@@ -5,6 +5,11 @@ module.exports = (sequelize, Sequelize) => {
             notEmpty: true,
             primaryKey: true
         },
-        name: {type: Sequelize.STRING}
+        name: {type: Sequelize.STRING},
+        date : {type: Sequelize.STRING},
+        expires : {type: Sequelize.STRING},
+        message : {type: Sequelize.STRING},
+        account : {type: Sequelize.STRING},
+        medient : {type: Sequelize.STRING}
     });
 }

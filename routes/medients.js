@@ -1,6 +1,7 @@
 /*
 * routes/targets.js
 */
+'use strict';
 const express = require('express'),
       bodyParser = require('body-parser'),
       app = express(),
@@ -10,8 +11,12 @@ const express = require('express'),
 const router = express.Router();
 const controller = require('../controllers/medients');
 router.post('/target/add', bodyParserJSON, (req, res) => {
-    controller.addTarget(req, res);
-  });
-
-
-  module.exports = router;
+  controller.addTarget(req, res);
+});
+router.put('/', bodyParserJSON, (req, res, next) => {
+  controller.updateMedient(req,res, next);
+});
+router.get('/pdf/:medient', controller.isAuthenticated, (req, res) => {
+  controller.MedientPDFExport(req,res);
+});
+module.exports = router;

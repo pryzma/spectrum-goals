@@ -1,9 +1,7 @@
-
-
 /*
 * assets/js/components.js
 */
-
+'use strict';
 //import {api} from "./server";
 const component = (() => {
   const methods = { 
@@ -46,7 +44,7 @@ const component = (() => {
     uid : uid,
     auth : auth,
     api : api
-  }
+  };
   // .................................................
   // component.date
   function date(format){
@@ -65,9 +63,9 @@ const component = (() => {
   function time(){
     let now = new Date();
     let hh = now.getHours();
-    hh = hh.toString().length === 1 ? `0${hh}` : hh
+    hh = hh.toString().length === 1 ? `0${hh}` : hh;
     let mm = now.getMinutes();
-    mm = mm.toString().length === 1 ? `${mm}0` : mm
+    mm = mm.toString().length === 1 ? `${mm}0` : mm;
     now = `${hh}:${mm}`;
 
     return now;
@@ -95,30 +93,28 @@ const component = (() => {
     }
   })
   */
-  const authModels = new Array
+  const authModels = new Array([]);
   function auth(args){
    
       // authData
       type(args.data,Object,()=>{
-        let authData 
+        let authData;
         api(args.data,(data)=>{
           authData = data;
         });
-      })
+      });
       // authModel
       type(args.data.model,Object,()=>{
         const model = args.data.model,
         modelName = authModels[Object.getOwnPropertyNames(model)[0]];
         type(args.data.model[modelName],Object,()=>{
           authModels[modelName] = args.data.model; // add objectto authModels
-        })
+        });
         type(args.data.model[modelName],Array,()=>{
-          for(authModel in args.data.model[modelName])
-            authModels[modelName][authModel] = args.data.model[modelName][authModel]
-        })
-        
+          for(let authModel in args.data.model[modelName])
+            authModels[modelName][authModel] = args.data.model[modelName][authModel];
+        });
       });
-    
   }
   // .................................................
   // component.api
@@ -153,7 +149,7 @@ const component = (() => {
         return args.callback(data);
       
       return data;
-    })
+    });
   }
  
  // .................................................
@@ -167,22 +163,20 @@ const component = (() => {
   function repeat(args){
     if(typeof args.data === 'string'){
       const apiObj = args;
-      apiObj.url = args.data
+      apiObj.url = args.data;
       return api(apiObj,(data)=>{
         apiObj.data = data;
         repeat(apiObj);
       });
-      
     }
     let output = '',index = 0;
     //for(let item of args.data){
     (()=>{
       output =+ args.template;
       for(let dataItem in args.data[index] )
-        output.replace(`{${dataItem}}`,item[dataItem])
-      
+        output.replace(`{${dataItem}}`,item[dataItem]);
       index++;
-    })().repeat(args.data.length)
+    })().repeat(args.data.length);
     //}
     return output;
   }
@@ -195,17 +189,17 @@ const component = (() => {
   })
   */
   function err(args){
-    throw args
+    throw args;
   }
   function type(args,type,callback){
     // assign callback to args type
-    const argsTypeOf = typeof args;
-    if(args.prototype === Array) argsTypeOf = 'array'
+    let argsTypeOf = typeof args;
+    if(args.prototype === Array) argsTypeOf = 'array';
     if( argsTypeOf != type ) err(`component.type called with type '${typeof type}' but args is  typeof ${argsTypeOf} `);
         
     switch(argsTypeOf){
             default :
-                callback(args)
+                callback(args);
                 break;
             
             
@@ -262,7 +256,7 @@ const component = (() => {
   */
   function btn(args){
     const btn = document.createElement('button');
-    if(!args.class) args.class = 'primary'
+    if(!args.class) args.class = 'primary';
     btn.setAttribute('class',`btn btn-${args.class}`);
     if(!args.id) args.id = uid();
     btn.setAttribute('id',args.id);
@@ -271,42 +265,38 @@ const component = (() => {
       btn.addEventListener(args.event[0],(event)=>args.event[1](event));
     }
     if(args.tooltip){
-      btn.setAttribute('data-toggle','tooltip')
-      btn.setAttribute('data-placement','top')
-      args.tooltip.title ? btn.setAttribute('title',args.tooltip) : btn.setAttribute('title',args.tooltip)
-      args.tooltip.trigger ? $(btn).tooltip({trigger : args.tooltip.trigger }) : $(btn).tooltip({trigger : 'hover focus'})
+      btn.setAttribute('data-toggle','tooltip');
+      btn.setAttribute('data-placement','top');
+      args.tooltip.title ? btn.setAttribute('title',args.tooltip) : btn.setAttribute('title',args.tooltip);
+      args.tooltip.trigger ? $(btn).tooltip({trigger : args.tooltip.trigger }) : $(btn).tooltip({trigger : 'hover focus'});
     }
     // confirm
     if(typeof args.confirm === 'object'){ 
       
       // confirm(args.confirm)
-      const $amModal = $('#amModal')
+      const $amModal = $('#amModal');
       const confirm = () => {
         args.confirm.confirm();
         if(args.confirm.hideOnConfirm)$amModal.modal('hide');
-      }
+      };
       const cancel = () => $(btn).popover('hide');
       
       args.confirm.trigger = 'focus';
       args.confirm.content = args.confirm.msg;
       args.confirm.html = true;
       $(btn).popover(args.confirm).on('shown.bs.popover', () => { // popover is shown
-
-        
-        if(!args.confirm.class) args.confirm.class = 'primary'
+        if(!args.confirm.class) args.confirm.class = 'primary';
         const $confirmBtn = $('<button></button>')
             .attr('class',`btn btn-sm btn-${args.confirm.class} confirm`)
             .html('Confirm')
             .on('click',confirm); // confirm method of confirm object in arguments
-        $('.popover-body').append($confirmBtn)
+        $('.popover-body').append($confirmBtn);
         const $cancelBtn = $('<button></button>')
             .attr('class','btn btn-sm cancel')
             .html('Cancel')
             .on('click',cancel);
-        $('.popover-body').append($cancelBtn)
-      
+        $('.popover-body').append($cancelBtn);
       });
-      
     }
     return btn;
   }  
@@ -323,39 +313,32 @@ const component = (() => {
     });
   */
   function confirm(args){
-   
       const $amModal = $('$amModal'),
             $confirmElement = args.el;
-    
       const confirmEvent = () => {
         args.confirm.confirm();
         if(args.confirm.hideOnConfirm)$amModal.modal('hide');
-      }
+      };
       const cancelEvent = () => $confirmElement.popover('hide');
-      
       args.confirm.trigger = 'focus';
       args.confirm.content = args.confirm.msg;
       args.confirm.html = true;
       $confirmElement.popover(args.confirm).on('shown.bs.popover', () => { // popover is shown
-
-        
-        if(!args.confirm.class) args.confirm.class = 'primary'
+        if(!args.confirm.class) args.confirm.class = 'primary';
         const $confirmBtn = $('<button></button>')
             .attr('class',`btn btn-sm btn-${args.confirm.class} confirm`)
             .html('Confirm')
             .on('click',confirmEvent); 
-        $('.popover-body').append($confirmBtn)
+        $('.popover-body').append($confirmBtn);
         const $cancelBtn = $('<button></button>')
             .attr('class','btn btn-sm cancel')
             .html('Cancel')
             .on('click',cancelEvent);
-        $('.popover-body').append($cancelBtn)
+        $('.popover-body').append($cancelBtn);
       
       }).on('hidden.bs.popover', () => { // popover is hidden
           //button_.removeEventListener('click',confirm);
       });
-      
-
   }
   // .................................................
   // component.modal
@@ -381,9 +364,9 @@ const component = (() => {
   */
   function modal(args){
     const $amModal = $('#amModal').modal();
-    $('#amModalTitle').html(args.title)
+    $('#amModalTitle').html(args.title);
     $amModal.on('shown.bs.modal', () => { // modal is shown
-      args.tabs ? $('#amModalBody').html(navTabs(args.tabs)) : $('#amModalBody').html(args.body);  
+      args.tabs ? $('#amModalBody').html(navTabs(args.tabs)) : $('#amModalBody').html(args.body);
       // nav-tabs fix ; https://github.com/pryzma/agenda-manager/issues/22
       $('.nav-tabs .nav-link').each(function(i){
         $(this).on('click',(e)=>{ // on each tab click
@@ -405,14 +388,14 @@ const component = (() => {
     }
     if(args.buttons){
       const button_container = document.createElement('div');
-      button_container.setAttribute('id','button_container')
+      button_container.setAttribute('id','button_container');
       const footer = document.getElementById('amModalFooter');
       for(let button of args.buttons){
         const button_ = component.btn(button);
-        button_container.appendChild(button_)
+        button_container.appendChild(button_);
         
       }
-      footer.appendChild(button_container)
+      footer.appendChild(button_container);
     }
     $amModal.on('hidden.bs.modal', function (e) {
       $('#amModalTitle').html('');
@@ -442,8 +425,7 @@ const component = (() => {
     const tabs = args;
     let tabIndex = 0;
 
-    for(let tab of tabs){
-      
+    tabs.forEach ((tab) => {
       const tabId = uid(),
       tabElement = document.createElement('li'),
       tabLink = document.createElement('a'),
@@ -454,13 +436,12 @@ const component = (() => {
       tabLink.setAttribute('href',`#${tabId}`);
       tabLink.setAttribute('class',tabLinkClass);
       tabLink.setAttribute('role','tab');
-      tabLink.setAttribute('aria-controls',tabId)
+      tabLink.setAttribute('aria-controls',tabId);
       tabLink.setAttribute('data-toggle','tab');
       tabLink.innerHTML = tab.label;
       tabLink.addEventListener('click',(event)=>{
-        
         $('.nav-tabs a[href="' + event.target.href + '"]').tab('show');
-      })
+      });
       tabElement.setAttribute('class','nav-item');
       tabElement.appendChild(tabLink);
       tabsElement.appendChild(tabElement);
@@ -472,7 +453,7 @@ const component = (() => {
       tabContent.innerHTML = tab.content;
       tabsContent.appendChild(tabContent);
       tabIndex++;
-    }
+    });
     tabsFragment.appendChild(tabsElement);
     tabsFragment.appendChild(tabsContent);
     return tabsFragment;
@@ -520,15 +501,12 @@ const component = (() => {
           props = Object.getOwnPropertyNames(model);
     let $tr = $('<tr></tr>'),$th;
     for(let col in args.cols){
-    
         $th = $('<th></th>');
         $th.html(args.cols[col].label);
         $tr.append($th);
-
     }
     $thead.append($tr);
     $table.append($thead);
-    
     if(args.data.url){
       const apiObj = {
         url : args.data.url,
@@ -537,26 +515,23 @@ const component = (() => {
             $table = tableBody($table,Object.getOwnPropertyNames(data[0]),data,args);
             tableInsert(args,$table);
           }else{
-            $(args.el).html('No Data')
+            $(args.el).html('No Data');
           }
-         
           if(args.data.callback) args.data.callback(data);
         }
-      }
+      };
       if(args.data.modify) apiObj.modify = args.data.modify;
       api(apiObj);
     }else{
       $table = tableBody($table,props,args.data,args);
       $table = tableInsert(args,$table);
-      return $table
-
+      return $table;
     }
-    
     // table body
     function tableBody($table,props,data,args){
       const $tbody = $('<tbody></tbody>');
       let $tr,$td;
-      for(let item of data){
+      data.forEach ((item) => {
         $tr = $('<tr></tr>');
         if(item.id) $tr.attr('id',item.id);
         if(args.methods){
@@ -575,27 +550,27 @@ const component = (() => {
           $td = $('<td></td>');
           const $button_group = $('<div></div>').attr('class','btn-group');
         
-          for(let option of Object.getOwnPropertyNames(args.options)){
+          Object.getOwnPropertyNames(args.options).forEach ((option) => {
             const $button = $('<button></button>');
             const $icon = $('<i></i>').attr('class','btn');
             if(option === 'view'){
-              $icon.attr('class','fas fa-eye')
+              $icon.attr('class','fas fa-eye');
             }else if(option === 'edit'){
-              $icon.attr('class','fas fa-edit')
+              $icon.attr('class','fas fa-edit');
             }else if(option === 'delete'){
-              $icon.attr('class','fas fa-trash')
+              $icon.attr('class','fas fa-trash');
             }
             $button.on('click',(event)=>{
               event.preventDefault();
               args.options[option](item);
-            })
+            });
             $button_group.append($button);
-          }
+          });
           $td.append($button_group);
           $tr.append($td);
         }
         $tbody.append($tr);
-      }
+      });
       $table.append($tbody);
       
       return $table;
@@ -623,7 +598,7 @@ const component = (() => {
     for(let [key,value] of formData.entries())
       formObj[key] = value;
     
-    return formObj
+    return formObj;
   }
   // .................................................
   // component.form.post
@@ -643,7 +618,7 @@ const component = (() => {
       event.preventDefault();
       axios.post(args.url,formObj)
       .then((formObj) => {
-        callback(formObj)
+        callback(formObj);
       }).catch(function(error){
         $(args.el).html(`A error has occured : ${error}`);
       });
@@ -678,18 +653,18 @@ const component = (() => {
           formBtnSave = document.createElement('button');
           formBtnSave.setAttribute('class','btn btn-primary btn-lg');
           formBtnSave.innerHTML = args.btnSaveTxt;
-          form.setAttribute('encType','multipart/form-data')
-          form.setAttribute('class','card shadow')
-          formBody.setAttribute('class','card-body')
-          formFooter.setAttribute('class','card-footer')
+          form.setAttribute('encType','multipart/form-data');
+          form.setAttribute('class','card shadow');
+          formBody.setAttribute('class','card-body');
+          formFooter.setAttribute('class','card-footer');
           let model,props;
           if(typeof args.model==='string'){
-            props = Object.getOwnPropertyNames(models[args.model])
+            props = Object.getOwnPropertyNames(models[args.model]);
           }else if(args.model.constructor === Array ){
-            props = []
+            props = [];
             for(let item of args.model){
               for(let prop of Object.getOwnPropertyNames(models[item]))
-                props.push(prop)
+                props.push(prop);
             }
           }
     let index =0;
@@ -700,9 +675,9 @@ const component = (() => {
       }else{
         
         if(prop.split('_')[0] === 'header'){
-          const header = document.createElement(prop.split('_')[1])
-          header.innerHTML = args.fields[prop]
-          const hr = document.createElement('hr')
+          const header = document.createElement(prop.split('_')[1]);
+          header.innerHTML = args.fields[prop];
+          const hr = document.createElement('hr');
           formBody.appendChild(header);
           formBody.appendChild(hr);
         }else if(prop === 'field'){
@@ -713,41 +688,40 @@ const component = (() => {
       }
       index++;
     }
-    if(!args.insert) args.insert = 'append'
-    if(!args.el) args.el = application.config.main
+    if(!args.insert) args.insert = 'append';
+    if(!args.el) args.el = application.config.main;
     $(args.el)[args.insert](form);
     // submit event
     formFooter.appendChild(formBtnSave);
     form.appendChild(formBody);
-    form.appendChild(formFooter)
+    form.appendChild(formFooter);
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const data = formData(form);
       if(args.url){
-        if(!args.method) args.method = 'post'
+        if(!args.method) args.method = 'post';
         if(args.method){
           if(args.before){
             //axios.interceptors.request.use((data) => {
-              args.before(data)
+              args.before(data);
             //});
           }
   
           axios[args.method](args.url,data)
           .then((data) => {
-            if(args.onSubmit)args.onSubmit(data)
-          })
+            if(args.onSubmit)args.onSubmit(data);
+          });
         }
       }else {
         if(args.onSubmit) args.onSubmit(data);
       } 
     });
-    return form
-    
+    return form;
   }
   
   // form group row
   function formRow(prop,args){
-    const usePropArgs = typeof prop === 'object'
+    const usePropArgs = typeof prop === 'object';
     if(usePropArgs) args = prop;
     // row
     const formRow = document.createElement('div');
@@ -755,12 +729,12 @@ const component = (() => {
     // label
     const formRowLabel  = document.createElement('label');
     formRowLabel.setAttribute('for',prop);
-    formRowLabel.setAttribute('class','col-sm-2 col-form-label')
+    formRowLabel.setAttribute('class','col-sm-2 col-form-label');
     formRowLabel.innerHTML = usePropArgs ? args.label : args.fields[prop].label;
     formRow.appendChild(formRowLabel);
     const formInputCol = document.createElement('div');
     formInputCol.setAttribute('class','col-sm-10');
-    let argsUse
+    let argsUse;
     try{
       argsUse = args.fields[prop].use;
     }catch(e){
@@ -787,7 +761,7 @@ const component = (() => {
         if(args.fields[prop].value) formRowInput.setAttribute('value',args.fields[prop].value);
       }
      
-      formInputCol.appendChild(formRowInput)
+      formInputCol.appendChild(formRowInput);
       if(usePropArgs){
         if(args.type === 'date') $(`#${args.id}`).datepicker();
       }else{
@@ -822,7 +796,7 @@ const component = (() => {
       setTimeout(()=>{
       
         alert.fadeOut(()=>{
-          alert.remove()
+          alert.remove();
         });
        
       },args.fadeOut);
@@ -837,13 +811,13 @@ const component = (() => {
       .attr('class','table table-calendar table-bordered table-striped'),
           $calendarTableHeader = $('<thead></thead>'),
           $calendarTableHeadersWeekDays = $('<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>'),
-          $calendarTableBody = $('<tbody></tbody>')
+          $calendarTableBody = $('<tbody></tbody>');
  
-    $calendarTableHeader.append($calendarTableHeadersWeekDays)
+    $calendarTableHeader.append($calendarTableHeadersWeekDays);
     $calendarTable.append($calendarTableHeader);
   
-    let $calendarTableRow
-    args = args ? args : {}
+    let $calendarTableRow;
+    args = args ? args : {};
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const now = new Date(),
     dd = args.d ? args.d : now.getDate(),
@@ -865,26 +839,26 @@ const component = (() => {
         url : args.data.url,
         callback : (data) => {
           if(data[0]){
-            calendarBuild(data)
+            calendarBuild(data);
           }else{
-            $(args.el).html('No Data')
+            $(args.el).html('No Data');
           }
          
           if(args.data.callback) args.data.callback(data);
         }
-      }
+      };
       if(args.data.modify) apiObj.modify = args.data.modify;
       api(apiObj); // fetch data from api
     }else{
-      calendarBuild()
+      calendarBuild();
     }
     function calendarBuild(data){
       // previous month
       while(prevMonthStart < prevMonthDays ){
-        weekDayNum = new Date(`${yyyy}-${prevMonth}-${prevMonthStart}`).getDay()
-        if(weekDayNum===0)$calendarTableRow = $('<tr></tr>')
-        let $calendarTableCell = $('<td></td>').attr('style','background-color:#fff;')
-        $calendarTableRow.append($calendarTableCell.html(prevMonthStart).addClass('text-muted'))
+        weekDayNum = new Date(`${yyyy}-${prevMonth}-${prevMonthStart}`).getDay();
+        if(weekDayNum===0)$calendarTableRow = $('<tr></tr>');
+        let $calendarTableCell = $('<td></td>').attr('style','background-color:#fff;');
+        $calendarTableRow.append($calendarTableCell.html(prevMonthStart).addClass('text-muted'));
         
         if(data){
           for(let item of data){
@@ -898,21 +872,21 @@ const component = (() => {
             }
           }
         }
-        if(weekDayNum===6)$calendarTableBody.append($calendarTableRow)
-        prevMonthStart++
+        if(weekDayNum===6)$calendarTableBody.append($calendarTableRow);
+        prevMonthStart++;
       }
       // current month
       while(start < days ){
 
-        if(start.toString().length<2)start = `0${start}`
-        weekDayNum = new Date(`${yyyy}-${mm}-${start}`).getDay()
-        if(weekDayNum===0)$calendarTableRow = $('<tr></tr>')
-        let $calendarTableCell = $('<td></td>')
-        $calendarTableCell.attr('data-date',`${yyyy}-${mm}-${start}`)
-        $calendarTableCell.attr('id',`date-${yyyy}-${mm}-${start}`)
+        if(start.toString().length<2)start = `0${start}`;
+        weekDayNum = new Date(`${yyyy}-${mm}-${start}`).getDay();
+        if(weekDayNum===0)$calendarTableRow = $('<tr></tr>');
+        let $calendarTableCell = $('<td></td>');
+        $calendarTableCell.attr('data-date',`${yyyy}-${mm}-${start}`);
+        $calendarTableCell.attr('id',`date-${yyyy}-${mm}-${start}`);
        // dd = (component.date('dd')/1);
        
-        dd === (start/1) ? $calendarTableRow.append($calendarTableCell.addClass('today').html(`<b>${start}</b>`)) : $calendarTableRow.append($calendarTableCell.html(start))
+        dd === (start/1) ? $calendarTableRow.append($calendarTableCell.addClass('today').html(`<b>${start}</b>`)) : $calendarTableRow.append($calendarTableCell.html(start));
         
         if(dd > start){
           $calendarTableCell.addClass('past');
@@ -941,7 +915,7 @@ const component = (() => {
           }
         }
         if(weekDayNum===6) $calendarTableBody.append($calendarTableRow);
-        start = (start/1)
+        start = (start/1);
         start++;
       }
       $calendarTable.append($calendarTableBody);
@@ -949,7 +923,7 @@ const component = (() => {
     }
 
     
-    const $calendarMonths = $('<div></div>').attr('class','dropdown')
+    const $calendarMonths = $('<div></div>').attr('class','dropdown');
     // calendarMonths dropdown 
     // https://getbootstrap.com/docs/4.3/components/dropdowns/
     $calendarMonths.append($('<a></a>')
@@ -960,7 +934,7 @@ const component = (() => {
       .html(months[mm-1]));
     const $calendarMonthsMenu = $('<div></div>')
       .attr('class','dropdown-menu')
-      .attr('aria-labelledby','calendarMonths')
+      .attr('aria-labelledby','calendarMonths');
     months.map(month => {
       if(month!==months[mm-1]) $calendarMonthsMenu.append(
         $('<a></a>')
@@ -973,7 +947,7 @@ const component = (() => {
     $documentFragment.append($calendarMonths);
     $documentFragment.append($calendarTable);
     $(args.el).html($documentFragment);
-    return $documentFragment
+    return $documentFragment;
   }
   // .................................................
   // editor; all in one CRUD component
@@ -1004,11 +978,14 @@ const component = (() => {
   })
   */
   function editor(args){
+    let editorView;
+    let editorOverview;
+    let editorAdd;
     // module presets
-    application.object[args.module].template = 'editor'
-    application.object[args.module].default = editorOverview
-    application.object[args.module].add = { default : editorAdd }
-    application.object[args.module].view = { default : editorView }
+    application.object[args.module].template = 'editor';
+    application.object[args.module].default = editorOverview;
+    application.object[args.module].add = { default : editorAdd };
+    application.object[args.module].view = { default : editorView };
     // set routes
     application.routes[`${args.module}/add`] = `${args.module}.add`;
     application.routes[`${args.module}/view`] = `${args.module}.view`;
@@ -1020,15 +997,15 @@ const component = (() => {
         application.object[args.module].data = data;
         args.data.callback();
       }
-    }
+    };
     // view
-    const editorView = (id) => {
+    editorView = (id) => {
  
       const item = application.object[args.module].data.filter((item) => item.id === id)[0];
       component[args.view.use.component](args.view);
-    }
+    };
     // overview
-    const editorOverview = () => {
+    editorOverview = () => {
       if(!args.overview.us.class && args.us.overview.component === 'table')
         args.use.overview.class = 'table-striped table-hover';
 
@@ -1039,11 +1016,11 @@ const component = (() => {
         class : args.use.overview.class,
         cols : args.use.overview.cols,
 
-      })
-    }
+      });
+    };
     //api call
-    api(editorData)
+    api(editorData);
   }
-  return methods
-})() // invoke
+  return methods;
+})(); // invoke
 //export default component;

@@ -1,7 +1,13 @@
 <section id="medientDashboard" class="container-fluid">
-    <div class="row">
-      <div class="col-md-3"><h3>Persoonlijk</h3> 
-        <span class="float-right" id="medientPersonalInfoOptions">
+    
+  <div class="row" style="padding:10px;"> 
+    <button class="btn btn-green  pointer white left" id="medientAdditionalInfo" ><i class="fas fa-pen"></i> Gegevens <b class="medientName"></b></button>
+    <button class="btn btn-outline-secondary  pointer left" id="medientAdditionalInfoPDFExport" style="margin-left: 5px;" ><i class="fas fa-file-pdf"></i> PDF Downloaden </button>
+</div>
+  <div class="row">
+      <div class="col-md-3">
+        <h3>Persoonlijk</h3> 
+        <div class="float-right" id="medientPersonalInfoOptions">
           <span id="medientEdit">
             <button class="btn btn-nobg yellow" id="medientEditBtn">
               <i class="fas fa-user-edit"></i>
@@ -11,8 +17,13 @@
               <button class="btn btn-nobg green" id="medientSaveBtn"><i class="fas fa-check"></i></button>
               <button class="btn btn-nobg red" id="medientEditCancelBtn"><i class="fas fa-times"></i></button>
           </span>
+        </div>
+          <form id="medientPersonalInfo">
+
+          </form>
       </div>
-      <div class="col-md-3"><h3>Contacten (<span id="medientContactsNum">0</span>)</h3>
+      <div class="col-md-3" id="medientPersonalInfoContainer">
+        <h3>Contacten (<span id="medientContactsNum">0</span>)</h3>
         <span class="float-right" id="medientAddContactOptions">
             <span id="medientAddContact">
               <button class="btn btn-nobg yellow" id="medientAddContactBtn">
@@ -25,13 +36,8 @@
             </span>
       </div>
     </div>
-        <div class="row" id="medientPersonalInfoContainer">
-          <form class="col-md-3" id="medientPersonalInfo">
-
-          </form>
-          
-        </div>
-        <div class="row">
+     
+        <div class="row" style="padding-top: 10px;">
          <div class="col-md-6">
           <h3>Voortgang</h3>
           <div id="medientTargets">
@@ -40,26 +46,40 @@
          </div>
          <div class="col-md-6">
            <h3>Evaluatie</h3>
-           <div id="addMedientEvaluation">
-             <form>
-              <div class="form-group">
-                <label for="date">Datum</label>
-                <input type="text" class="form-control" id="date">
-              </div>
-               <div class="form-group">
-                <label for="evaluation">Evaluatie</label>
-                <textarea class="form-control" id="evaluation" rows="3"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary mb-2">Evaluatie Toevoegen</button>
-             </form>
+           
+           <div id="overviewMedientEvaluation" class="p-2"></div>
+           <div class="p-2"  style="padding: 15px;">
+            <button id="addMedientEvaluation" class="btn btn-nobg btn-block border-dashed muted left"><i class="fas fa-plus"></i> Evaluatie toevoegen</button>
+         
            </div>
-           <div id="overviewMedientEvaluation"></div>
-         </div>
+           </div>
         </div>   
         
 </section>
 <div style="display: none;" id="medientDashboard_templates">
-  <div class="col-md-3" id="medientContact">
+  <div class="medientContactItem">
+    <div class="float-right medientContactOptions">
+      <div class="medientContactEdit">
+          <div class="btn-group medientEditDeleteContact" role="group" aria-label="Basic example">
+          <button class="btn btn-nobg yellow medientEditContact">
+              <i class="fas fa-user-edit"></i>
+          </button>
+          <button class="btn btn-nobg red medientDeleteContact">
+              <i class="fas fa-user-times"></i>
+          </button>
+          </div>
+        </div>
+      <div class="medientContactEditSave" style="display: none;">
+          <button class="btn btn-nobg green medientContactEditSaveBtn"><i class="fas fa-check"></i></button>
+          <button class="btn btn-nobg red medientAddContactEditCancelBtn"><i class="fas fa-times"></i></button>
+      </div>
+  </div>
+    <div class="form-group">
+      <label class="medientRelation"></label>
+      <input type="text" class="form-control" class="medientContactName" disabled>
+    </div>
+  </div>
+  <div id="medientContact">
     <div class="float-right medientContactOptions">
         <div class="medientContactEdit">
             <div class="btn-group medientEditDeleteContact" role="group" aria-label="Basic example">
@@ -125,7 +145,7 @@
           </div>
           
       </div>
-
-
+     
   </form>
+ 
 </div>

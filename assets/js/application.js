@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
 * Application Client 0.12
@@ -32,19 +32,19 @@ const application = (function(){
     templateEngine : 'html',
     templatePath : '{templateEngine}/templates/{template}.{templateEngine}', // template file path
     modulesPath : 'js/modules/{module}.js'
-  }
+  };
 //
   const require = (name,callback) => {
-      const requireStart = new Date;
+      const requireStart = new Date();
       $.get(`js/${name}.js`).done(() => {
-        const requireEnd = new Date;
-        const requireLoadtime = requireEnd - requireStart
-        if(debug)debug(`application.require : js/${name}.js load complete in ${requireLoadtime} ms`)
-        if(callback)callback()
+        const requireEnd = new Date();
+        const requireLoadtime = requireEnd - requireStart;
+        if(debug)debug(`application.require : js/${name}.js load complete in ${requireLoadtime} ms`);
+        if(callback)callback();
       }).fail(()=>{
-         throw `application.require : ${name} not available`
+         throw `application.require : ${name} not available`;
       });
-  }
+  };
 
   const hash = () => location.hash.slice(1);
   const route = () => hash().split('/');
@@ -53,19 +53,18 @@ const application = (function(){
 
 //..............................................................................
 
-  const element = {}
+  const element = {};
   const elements = () => {
     const isElement = (obj,property) =>
-      (typeof obj[property] === 'string')
-      && obj[property].includes('#');
+      (typeof obj[property] === 'string') && obj[property].includes('#');
     const setElements = () => {
       for(let property in config)
         if(isElement(config,property)) element[property] = $(config[property]);
-    }
-    setElements(config)
+    };
+    setElements(config);
     debug(`application.elements : ${Object.getOwnPropertyNames(element).join(',')}`);
     return element;
-  }
+  };
 
 //..............................................................................
 //
@@ -75,7 +74,7 @@ const application = (function(){
  */
 const add = function(name,module,callback) {
    
-    if(!typeof name==='string') throw 'application.add: module name was expected as string but is '+typeof name
+    if(typeof name!=='string') throw 'application.add: module name was expected as string but is '+typeof name;
     if(name.includes('.')){
       name = name.split('.');
       name[1] ? object[name[0]][name[1]] = module : object[name[0]] = module;
@@ -90,20 +89,20 @@ const add = function(name,module,callback) {
       // add given name to application routes object
       object.routes[name.replace('.','/')] = name;
     }
-    if(typeof callback === 'function') callback()
+    if(typeof callback === 'function') callback();
     if(module) return module;
 
-  }
+  };
 
 //..............................................................................
 // removes (module) property from application object
 const remove = function(name) {
 
-    const obj = {}
+    const obj = {};
     for(let module in object)
       if(module != name ) obj[module] = module;
     object = obj;
-  }
+  };
 // call require for given (object.require) array
 const initRequire = (_require,callback) => {
     if(_require.length>0){
@@ -119,25 +118,51 @@ const initRequire = (_require,callback) => {
       }
       if(callback)callback();
     }else{
-      require(_require,callback)
+      require(_require,callback);
     }
-  }
+  };
+
+//..............................................................................
+//
+const initQueue = (prop,path,callback) => {
+
+  require(`${path}${object[prop][position]}`, () =>{
+    debug(`application.initQueue : ${path}${object[prop][position]} loaded`);
+    if(position === object[prop].length-1){
+      position = 0;
+      finish = new Date();
+      loadtime = finish - start;
+      application.loadtime = loadtime;
+      debug(`application.initinitQueue complete in ${loadtime} ms: init load`);
+      
+      $(window).on( 'hashchange',()=>load(()=>{
+        // event load
+
+      }));
+      if(callback) callback();
+    } else {
+
+      position++; // next position in modules array
+      initQueue();
+    }
+  });
+};
 //..............................................................................
 //
 const initModules = () => {
     require(`modules/${object.modules[position]}`, () =>{
       debug(`application.initModules : modules/${object.modules[position]} loaded`);
       if(position === object.modules.length-1){
-        finish = new Date
-        loadtime = finish - start
-        application.loadtime = loadtime
+        finish = new Date();
+        loadtime = finish - start;
+        application.loadtime = loadtime;
         debug(`application.initModules complete in ${loadtime} ms: init load`);
         load(()=>{ // call moduleRouter
           // init load
-          _finish = new Date;
+          _finish = new Date();
           _loadtime =  _finish - _start;
           application.object[getRoute().endpoint].loadtime = _loadtime;
-        })
+        });
         $(window).on( 'hashchange',()=>load(()=>{
           // event load
 
@@ -149,12 +174,12 @@ const initModules = () => {
         initModules();
       }
     });
-  }
+  };
 //..............................................................................
 const initObj = (_application) => {
     if( _application && object ){ // checks if application object exists
       if(typeof _application === 'function'){
-         _application()
+         _application();
       }else{
         for( let property in object){
           if(!object[property])
@@ -168,7 +193,7 @@ const initObj = (_application) => {
       // BUG:
       //object = application.object; // use existing object
     }
-  }
+  };
 //..............................................................................
 const initConfig = (callback) => {
     // get config object from server
@@ -176,7 +201,7 @@ const initConfig = (callback) => {
       config = data;
       object.config = config;
       object.default = config.default;
-      object.modules = config.modules.map((module)=>module.module)
+      object.modules = config.modules.map((module)=>module.module);
       object.routes = config.routes;
       //debug(`application.initConfig : json/config.json loaded`);
       //debug(config);
@@ -191,14 +216,14 @@ const initConfig = (callback) => {
       }
 
     }).always(()=>{
-      if(callback)callback()
-    })
-  }
+      if(callback)callback();
+    });
+  };
 
 //..............................................................................
 
 const init = (( _application ) => { // initialize application
-    start = new Date;
+    start = new Date();
 
       initObj(_application); // assigns given, existing or merged application object
       initConfig(()=>{ // initialize config object
@@ -210,24 +235,22 @@ const init = (( _application ) => { // initialize application
             if(config.require){
               initRequire(config.require,()=>{
                 initModules(loadModules);
-              })
+              });
             }else{
               initModules(loadModules);
             }
           }
           application.config = config;
-        })
-
+        });
       });
-      return object
-
-  })()
+      return object;
+  })();
 
 //..............................................................................
 const getRoute = (_route) => {
 
-    _route = _route ? _route : hash()
-    if(!_route) _route = endpoint() // get config.default if hash route not provided
+    _route = _route ? _route : hash();
+    if(!_route) _route = endpoint(); // get config.default if hash route not provided
 
     let _parameter,_endpoint;
     const routesProps = Object.getOwnPropertyNames(config.routes);
@@ -241,12 +264,12 @@ const getRoute = (_route) => {
     return {
       parameter : _parameter,
       endpoint : _endpoint
-    }
-  }
+    };
+  };
   //..............................................................................
   const moduleRouter = (_route) => {
-    _start = new Date
-    let callback
+    _start = new Date();
+    let callback;
     if(typeof _route === 'function' ) {
       callback = _route;
       _route = getRoute();
@@ -256,12 +279,8 @@ const getRoute = (_route) => {
     if(_endpoint){
       // module route
 
-      const _module = _endpoint[1] ?
-      object[_endpoint[0]][_endpoint[1]]
-      : object[_endpoint[0]];
-      if(endpoint[2]) _module = _endpoint[3] ?
-      _module[_endpoint[2]][_endpoint[3]]
-      : _module[_endpoint[2]].default;
+      let _module = _endpoint[1] ? object[_endpoint[0]][_endpoint[1]] : object[_endpoint[0]];
+      if(endpoint[2]) _module = _endpoint[3] ? _module[_endpoint[2]][_endpoint[3]] : _module[_endpoint[2]].default;
 
       page(() => { // call page
         if(typeof _module.default === 'function'){
@@ -279,7 +298,7 @@ const getRoute = (_route) => {
     }
     if(callback) callback();
   },
-  load = moduleRouter
+  load = moduleRouter;
 //..............................................................................
 // displays page from template, execute callback and call render
 const page = ( _module ) => {
@@ -301,7 +320,7 @@ const page = ( _module ) => {
 
 //..............................................................................
 
-  templates = {}
+  templates = {};
   const template = (_route, html, callback) => {
     // gets template for given or current route
 
@@ -319,10 +338,10 @@ const page = ( _module ) => {
     obj.templateEngine ? _templateEngine = obj.templateEngine : _templateEngine = config.templateEngine;
     if(!templates[_template]){ // template is not available in templates object
       if(!config.templatePath) config.templatePath = defaults.templatePath; // get filepath
-      let template_load_start = new Date;
+      let template_load_start = new Date();
       // TODO: mustache / handlebars /ejs
       $.get( `${_templateEngine}/templates/${_template}.${_templateEngine}`, function( data ) { // get file
-        let template_load_end = new Date;
+        let template_load_end = new Date();
         let template_loadtime = template_load_end - template_load_start;
         debug(`application.template : ${_templateEngine}/templates/${_template}.${_templateEngine} load complete in ${template_loadtime} ms`);
         // ejs migrated to assets/js/ejs.js
@@ -337,36 +356,36 @@ const page = ( _module ) => {
     }else{
       if(html) {
         _template = templates[_template]; // get template from templates object
-        view.main.html(_template)
+        view.main.html(_template);
         if(callback) callback();
       }
     }
 
 
     return _template;
-  }
+  };
 
 //..............................................................................
 // updates page view with module properties
 
 const render = ( _this, callback ) => {
-    let _route,_event = ''
+    let _route,_event = '';
 
     if(typeof _this === 'function' ) {
       callback = _this; // route argument as callback
       _route = getRoute().endpoint;
     }else if(_this) {
-      _start = new Date
+      _start = new Date();
       if(_this.target){
         // event
         if(_this.target.id){
-          _event = `(#${_this.target.id} ${_this.type} event)`
+          _event = `(#${_this.target.id} ${_this.type} event)`;
         }else if(_this.target.class){
-          _event = `(.${_this.target.class} ${_this.type} event)`
+          _event = `(.${_this.target.class} ${_this.type} event)`;
         }
       }else{
         if(typeof _this === 'string') {
-          _event = `(${_this})`
+          _event = `(${_this})`;
         }
       }
       _route = getRoute().endpoint;
@@ -383,11 +402,11 @@ const render = ( _this, callback ) => {
       for(let property in object[_route]){
         if(typeof object[_route][property] === 'string' ){
 
-          const selClassElement = $(`#${_template} .${property}`)
+          const selClassElement = $(`#${_template} .${property}`);
           if(selClassElement){
             selClassElement.html(str(object[_route][property])); // element html & parse with str
             if(selClassElement.length>0)
-              debug(`application.render : updated ${selClassElement.length} elements with class .${property}`)
+              debug(`application.render : updated ${selClassElement.length} elements with class .${property}`);
           }
 
           if($(`[data-property*='${property}']`)){
@@ -399,15 +418,15 @@ const render = ( _this, callback ) => {
       //output = $(`#${template(_route)}`).html(str($(`#${template(_route)}`).html())); // parse with str
       output = $(`#${_template}`).html();
       if(callback) callback();
-      for(let event in events) events[event]()
-      _finish = new Date
-      _loadtime =  _finish - _start
-      thisObj.loadtime = _loadtime
+      for(let event in events) events[event]();
+      _finish = new Date();
+      _loadtime =  _finish - _start;
+      thisObj.loadtime = _loadtime;
       debug(`application.render ${_event}: ${_route} complete in ${_loadtime} ms`);
       //if(config.debug && application.debug) application.debug.debugger()
     //}
     return application;
-  }
+  };
 
 //..............................................................................
 // creates/updates nav element
@@ -430,8 +449,8 @@ const nav = () => {
 
     }
 
-    let _endpoint = getRoute().endpoint[0]
-    let debugStr = modules().join(',').replace(_endpoint,`${_endpoint}(active)`)
+    let _endpoint = getRoute().endpoint[0];
+    let debugStr = modules().join(',').replace(_endpoint,`${_endpoint}(active)`);
     debug(`application.nav : ${debugStr}`);
 
     const active = `${config.nav} li#${_endpoint} a`;
@@ -440,7 +459,7 @@ const nav = () => {
       $( active ).attr('style',`${str(config.style)}`);
     }
     return view.nav;
-  }
+  };
 
 //..............................................................................
 // sets document title with name property of module object
@@ -452,7 +471,7 @@ const title = (route) => {
     $('title').html(pageTitle);
     debug(`application.title : ${pageTitle}`);
     return pageTitle;
-  }
+  };
 
 //..............................................................................
 /**
@@ -481,9 +500,9 @@ const event = (_element, _event, callback ) => {
         property.includes('.') ?
         object[property.split('.')[0]][property.split('.')[1]] = event.target.value
         : module()[property] = event.target.value;
-      }
+      };
     }else if (typeof callback === 'object') {
-      const obj = callback
+      const obj = callback;
       callback = (event) => {
         if(obj.api){ // bind api request to event
           $.ajax(obj).done(()=>obj.callback());
@@ -492,23 +511,23 @@ const event = (_element, _event, callback ) => {
           const property = event.target.class;
           if(event.target.value) obj[property] = event.target.value;
         }
-      }
+      };
     }
-    let id
+    let id;
     if(_element){
       id = _element.attr('id');
 
       _element.on(_event,(event) => {
-        _start = new Date;
+        _start = new Date();
         if (typeof callback === 'function')callback(event);
         render(event); // event render
       });
     }
 
-    let _events = id ?  events[id] : events
-    return _events
+    let _events = id ?  events[id] : events;
+    return _events;
   },
-  events = {}
+  events = {};
 
 //..............................................................................
 /**
@@ -516,14 +535,14 @@ const event = (_element, _event, callback ) => {
  */
 const  modules = function(){
     // get modules as array
-    let _modules
+    let _modules;
     //if(config.modules){
     //  _modules = config.modules
     //} else {
       _modules = [];
       for(let property of Object.getOwnPropertyNames(application.object)){
         let obj = object[property];
-        if(typeof obj.default === 'function' ) _modules.push(property)
+        if(typeof obj.default === 'function' ) _modules.push(property);
       }
     //}
     return _modules;
@@ -534,23 +553,23 @@ const  modules = function(){
     try{
       obj = route[1] ? object[route[0]][route[1]] : object[route];
     }catch(e){
-      obj = {}
+      obj = {};
     }
     
     return obj;
   },
-  module = moduleObj
+  module = moduleObj;
 //..............................................................................
 
 const str = (str) => {
     // replace {template} strings with module properties
     const _endpoint = getRoute().endpoint[0];
     const obj = application.object[_endpoint];
-    const objProps = Object.getOwnPropertyNames(obj)
+    const objProps = Object.getOwnPropertyNames(obj);
     for(let item of objProps)
       if(typeof obj[item] === 'string' )
         str = str.replace(new RegExp(`{${item}}`, 'g'),obj[item]);
-    const defaultProps = Object.getOwnPropertyNames(defaults)
+    const defaultProps = Object.getOwnPropertyNames(defaults);
     for(let property of defaultProps)
       str = str.replace(new RegExp(`{${property}}`, 'g'),defaults[property]);
       // TODO: template engines
@@ -560,13 +579,13 @@ const str = (str) => {
 
    }
 
-    return str
+    return str;
   },
   model = {},
   view = element,
   controller = (_element, _event, callback ) => {
-    event(_element, _event, callback )
-  }
+    event(_element, _event, callback );
+  };
 
   const methods = {
     route : route,
@@ -594,8 +613,8 @@ const str = (str) => {
     templates : templates,
     title : title,
     debug : []
-  }
+  };
   // return public methods & variables
   /** @namespace application */
-  return methods
+  return methods;
 })();

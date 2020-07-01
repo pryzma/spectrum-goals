@@ -1,40 +1,41 @@
 /*
 * controllers/subjects.js
 */
-const controller = module.exports = {}
-const models = require('../models').sequelize.models
+'use strict';
+const controller = module.exports = {};
+const models = require('../models').sequelize.models;
 const Subject = models.Subject;
 const Target = models.Target;
 const Level = models.Level;
 const SubLevel = models.SubLevel;
 const auth = require('./auth');
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid');
 
 controller.createSubject = (req,res) => {
-    const subject = req.body
+    const subject = req.body;
   
     if(!subject.id) subject.id = uuidv4();
     Subject.create(subject).then((subject)=>{
-        console.log(subject.dataValues)
+        console.log(subject.dataValues);
         res.json(subject.dataValues);
     }).catch((err)=>{
         console.log(err);
     });
-}
+};
 
 controller.updateSubject = (req,res,next) => {
     Subject.update(req.body,{where: { id: req.body.id } })
     .then(function(rowsUpdated) {
-        res.json(rowsUpdated)
+        res.json(rowsUpdated);
     })
     .catch(next);
-}
+};
 
 controller.getAll = (req,res) => {
     Subject.findAll({order:[['name','DESC']]}).then((items) => {
         res.json(items);
     });
-}
+};
 
 controller.deleteSubject = (req,res) => {
     Subject.destroy({
@@ -49,13 +50,13 @@ controller.deleteSubject = (req,res) => {
             }).then(()=>{
                 SubLevel.destroy({
                     where: {subject : req.params.id}
-                })
-            })
+                });
+            });
             
-        })
+        });
         
         controller.getAll(req,res);
     });
-}
+};
 
 controller.isAuthenticated = auth.isAuthenticated;

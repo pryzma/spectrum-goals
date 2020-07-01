@@ -8,6 +8,10 @@ module.exports =  (sequelize, Sequelize) => {
       medient: {type: Sequelize.STRING},
       target : {type: Sequelize.STRING},
       evaluation : {type: Sequelize.STRING},
+      createdBy: {
+        type: Sequelize.STRING,
+        notEmpty: false
+    },
       date : {type: Sequelize.DATE}
   })
 }

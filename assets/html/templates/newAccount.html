@@ -1,5 +1,5 @@
 <section id="accountDashboard" class="container-fluid">
-      <div id="accountValidation"></div>
+      <div id="accountValidation" class="text-danger"></div>
       <form id="accountInfo">
         <input type="hidden" id="id" />
         <input type="hidden" name="profile" id="profile" value="medient" />
@@ -12,28 +12,28 @@
         </div>
         <div class="form-group">
           <label for="firstName">Voornaam</label>
-          <input type="text" class="form-control" id="firstName" required />
+          <input type="text" class="form-control" id="firstName" required autocomplete="off" />
         </div>
         <div class="form-group">
           <label for="lastName">Achternaam</label>
-          <input type="text" class="form-control" id="lastName" required />
+          <input type="text" class="form-control" id="lastName" required autocomplete="off" />
         </div>
-        <div class="form-group">
+        <div class="form-group" id="formGroupUsername">
           <label for="username">Gebruikersnaam</label>
-          <input type="text" class="form-control" id="username" required />
+          <input type="text" class="form-control" id="username" required autocomplete="off" />
         </div>
-        <div class="form-group">
+        <div class="form-group" id="formGroupEmail">
           <label for="email">E-mail</label>
-          <input type="email" class="form-control" id="email" required  />
+          <input type="email" class="form-control" id="email" required autocomplete="off"  />
         </div>
         <div class="form-group" id="formGroupMedientIndication">
           <label for="indication">Datum Indicatie</label>
-          <input type="text" class="form-control" id="indication" required />
+          <input type="text" class="form-control" id="indication" required autocomplete="off" />
         </div>
         <span id="accountSave">
           <button class="btn btn-outline-success" id="accountSaveBtn"><i class="fas fa-check"></i> Opslaan</button>
-          <!--<button class="btn btn-outline-secondary" id="accountEditCancelBtn"><i class="fas fa-times"></i> Annuleren</button>-->
-          <a href="#accounts" class="btn btn-outline-secondary"><i class="fas fa-times"></i> Annuleren</a>
+          <button class="btn btn-outline-secondary" id="accountEditCancelBtn"><i class="fas fa-times"></i> Annuleren</button>
+          <!--<a href="#accounts" class="btn btn-outline-secondary"><i class="fas fa-times"></i> Annuleren</a>-->
         </span>
   
       </form>
